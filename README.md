@@ -1,7 +1,7 @@
 # 💻 Projeto Frontend – Grupo 8 – Processo Trainee CJR
 
 > Repositório responsável pelo frontend da aplicação do grupo 8, voltado ao processo trainee da **CJR**.  
-> Tecnologias previstas: **Next.js**, **Biblioteca Tailwind**  
+> Tecnologias previstas: **Next.js**, **TypeScript** e **Biblioteca Tailwind**  
 >  
 > Este README serve como base inicial — detalhes da interface e integração com o backend serão definidos à medida que o projeto evolui.
 
