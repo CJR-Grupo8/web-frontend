@@ -56,10 +56,12 @@ body {
 }
 
 .login-image {
-  width: clamp(260px, 42vw, 520px);
+  width: clamp(520px, 52vw, 720px);
   height: auto;
-  margin-left: 48px;
-  display: block;
+  margin-right: 48px;
+  display: inline-block;
+  max-height: 90vh;
+  object-fit: contain;
 }
 
 .login-card {
