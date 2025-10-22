@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 import "../styles/cadastro.css";
 
 const RegisterPage: React.FC = () => {
@@ -28,7 +29,7 @@ const RegisterPage: React.FC = () => {
           <button type="submit" className="signup-button">CRIAR CONTA</button>
 
           <p className="signup-login">
-            Já possui uma conta? <a href="/login" className="signup-link-cta">Login</a>
+            Já possui uma conta? <Link href="/login" className="signup-link-cta">Login</Link>
           </p>
         </form>
       </section>
