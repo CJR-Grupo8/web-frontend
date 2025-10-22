@@ -8,7 +8,7 @@ const LoginPage: React.FC = () => {
         <div className="login-figure">
           <img src="images/logo.svg" alt="Stock.io" className="login-logo" />
           <img
-            src="/images/boneco-login.svg"
+            src="/images/garoto-caixa.svg"
             alt="Personagem segurando uma caixa"
             className="login-image"
           />
