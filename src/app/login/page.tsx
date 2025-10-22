@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 import "../styles/login.css";
 
 const LoginPage: React.FC = () => {
@@ -62,11 +63,8 @@ const LoginPage: React.FC = () => {
             ENTRAR
           </button>
 
-          <p className="login-signup">
-            Não possui uma conta?{" "}
-            <a href="#" className="login-link-cta">
-              Cadastre-se
-            </a>
+          <p className="login-register">
+            Não possui uma conta? <Link href="/cadastro" className="login-link-cta">Cadastre-se</Link>
           </p>
         </form>
       </section>
