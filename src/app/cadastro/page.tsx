@@ -37,7 +37,7 @@ const RegisterPage: React.FC = () => {
       <section className="signup-right">
         <div className="signup-figure">
           <img src="/images/logo.svg" alt="Stock.io" className="signup-logo" />
-          <img src="/images/garota-kawaii.svg" alt="Ilustração personagem" className="signup-image" />
+          <img src="/images/garoto-controle.svg" alt="Ilustração personagem" className="signup-image" />
         </div>
       </section>
     </main>
