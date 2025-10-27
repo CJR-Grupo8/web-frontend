@@ -5,10 +5,12 @@ export default function HomePage(){
     return(
       <main className="home-root">
             {/*Header */}
-            <header className="home-header"> 
+            <header className="home-header">
+            <a href="/home"> 
             <div className="logo">
-                <img src="/images/logo.svg" alt="Logo Stock.io" className="logo-img"/>
+                <img src="/images/logo_clara.svg" alt="Logo Stock.io" className="logo-img"/>
             </div>
+            </a>
             <nav className="nav-links">
                 <a href="/login">Login</a>
                 <a href="/cadastro" className="cadastro-btn">Cadastre-se</a>
