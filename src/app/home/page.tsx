@@ -1,4 +1,5 @@
 import React from "react";
+import "../styles/header.css";
 import "../styles/home.css";
 
 export default function HomePage(){
@@ -8,11 +9,11 @@ export default function HomePage(){
             <header className="home-header">
             <a href="/home"> 
             <div className="logo">
-                <img src="/images/logo_clara.svg" alt="Logo Stock.io" className="logo-img"/>
+                <img src="/images/id-visual/logo_clara.svg" alt="Logo Stock.io" className="logo-img"/>
             </div>
             </a>
             <nav className="nav-links">
-                <a href="/login">Login</a>
+                <a href="/login" className="login-btn">Login</a>
                 <a href="/cadastro" className="cadastro-btn">Cadastre-se</a>
             </nav>
             </header>
@@ -27,7 +28,7 @@ export default function HomePage(){
                     <a href="/cadastro" className="hero-button">Começar agora</a>
                 </div>
                 <div className="hero-image">
-                    <img src="/images/garoto-celular.svg" alt="Personagem"/>
+                    <img src="/images/id-visual/garoto-celular.svg" alt="Personagem"/>
                 </div>
             </section>
 
