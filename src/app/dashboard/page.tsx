@@ -1,4 +1,15 @@
 import React from "react";
+import{
+    FaShoppingCart, 
+  FaClinicMedical, 
+  FaSmile, 
+  FaTshirt, 
+  FaLaptop, 
+  FaGamepad, 
+  FaRobot,
+  FaEllipsisH, 
+  FaStore
+} from "react-icons/fa";
 import "../styles/dashboard.css";
 
 export default function Dashboard() {
@@ -10,6 +21,7 @@ export default function Dashboard() {
           <img src="/images/id-visual/logo_escura.svg" alt="Logo Stock.io" className="logo-img" />
         </div>
         <nav className="nav-links">
+          <a href ="/ver_mais" className="store-icon" title="ver mais produtos"><FaStore /> </a>
           <a href="/perfil">Perfil</a>
           <a href="/logout" className="logout-btn">Sair</a>
         </nav>
@@ -29,7 +41,47 @@ export default function Dashboard() {
         </div>
       </section>
 
-      {/* categorias*/}
+      {/* CATEGORIAS*/}
+       <section className="dashboard-categorias">
+        <h3>Categorias</h3>
+        <div className="categorias-grid">
+          <button className="categoria-btn">
+            <FaShoppingCart className="categoria-icon" />
+            Mercado
+          </button>
+          <button className="categoria-btn">
+            <FaClinicMedical className="categoria-icon" />
+            Farmácia
+          </button>
+          <button className="categoria-btn">
+            <FaSmile className="categoria-icon" />
+            Beleza
+          </button>
+          <button className="categoria-btn">
+            <FaTshirt className="categoria-icon" />
+            Moda
+          </button>
+          <button className="categoria-btn">
+            <FaLaptop className="categoria-icon" />
+            Eletrônicos
+          </button>
+          <button className="categoria-btn">
+            <FaGamepad className="categoria-icon" />
+            Jogos
+          </button>
+          <button className="categoria-btn">
+            <FaRobot className="categoria-icon" />
+            Brinquedos
+          </button>
+          <button className="categoria-btn">
+            <FaEllipsisH className="categoria-icon" />
+            Outros
+          </button>
+        </div>
+      </section>
+
+
+      {/* produtos em destaque*/}
       <section className="dashboard-destaques">
         <h3>Produtos em destaque</h3>
         <div className="produto-grid">
