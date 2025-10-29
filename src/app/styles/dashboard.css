@@ -1,0 +1,241 @@
+.dashboard-root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #faf8f4;
+  color: #1a1a1a;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* HEADER */
+.dashboard-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background-color: #ffffff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 3rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  height: 60px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.logo-img {
+  height: 70px;
+  width: auto;
+  transform: translateY(-10px);
+}
+
+.nav-links {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  margin-left: auto;
+}
+
+.nav-links a {
+  color: #000;
+  text-decoration: none;
+  font-weight: 500;
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  transition: 0.2s;
+}
+
+.nav-links a:first-child {
+    background:transparent;
+}
+
+.nav-links a:first-child:hover {
+    background: rgba(108, 99, 255, 0.1);
+    color: #6c63ff;
+}
+
+.logout-btn {
+  background: #ff5b5b !important;
+  color: #fff !important;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: 0.2s;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.logout-btn:hover {
+  background: #ff4d4d !important;
+  transform: translateY(-1px);
+}
+
+/* HERO */
+.dashboard-hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5rem 8%;
+  background: #000;
+  color: #fff;
+  min-height: 45%;
+  max-height: 500px;
+}
+
+.hero-content {
+  max-width: 50%;
+}
+
+.hero-content h2 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.hero-content p {
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+}
+
+.hero-button {
+  display: inline-block;
+  background: #6c63ff;
+  color: #fff;
+  padding: 0.75rem 1.5rem;
+  border-radius: 10px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.3s;
+}
+
+.hero-button:hover {
+  background: #534bcf;
+}
+
+.hero-image img {
+  width: 180px;
+}
+
+.dashboard-hero .hero-content h2 {
+    font-size: 2.2rem;
+    line-height: 1.2;
+    margin-bottom: 2rem;
+}
+
+/* PRODUTOS EM DESTAQUE */
+.dashboard-destaques {
+  padding: 3rem 8%;
+}
+
+.dashboard-destaques h3 {
+  text-align: left;
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
+  color: #1a1a1a;
+  font-weight: 600;
+}
+
+.produto-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.produto-card {
+  flex: 1 1 200px;
+  background: #fff;
+  border-radius: 10px;
+  padding: 1.5rem;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s;
+}
+
+.produto-card:hover {
+  transform: translateY(-5px);
+}
+
+/*categorias*/
+
+.dashboard-categorias {
+    padding: 3rem 8%;
+    background-color: #fff;
+    margin: 2rem 8%;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.dashboard-categorias h3 {
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+    color: #1a1a1a;
+    font-weight: 600;
+    text-align: center;
+}
+
+.categorias-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+}
+
+.categoria-btn:hover {
+    background: #6c63ff;
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(108, 99, 255, 0.2);
+    border-color: #6c63ff;
+}
+
+.categoria-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    background: #f8f7ff;
+    border: 2px solid #e4e2ff;
+    color: #6c63ff;
+    padding: 1.5rem 0.5rem;
+    border-radius: 16px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    font-size: 1rem;
+    text-align: center;
+    min-height: 120px;
+}
+
+.categoria-icon{
+    font-size: 2.5rem;
+    color: inherit;
+    transition: transform 0.3s ease;
+}
+
+.categoria-btn:hover .categoria-icon{
+    transform: scale(1.1);
+}
+
+/*icone loja*/
+
+.store-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #000;
+    text-decoration: none;
+    font-size: 1.3rem;
+    padding: 0.5rem;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+    background: transparent;
+}
+
+.store-icon:hover {
+    background: rgba(0, 0, 0, 0.05);
+    transform: scale(1.05);
+}
