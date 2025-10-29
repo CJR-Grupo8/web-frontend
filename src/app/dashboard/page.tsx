@@ -22,7 +22,7 @@ export default function Dashboard() {
           <p>
             Organize seu estoque, acompanhe os produtos e visualize de forma intuitiva.
           </p>
-          <a href="/produtos" className="hero-button">Ver mais produtos</a>
+          <a href="/ver_mais" className="hero-button">Ver mais produtos</a>
         </div>
         <div className="hero-image">
           <img src="/images/id-visual/garoto-celular.svg" alt="Personagem" />
