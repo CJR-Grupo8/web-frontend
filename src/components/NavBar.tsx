@@ -4,7 +4,7 @@ import Link from "next/link";
 import { FaStore } from "react-icons/fa";
 import { RiAccountCircleFill } from "react-icons/ri";
 import { RiLogoutBoxRLine } from "react-icons/ri";
-import "./styles/NavBar.css";
+import "./styles/nav-bar.css";
 
 type NavBarProps = {
   logado?: boolean;

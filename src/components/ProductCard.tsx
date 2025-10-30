@@ -1,4 +1,4 @@
-import "../app/styles/ver_mais.css";
+import "./styles/product-card.css";
 
 export type StoreSeal = "cjr" | "moumer" | "nako" | string;
 export type Availability = "DISPONÍVEL" | "INDISPONÍVEL";

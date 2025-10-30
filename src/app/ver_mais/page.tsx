@@ -1,5 +1,5 @@
 import React from "react";
-import "../styles/ver_mais.css";
+import "../styles/ver-mais.css";
 import ProductCard, {Product} from "@/components/ProductCard";
 import NavBar from "@/components/NavBar";
 

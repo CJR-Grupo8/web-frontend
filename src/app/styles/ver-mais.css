@@ -111,31 +111,3 @@
 .availability.off {
   color: var(--off);
 }
-
-.pager {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 12px;
-  margin: 28px 0 40px;
-  user-select: none;
-}
-
-.pager-btn,
-.pager-num {
-  background: transparent;
-  border: none;
-  font-size: 1.1rem;
-  padding: 4px 6px;
-  cursor: pointer;
-  color: #222;
-}
-
-.pager-btn[disabled] {
-  opacity: 0.35;
-  cursor: default;
-}
-
-.pager-num.is-active {
-  font-weight: 700;
-}
