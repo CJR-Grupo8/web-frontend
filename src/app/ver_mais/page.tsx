@@ -1,10 +1,9 @@
-import "../styles/home.css";
+import React from "react";
+import "../styles/ver-mais.css";
+import ProductCard, {Product} from "@/components/ProductCard";
 import NavBar from "@/components/NavBar";
-import ProductCarousel from "@/components/ProductCarousel";
-import CategoryCarousel from "@/components/CategoryCarousel";
-import { Product } from "@/components/ProductCard";
 
-const produtos: Product[] = [
+const products: Product[] = [
     { id: "1", name: "Brownie Meio A.", price: "R$4,70", image: "brownie-meio-amargo", seal: "cjr", availability: "DISPONÍVEL" },
     { id: "2", name: "Brownie Trad.", price: "R$3,80", image: "brownie-tradicional", seal: "cjr", availability: "INDISPONÍVEL" },
     { id: "3", name: "Nozes", price: "R$29,99", unit: "/kg", image: "nozes", seal: "dcarts-&-baskets", availability: "DISPONÍVEL" },
@@ -22,33 +21,17 @@ const produtos: Product[] = [
     { id: "15", name: "Mouse Logitech G403", price: "R$399,99", image: "nome", seal: "nako", availability: "INDISPONÍVEL" },
 ];
 
-export default function HomePage() {
-  return (
-    <main className="home-root">
-      <NavBar logado={false} /> {/* está em hardcoding — mude para logged={true} para testar o front (precisa de requisição do back) */}
+const pageItems = products.slice(0, 15);
 
-      <section className="home-hero">
-        <div className="hero-content">
-          <h2>Gerencie tudo com praticidade e estilo</h2>
-          <p>Organize seu estoque, acompanhe os produtos e vizualize de forma intuitiva.</p>
-          <a href="/cadastro" className="hero-button">
-            Começar agora
-          </a>
-        </div>
-        <div className="hero-image">
-          <img src="/images/id-visual/garoto-celular.svg" alt="Personagem" />
-        </div>
-      </section>
-
-      {/* CATEGORIAS*/}
-       <section className="dashboard-categorias">
-        <h3>Categorias</h3>
-        <CategoryCarousel />
-      </section>
-
-      <section className="home-produtos">
-        <ProductCarousel title="Produtos" items={produtos} />
-      </section>
-    </main>
-  );
+export default function VerMaisPage() {
+    return (
+        <main className="home-root">
+            <NavBar logado={true} /> {/* está em hardcoding — mude para logged={true} para testar o front (precisa de requisição do back) */}
+            <section className="catalog">
+                {pageItems.map((p) => (
+                    <ProductCard key={p.id} {...p} />
+                ))}
+            </section>
+        </main>
+    );
 }

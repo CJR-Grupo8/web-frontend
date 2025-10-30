@@ -1,14 +1,5 @@
-.home-root {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-  background-color: #ffffff;
-  color: #1a1a1a;
-  font-family: 'Poppins', sans-serif;
-}
-
 /* HERO */
-.home-hero {
+.dashboard-hero {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -53,7 +44,47 @@
   width: 180px;
 }
 
-/* CATEGORIAS */
+.dashboard-hero .hero-content h2 {
+    font-size: 2.2rem;
+    line-height: 1.2;
+    margin-bottom: 2rem;
+}
+
+/* PRODUTOS EM DESTAQUE */
+.dashboard-destaques {
+  padding: 3rem 8%;
+}
+
+.dashboard-destaques h3 {
+  text-align: left;
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
+  color: #1a1a1a;
+  font-weight: 600;
+}
+
+.produto-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.produto-card {
+  flex: 1 1 200px;
+  background: #fff;
+  border-radius: 10px;
+  padding: 1.5rem;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s;
+}
+
+.produto-card:hover {
+  transform: translateY(-5px);
+}
+
+/*categorias*/
+
 .dashboard-categorias {
     padding: 3rem 8%;
     background-color: #fff;
@@ -113,27 +144,22 @@
     transform: scale(1.1);
 }
 
-/* PRODUTOS */
-.home-produtos {
-  padding: 3rem 8%;
+/*icone loja*/
+
+.store-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #000;
+    text-decoration: none;
+    font-size: 1.3rem;
+    padding: 0.5rem;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+    background: transparent;
 }
 
-.produto-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1.5rem;
-  margin-top: 1.5rem;
-}
-
-.produto-card {
-  flex: 1 1 200px;
-  background: #fff;
-  border-radius: 10px;
-  padding: 1.5rem;
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s;
-}
-
-.produto-card:hover {
-  transform: translateY(-5px);
+.store-icon:hover {
+    background: rgba(0, 0, 0, 0.05);
+    transform: scale(1.05);
 }

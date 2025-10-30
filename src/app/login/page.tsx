@@ -7,9 +7,11 @@ const LoginPage: React.FC = () => {
     <main className="login-root">
       <section className="login-illustration">
         <div className="login-figure">
-          <img src="images/logo.svg" alt="Stock.io" className="login-logo" />
+          <a href="/home">
+          <img src="images/id-visual/logo_escura.svg" alt="Stock.io" className="login-logo" />
+          </a>
           <img
-            src="/images/garoto-caixa.svg"
+            src="/images/id-visual/garoto-caixa.svg"
             alt="Personagem segurando uma caixa"
             className="login-image"
           />
