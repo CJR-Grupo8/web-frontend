@@ -1,3 +1,12 @@
+.home-root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #ffffff;
+  color: #1a1a1a;
+  font-family: 'Poppins', sans-serif;
+}
+
 /* HERO */
 .home-hero {
   display: flex;
@@ -45,31 +54,63 @@
 }
 
 /* CATEGORIAS */
-.home-categorias {
-  padding: 4rem 8%;
-  text-align: center;
+.dashboard-categorias {
+    padding: 3rem 8%;
+    background-color: #fff;
+    margin: 2rem 8%;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
-.categoria-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-  gap: 1.5rem;
-  margin-top: 2rem;
+.dashboard-categorias h3 {
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+    color: #1a1a1a;
+    font-weight: 600;
+    text-align: center;
 }
 
-.categoria-grid button {
-  background: #fff;
-  border: 2px solid #6c63ff;
-  color: #6c63ff;
-  padding: 0.75rem;
-  border-radius: 12px;
-  font-weight: 600;
-  transition: all 0.2s;
+.categorias-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
 }
 
-.categoria-grid button:hover {
-  background: #6c63ff;
-  color: #fff;
+.categoria-btn:hover {
+    background: #6c63ff;
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(108, 99, 255, 0.2);
+    border-color: #6c63ff;
+}
+
+.categoria-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    background: #f8f7ff;
+    border: 2px solid #e4e2ff;
+    color: #6c63ff;
+    padding: 1.5rem 0.5rem;
+    border-radius: 16px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    font-size: 1rem;
+    text-align: center;
+    min-height: 120px;
+}
+
+.categoria-icon{
+    font-size: 2.5rem;
+    color: inherit;
+    transition: transform 0.3s ease;
+}
+
+.categoria-btn:hover .categoria-icon{
+    transform: scale(1.1);
 }
 
 /* PRODUTOS */
@@ -96,4 +137,3 @@
 .produto-card:hover {
   transform: translateY(-5px);
 }
-

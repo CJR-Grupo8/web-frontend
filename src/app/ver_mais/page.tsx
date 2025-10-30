@@ -1,19 +1,7 @@
 import React from "react";
 import "../styles/ver_mais.css";
-import "../styles/header.css";
-
-type StoreSeal = "cjr" | "moumer" | "nako";
-type Availability = "DISPONÍVEL" | "INDISPONÍVEL";
-
-type Product = {
-    id: string;
-    name: string;
-    price: string;
-    unit?: string;
-    image: string;
-    seal: string;
-    availability: Availability;
-};
+import ProductCard, {Product} from "@/components/ProductCard";
+import NavBar from "@/components/NavBar";
 
 const products: Product[] = [
     { id: "1", name: "Brownie Meio A.", price: "R$4,70", image: "brownie-meio-amargo", seal: "cjr", availability: "DISPONÍVEL" },
@@ -33,96 +21,15 @@ const products: Product[] = [
     { id: "15", name: "Mouse Logitech G403", price: "R$399,99", image: "nome", seal: "nako", availability: "INDISPONÍVEL" },
 ];
 
-const sealSrc = (seal: string) =>
-    `/images/lojas/${encodeURIComponent(seal)}.svg`;
+const pageItems = products.slice(0, 15);
 
-const imageSrc = (image: string) =>
-    `/images/produtos/${encodeURIComponent(image)}.svg`;
-
-type PaginationProps = {
-    total: number;
-    page: number;
-    perPage: number;
-    onChange: (p: number) => void;
-    maxPages?: number;
-};
-
-export function Pagination({ total, page, perPage, onChange, maxPages = 5 }: PaginationProps) {
-    const totalPages = Math.max(1, Math.ceil(total / perPage));
-    const clamp = (n: number) => Math.min(totalPages, Math.max(1, n));
-
-    const half = Math.floor(maxPages / 2);
-    let start = Math.max(1, page - half);
-    let end = Math.min(totalPages, start + maxPages - 1);
-    if (end - start + 1 < maxPages) start = Math.max(1, end - maxPages + 1);
-
-    const pages = [];
-    for (let p = start; p <= end; p++) pages.push(p);
-
-    return (
-        <nav className="pager" aria-label="Paginação">
-            <button
-                className="pager-btn"
-                onClick={() => onChange(clamp(page - 1))}
-                disabled={page === 1}
-                aria-label="Página anterior"
-            >
-                &lt;
-            </button>
-
-            {pages.map(p => (
-                <button
-                    key={p}
-                    className={`pager-num ${p === page ? "is-active" : ""}`}
-                    onClick={() => onChange(p)}
-                    aria-current={p === page ? "page" : undefined}
-                >
-                    {p}
-                </button>
-            ))}
-
-            <button
-                className="pager-btn"
-                onClick={() => onChange(clamp(page + 1))}
-                disabled={page === totalPages}
-                aria-label="Próxima página"
-            >
-                &gt;
-            </button>
-        </nav>
-    );
-}
-
-export default function HomePage() {
+export default function VerMaisPage() {
     return (
         <main className="home-root">
-            <header className="home-header">
-                <a href="/home">
-                    <div className="logo">
-                        <img src="/images/id-visual/logo_clara.svg" alt="Logo Stock.io" className="logo-img" />
-                    </div>
-                </a>
-                <nav className="nav-links">
-                    <a href="/login" className="login-btn">Login</a>
-                    <a href="/cadastro" className="cadastro-btn">Cadastre-se</a>
-                </nav>
-            </header>
+            <NavBar logado={true} /> {/* está em hardcoding — mude para logged={true} para testar o front (precisa de requisição do back) */}
             <section className="catalog">
-                {products.map(p => (
-                    <article className="card" key={p.id}>
-                        <div className="thumb">
-                            <img src={imageSrc(p.image)} alt={p.name} />
-                            <img className="seal" src={sealSrc(p.seal)} alt={`Selo ${p.seal}`} />
-                        </div>
-                        <h3 className="title">{p.name}</h3>
-                        <div className="price-line">
-                            <span className="price">{p.price}</span>
-                            {p.unit && <span className="unit">{p.unit}</span>}
-                        </div>
-                        <span className={`availability ${p.availability === "DISPONÍVEL" ? "ok" : "off"}`}>
-                            {p.availability}
-                        </span>
-                    </article>
+                {pageItems.map((p) => (
+                    <ProductCard key={p.id} {...p} />
                 ))}
             </section>
         </main>

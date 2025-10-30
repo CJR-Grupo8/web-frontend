@@ -1,3 +1,12 @@
+.home-root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #faf8f4;
+  color: #1a1a1a;
+  font-family: 'Poppins', sans-serif;
+}
+
 .catalog {
   max-width: 1200px;
   margin: 0 auto;
