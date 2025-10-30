@@ -178,3 +178,34 @@ body {
     min-height: 100vh;
   }
 }
+
+.input-error {
+  border: 1px solid #e11d48;
+}
+
+.input-hint.error {
+  color: #e11d48;
+  font-size: 0.8rem;
+  margin-top: 4px;
+  display: block;
+}
+
+.form-success {
+  background: #22c55e20;
+  border: 1px solid #22c55e;
+  color: #166534;
+  padding: 8px 12px;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  font-size: 0.85rem;
+}
+
+.form-error {
+  background: #f43f5e20;
+  border: 1px solid #f43f5e;
+  color: #b91c1c;
+  padding: 8px 12px;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  font-size: 0.85rem;
+}
