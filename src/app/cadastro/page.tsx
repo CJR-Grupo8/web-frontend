@@ -66,8 +66,11 @@ const RegisterPage: React.FC = () => {
     } else if (!/[0-9]/.test(form.password)) {
       newErrors.password = "A senha deve conter pelo menos um número.";
       valid = false;
+    } else if (!/[!@#$%^&*(),.?":{}|<>]/.test(form.password)) {
+      newErrors.password = "A senha deve conter ao menos um caractere especial.";
+      valid = false;
     }
-
+    
     if (form.confirm !== form.password) {
       newErrors.confirm = "As senhas não conferem.";
       valid = false;
