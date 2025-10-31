@@ -3,6 +3,8 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import "../styles/login.css";
+import apiClient from "../services/api";
+import { LoginResponse } from "../types/auth";
 
 const LoginPage: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -49,11 +51,33 @@ const LoginPage: React.FC = () => {
     setSuccess("");
 
     if (!validate()) return;
-
-    // AQUi ENTRA REQUISICAO DO BACK
-
-    // ABAIXO ESTA SOMENTE TESTE MOCKADO PRO FRONT
-    setSuccess("Login realizado!");
+    
+    try {
+      const response = await apiClient.post<LoginResponse>("/auth/login", {
+        email,
+        password,
+      });
+      
+      // Armazena o token JWT no localStorage
+      if (response.data.access_token) {
+        localStorage.setItem("token", response.data.access_token);
+        localStorage.setItem("user", JSON.stringify(response.data.user));
+      }
+      
+      setSuccess("Login realizado com sucesso! Redirecionando...");
+      
+      // Redireciona para a home após 1 segundo
+      setTimeout(() => {
+        window.location.href = "/home";
+      }, 1000);
+    } catch (error: any) {
+      const errorMessage = error.response?.data?.message || "Erro ao realizar login.";
+      if (error.response?.status === 401) {
+        setServerError("Email ou senha incorretos.");
+      } else {
+        setServerError(errorMessage);
+      }
+    }
   }
 
   return (

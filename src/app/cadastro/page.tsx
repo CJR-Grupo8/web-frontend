@@ -3,6 +3,8 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import "../styles/cadastro.css";
+import apiClient from "../services/api";
+import { User } from "../types/auth";
 
 const RegisterPage: React.FC = () => {
   const [form, setForm] = useState({
@@ -55,6 +57,15 @@ const RegisterPage: React.FC = () => {
     } else if (form.password.length < 8) {
       newErrors.password = "A senha deve ter pelo menos 8 caracteres.";
       valid = false;
+    } else if (!/[A-Z]/.test(form.password)) {
+      newErrors.password = "A senha deve conter pelo menos uma letra maiúscula.";
+      valid = false;
+    } else if (!/[a-z]/.test(form.password)) {
+      newErrors.password = "A senha deve conter pelo menos uma letra minúscula.";
+      valid = false;
+    } else if (!/[0-9]/.test(form.password)) {
+      newErrors.password = "A senha deve conter pelo menos um número.";
+      valid = false;
     }
 
     if (form.confirm !== form.password) {
@@ -78,17 +89,36 @@ const RegisterPage: React.FC = () => {
 
     if (!validate()) return;
 
-    //BACK ENTRA AQUI PARA FETCH DE DADOS 
-
-    // AQUI ABAIXO É SÓ SIMULAÇÃO MOCKADA PRO FRONT
-    setSuccess("Conta criada com sucesso!");
-    setForm({
-      name: "",
-      username: "",
-      email: "",
-      password: "",
-      confirm: "",
-    });
+    try {
+      const response = await apiClient.post<User>("/users", {
+        fullName: form.name,
+        username: form.username,
+        email: form.email,
+        password: form.password,
+      });
+      setSuccess("Conta criada com sucesso! Redirecionando...");
+      
+      // Limpa o formulário
+      setForm({
+        name: "",
+        username: "",
+        email: "",
+        password: "",
+        confirm: "",
+      });
+      
+      // Redireciona para login após 2 segundos
+      setTimeout(() => {
+        window.location.href = "/login";
+      }, 2000);
+    } catch (error: any) {
+      const errorMessage = error.response?.data?.message || "Erro ao criar conta.";
+      if (Array.isArray(errorMessage)) {
+        setServerError(errorMessage.join(", "));
+      } else {
+        setServerError(errorMessage);
+      }
+    }
   }
 
   return (
