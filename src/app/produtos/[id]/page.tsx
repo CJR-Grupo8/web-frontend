@@ -1,5 +1,5 @@
 import { notFound } from 'next/navigation';
-// Importa nossos dados mocados (VAMOS CRIAR ESTE ARQUIVO)
+
 import { allProductDetails, allProductSummaries } from '@/data/mock';
 import ProductCarousel from '@/components/ProductCarousel';
 import NavBar from "@/components/NavBar";
