@@ -1,17 +1,9 @@
 import { notFound } from 'next/navigation';
-
 import { allProductDetails, allProductSummaries } from '@/data/mock';
 import ProductCarousel from '@/components/ProductCarousel';
 import NavBar from "@/components/NavBar";
+import ProductGallery from '@/components/ProductGallery';
 
-
-function imageSrc(image: string) {
-  if (image.startsWith('http')) return image; 
-  return `/images/produtos/${image}.svg`;
-}
-function sealSrc(seal: string) {
-  return `/images/lojas/${seal}.svg`;
-}
 function formatPrice(price: number) {
   return price.toLocaleString('pt-BR', {
     style: 'currency',
@@ -32,30 +24,22 @@ function RatingStars({ rating, reviews }: { rating: number; reviews: number }) {
   );
 }
 
-
 type PageProps = {
   params: {
     id: string;
   };
 };
 
-
 export default async function ProdutoPage({ params }: PageProps) {
   const product = allProductDetails.find(p => p.id === params.id);
-
 
   if (!product) {
     notFound();
   }
 
-
   const relatedProducts = allProductSummaries.filter(
     p => p.seal === product.seal && p.id !== product.id
   );
-
-
-  const mainImage = imageSrc(product.images[0] || 'https://placehold.co/600x600/f8f8f8/ccc?text=Produto');
-  const thumbnails = product.images.slice(0, 4); 
 
   return (
     <>
@@ -63,31 +47,12 @@ export default async function ProdutoPage({ params }: PageProps) {
 
       <div className="prod-page-container">
         <main className="prod-page-main-content">
-          <section className="prod-gallery">
-            <div className="prod-gallery__thumbnails">
-              {thumbnails.map((imgSlug, index) => (
-                <button key={index} className={`thumbnail-btn ${index === 0 ? 'active' : ''}`}>
-                  <img 
-                    src={imageSrc(imgSlug)} 
-                    alt={`Thumbnail ${index + 1}`} 
-                  />
-                </button>
-              ))}
-            </div>
-            <div className="prod-gallery__main-image">
-            <img 
-              className="prod-gallery__seal"
-              src={sealSrc(product.seal)} 
-              alt={`Selo ${product.seal}`} 
-            />
-           
-            <img 
-              className="prod-gallery__product-image" 
-              src={mainImage} 
-              alt={product.name} 
-            />
-          </div>
-          </section>
+
+          <ProductGallery 
+            images={product.images} 
+            seal={product.seal} 
+            productName={product.name} 
+          />
 
           <section className="prod-info">
             <div className="prod-info__header">
