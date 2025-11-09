@@ -59,5 +59,20 @@ export const allProductDetails: ProductDetails[] = [
     stockCount: 0,
     seal: "cjr"
   },
+  {
+    id: "4",
+    name: "Banana",
+    price: 3.99,
+    description: "Banana fresca e saborosa, perfeita para lanches e sobremesas.",
+    images: ["banana",
+              "banana2",
+              "banana3"],
+              
+    rating: 4.5,
+    reviews: 10,
+    availability: "DISPONÍVEL",
+    stockCount: 12,
+    seal: "moumer"
+  }
   
 ];
