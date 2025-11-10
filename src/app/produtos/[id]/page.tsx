@@ -32,7 +32,8 @@ type PageProps = {
 };
 
 export default async function ProdutoPage({ params }: PageProps) {
-  const product = allProductDetails.find(p => p.id === params.id);
+  const { id } = await params;
+  const product = allProductDetails.find(p => p.id === id);
 
   if (!product) {
     notFound();
