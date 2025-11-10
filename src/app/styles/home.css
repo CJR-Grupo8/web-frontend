@@ -12,45 +12,73 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 5rem 8%;
   background: #000;
   color: #fff;
-  min-height: 45%;
-  max-height: 500px;
+
+  padding: 3.5rem 8%;
+  height: 360px;          /* hero mais baixinho, como no layout */
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
+/* BLOCO DE TEXTO (metade esquerda) */
 .hero-content {
-  max-width: 50%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .hero-content h2 {
-  font-size: 2.5rem;
+  font-size: 2.8rem;
   font-weight: 700;
-  margin-bottom: 1rem;
+  line-height: 1.15;
+  margin: 0;
+  text-align: center;     /* centralizado na metade esquerda, igual ao figma */
 }
 
-.hero-content p {
-  font-size: 1.1rem;
-  margin-bottom: 2rem;
+.hero-content h2 + h2 {
+  margin-top: 0.4rem;
 }
 
-.hero-button {
-  display: inline-block;
-  background: #6c63ff;
-  color: #fff;
-  padding: 0.75rem 1.5rem;
-  border-radius: 10px;
-  font-weight: 600;
-  text-decoration: none;
-  transition: background 0.3s;
-}
-
-.hero-button:hover {
-  background: #534bcf;
+/* IMAGEM (metade direita) */
+.hero-image {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  overflow: hidden;       /* corta da cintura pra baixo */
 }
 
 .hero-image img {
-  width: 180px;
+  width: 80%;
+  max-width: 320px;       /* controla o tamanho do boneco */
+  object-fit: cover;
+  object-position: top center;
+  transform: translateY(30%);  /* empurra um pouco pra baixo -> só cintura pra cima */
+}
+
+/* RESPONSIVO */
+@media (max-width: 1024px) {
+  .home-hero {
+    flex-direction: column;
+    height: auto;
+    padding: 3rem 6%;
+  }
+
+  .hero-content {
+    align-items: center;
+  }
+
+  .hero-content h2 {
+    font-size: 2.2rem;
+    text-align: center;
+  }
+
+  .hero-image img {
+    max-width: 260px;
+    transform: translateY(10%);
+  }
 }
 
 /* CATEGORIAS */
