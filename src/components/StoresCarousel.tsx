@@ -3,7 +3,6 @@
 import { useMemo, useState } from 'react';
 import { STORES, type StoreCategory } from '@/data/stores';
 import StoreCard from './StoreCard';
-import '@/styles/components-css/store-carousel.css';
 
 const CATEGORIES: { value: StoreCategory; label: string; icon?: string }[] = [
   { value: 'mercado', label: 'Mercado', icon: '🛒' },

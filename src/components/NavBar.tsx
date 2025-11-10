@@ -4,7 +4,6 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { FaStore, FaShoppingBag  } from "react-icons/fa";
 import { RiAccountCircleFill, RiLogoutBoxRLine } from "react-icons/ri";
-import '@/styles/components-css/nav-bar.css';
 
 export default function NavBar() {
   const [logado, setLogado] = useState(false);

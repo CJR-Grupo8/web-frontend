@@ -1,6 +1,5 @@
 import Link from 'next/link';
 import type { Store } from '@/data/stores';
-import '@/styles/components-css/store-card.css';
 
 type StoreCardProps = {
   store: Store;

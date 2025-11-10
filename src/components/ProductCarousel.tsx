@@ -2,7 +2,6 @@
 
 import useEmblaCarousel from "embla-carousel-react";
 import ProductCard, { Product } from "@/components/ProductCard";
-import '@/styles/components-css/home-carousel.css';
 import Link from "next/link";
 
 
