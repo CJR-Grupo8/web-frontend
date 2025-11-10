@@ -1,3 +1,4 @@
+/* BLOCO BASE (usado em categorias e produtos) */
 .home-block {
   width: min(1180px, 100%);
   margin: 1.5rem auto 0;
@@ -27,8 +28,23 @@
   font-size: 0.9rem;
 }
 
+/* só pra categorias ficarem um pouco mais coladas nos produtos */
+.home-block--categories {
+  margin-top: 0.5rem;   /* menos espaço acima */
+  margin-bottom: 0rem; /* menos espaço abaixo */
+}
+
+/* ======================
+   CATEGORIAS (CARROSSEL)
+   ====================== */
+
 .home-cat__viewport {
   overflow: hidden;
+  cursor: grab;
+}
+
+.home-cat__viewport:active {
+  cursor: grabbing;
 }
 
 .home-cat__container {
@@ -81,6 +97,10 @@
   color: #272727;
   text-align: center;
 }
+
+/* ======================
+   PRODUTOS (CARROSSEL)
+   ====================== */
 
 .home-prod__viewport {
   overflow: hidden;

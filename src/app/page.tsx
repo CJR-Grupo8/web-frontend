@@ -6,6 +6,7 @@ import ProductCarousel from "@/components/ProductCarousel";
 import CategoryCarousel from "@/components/CategoryCarousel";
 import { Product } from "@/components/ProductCard";
 import StoresCarousel from '@/components/StoresCarousel';
+import SearchBar from "@/components/SearchBar";
 
 const produtos: Product[] = [
     { id: "1", name: "Brownie Meio A.", price: "R$4,70", image: "brownie-meio-amargo", seal: "cjr", availability: "DISPONÍVEL" },
@@ -34,10 +35,9 @@ export default function HomePage() {
         imageSrc="/images/id-visual/garoto-celular.svg"
         imageAlt="Personagem com celular"/>
 
-       <section className="dashboard-categorias">
-        <h3>Categorias</h3>
-        <CategoryCarousel />
-      </section>
+      <SearchBar />
+
+      <CategoryCarousel />
 
       <section className="home-produtos">
         <ProductCarousel title="Produtos" items={produtos} />

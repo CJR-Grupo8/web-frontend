@@ -6,7 +6,8 @@ export type StoreCategory =
   | 'eletronicos'
   | 'jogos'
   | 'brinquedos'
-  | 'casa';
+  | 'casa'
+  | 'outros';
 
 export type Store = {
   id: number;
