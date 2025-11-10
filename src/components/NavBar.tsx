@@ -1,16 +1,39 @@
 "use client";
 
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { FaStore } from "react-icons/fa";
-import { RiAccountCircleFill } from "react-icons/ri";
-import { RiLogoutBoxRLine } from "react-icons/ri";
+import { RiAccountCircleFill, RiLogoutBoxRLine } from "react-icons/ri";
 import "./styles/nav-bar.css";
 
-type NavBarProps = {
-  logado?: boolean;
-};
+export default function NavBar() {
+  const [logado, setLogado] = useState(false);
 
-export default function NavBar({ logado = false }: NavBarProps) {
+  useEffect(() => {
+    const checkLoginStatus = () => {
+      const token = typeof window !== "undefined"
+        ? localStorage.getItem("token")
+        : null;
+      setLogado(!!token);
+    };
+
+    checkLoginStatus();
+
+    window.addEventListener("storage", checkLoginStatus);
+
+    return () => {
+      window.removeEventListener("storage", checkLoginStatus);
+    };
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    setLogado(false);
+    window.dispatchEvent(new Event("storage"));
+    window.location.href = "/home";
+  };
+
   return (
     <header className={logado ? "header logged" : "header"}>
       <Link href="/home" aria-label="Ir para a Home">
@@ -32,9 +55,13 @@ export default function NavBar({ logado = false }: NavBarProps) {
             <Link href="/perfil" className="perfil-icon" title="ver perfil">
               <RiAccountCircleFill />
             </Link>
-            <Link href="/home" className="logout-btn" title="deslogar">
+            <button
+              onClick={handleLogout}
+              className="logout-btn"
+              title="deslogar"
+            >
               <RiLogoutBoxRLine />
-            </Link>
+            </button>
           </>
         ) : (
           <>
