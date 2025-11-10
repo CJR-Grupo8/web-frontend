@@ -1,51 +1,69 @@
-.stores-carousel {
-  margin-top: 3rem;
-  padding: 0 3rem 3rem;
+/* container da seção de lojas */
+.stores {
+  max-width: 1180px;
+  margin: 4rem auto 4rem;
+  padding: 0 2rem;
 }
 
-.stores-carousel__header {
+/* header: título + filtro */
+.stores-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin-bottom: 1.5rem;
 }
 
-.stores-carousel__title {
+.stores-title {
   font-size: 2.4rem;
   font-weight: 700;
 }
 
-.stores-carousel__filter {
+/* FILTRO */
+
+.stores-filter {
   position: relative;
 }
 
-.stores-carousel__filter-toggle {
-  border: none;
-  background: #f3e9ff;
-  border-radius: 999px;
+/* aqui eu limpo qualquer estilo padrão do navegador */
+.stores-filter-toggle {
+  all: unset;
+  box-sizing: border-box;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+
   padding: 0.8rem 1.6rem;
+  border-radius: 999px;
+
+  background: #f5f0ff;
   cursor: pointer;
+
   font-size: 1.4rem;
-  transition: background 0.2s ease;
+  line-height: 1;
 }
 
-.stores-carousel__filter-toggle:hover {
-  background: #e3d1ff;
+.stores-filter-toggle:hover {
+  background: #e8dcff;
 }
 
-.stores-carousel__filter-panel {
+.stores-filter-chevron {
+  font-size: 1.2rem;
+}
+
+.stores-filter-panel {
   position: absolute;
   right: 0;
   top: 110%;
   width: min(420px, 80vw);
   background: #ffffff;
-  border-radius: 20px;
+  border-radius: 24px;
   padding: 1.8rem 2rem 2.4rem;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
-  z-index: 10;
+  z-index: 20;
 }
 
-.stores-carousel__filter-header {
+.stores-filter-panel-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -54,38 +72,47 @@
   margin-bottom: 1.4rem;
 }
 
-.stores-carousel__filter-close {
-  border: none;
-  background: transparent;
-  font-size: 1.6rem;
+.stores-filter-close {
+  all: unset;
   cursor: pointer;
+  font-size: 1.6rem;
 }
 
-.stores-carousel__filter-list {
+.stores-filter-list {
   display: grid;
   gap: 0.8rem;
+  padding: 0;
+  margin: 0;
 }
 
-.stores-carousel__filter-chip {
+.stores-filter-item {
+  list-style: none;
+}
+
+.stores-filter-chip {
+  all: unset;
+  box-sizing: border-box;
+
   width: 100%;
   border-radius: 999px;
   border: 1px solid #e0d4ff;
   padding: 0.7rem 1.2rem;
+
   display: flex;
   align-items: center;
   gap: 0.8rem;
+
   background: #fff;
   cursor: pointer;
   font-size: 1.4rem;
-  transition: background 0.2s, border 0.2s;
 }
 
-.stores-carousel__filter-chip.checked {
+.stores-filter-chip.is-checked {
   background: #f3e9ff;
   border-color: #c19dff;
 }
 
-.stores-carousel__filter-chip .checkbox {
+.stores-filter-checkbox {
   width: 20px;
   height: 20px;
   border-radius: 999px;
@@ -96,24 +123,60 @@
   font-size: 1.2rem;
 }
 
-.stores-carousel__track {
-  display: flex;
-  overflow-x: auto;
-  gap: 3.5rem;
-  padding-bottom: 1rem;
+.stores-filter-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
 }
 
-/* mobile */
+.stores-filter-icon {
+  font-size: 1.4rem;
+}
+
+/* CARROSSEL */
+
+.stores-carousel {
+  overflow-x: auto;
+  padding-bottom: 0.8rem;
+}
+
+.stores-track {
+  display: flex;
+  align-items: stretch;
+  gap: 3.5rem;
+  min-width: 100%;
+}
+
+/* responsivo */
+
 @media (max-width: 768px) {
-  .stores-carousel {
-    padding: 0 1.6rem 2.4rem;
+  .stores {
+    padding: 0 1.6rem;
+    margin: 3rem auto 2rem;
   }
 
-  .stores-carousel__title {
+  .stores-title {
     font-size: 2rem;
   }
+}
 
-  .stores-carousel__filter-toggle {
-    font-size: 1.2rem;
-  }
+/* Embla-like horizontal scroll para lojas */
+.stores-carousel__viewport {
+  overflow: hidden;
+  width: 100%;
+  cursor: grab;
+}
+
+.stores-carousel__viewport:active {
+  cursor: grabbing;
+}
+
+.stores-carousel__container {
+  display: flex;
+  gap: 3.5rem;
+}
+
+.stores-carousel__slide {
+  flex: 0 0 auto;
+  scroll-snap-align: start;
 }
