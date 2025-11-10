@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { FaStore } from "react-icons/fa";
+import { FaStore, FaShoppingBag  } from "react-icons/fa";
 import { RiAccountCircleFill, RiLogoutBoxRLine } from "react-icons/ri";
 import "./styles/nav-bar.css";
 
@@ -36,7 +36,7 @@ export default function NavBar() {
 
   return (
     <header className={logado ? "header logged" : "header"}>
-      <Link href="/home" aria-label="Ir para a Home">
+      <Link href="/home" aria-label="Ir para a Home.">
         <div className="logo">
           <img
             src="/images/id-visual/logo_clara.svg"
@@ -49,16 +49,16 @@ export default function NavBar() {
       <nav className="nav-links">
         {logado ? (
           <>
-            <Link href="/ver_mais" className="store-icon" title="ver mais produtos">
+            <Link href="/carrinho" className="bag-icon" title="Ver Bolsa.">
+              <FaShoppingBag />
+            </Link>
+            <Link href="/ver_mais" className="store-icon" title="Ver Mais Produtos.">
               <FaStore />
             </Link>
-            <Link href="/perfil" className="perfil-icon" title="ver perfil">
+            <Link href="/perfil" className="perfil-icon" title="Ver Perfil.">
               <RiAccountCircleFill />
             </Link>
-            <button
-              onClick={handleLogout}
-              className="logout-btn"
-              title="deslogar">
+            <button onClick={handleLogout} className="logout-btn" title="Deslogar">
               <RiLogoutBoxRLine />
             </button>
           </>
