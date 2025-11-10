@@ -32,12 +32,8 @@ const LoginPage: React.FC = () => {
         valid = false;
       }
     }
-
     if (!password) {
       newErrors.password = "Informe a senha.";
-      valid = false;
-    } else if (password.length < 8) {
-      newErrors.password = "Informe uma senha válida.";
       valid = false;
     }
 
@@ -62,6 +58,7 @@ const LoginPage: React.FC = () => {
       if (response.data.access_token) {
         localStorage.setItem("token", response.data.access_token);
         localStorage.setItem("user", JSON.stringify(response.data.user));
+        window.dispatchEvent(new Event("storage"));
       }
       
       setSuccess("Login realizado com sucesso! Redirecionando...");

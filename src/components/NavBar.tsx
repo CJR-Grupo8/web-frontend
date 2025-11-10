@@ -1,19 +1,42 @@
 "use client";
 
 import Link from "next/link";
-import { FaStore } from "react-icons/fa";
-import { RiAccountCircleFill } from "react-icons/ri";
-import { RiLogoutBoxRLine } from "react-icons/ri";
+import { useEffect, useState } from "react";
+import { FaStore, FaShoppingBag  } from "react-icons/fa";
+import { RiAccountCircleFill, RiLogoutBoxRLine } from "react-icons/ri";
 import "./styles/nav-bar.css";
 
-type NavBarProps = {
-  logado?: boolean;
-};
+export default function NavBar() {
+  const [logado, setLogado] = useState(false);
 
-export default function NavBar({ logado = false }: NavBarProps) {
+  useEffect(() => {
+    const checkLoginStatus = () => {
+      const token = typeof window !== "undefined"
+        ? localStorage.getItem("token")
+        : null;
+      setLogado(!!token);
+    };
+
+    checkLoginStatus();
+
+    window.addEventListener("storage", checkLoginStatus);
+
+    return () => {
+      window.removeEventListener("storage", checkLoginStatus);
+    };
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    setLogado(false);
+    window.dispatchEvent(new Event("storage"));
+    window.location.href = "/home";
+  };
+
   return (
     <header className={logado ? "header logged" : "header"}>
-      <Link href="/home" aria-label="Ir para a Home">
+      <Link href="/home" aria-label="Ir para a Home.">
         <div className="logo">
           <img
             src="/images/id-visual/logo_clara.svg"
@@ -26,15 +49,18 @@ export default function NavBar({ logado = false }: NavBarProps) {
       <nav className="nav-links">
         {logado ? (
           <>
-            <Link href="/ver_mais" className="store-icon" title="ver mais produtos">
+            <Link href="/carrinho" className="bag-icon" title="Ver Bolsa.">
+              <FaShoppingBag />
+            </Link>
+            <Link href="/ver_mais" className="store-icon" title="Ver Mais Produtos.">
               <FaStore />
             </Link>
-            <Link href="/perfil" className="perfil-icon" title="ver perfil">
+            <Link href="/perfil" className="perfil-icon" title="Ver Perfil.">
               <RiAccountCircleFill />
             </Link>
-            <Link href="/home" className="logout-btn" title="deslogar">
+            <button onClick={handleLogout} className="logout-btn" title="Deslogar">
               <RiLogoutBoxRLine />
-            </Link>
+            </button>
           </>
         ) : (
           <>

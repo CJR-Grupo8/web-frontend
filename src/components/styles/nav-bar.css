@@ -7,25 +7,20 @@
   justify-content: space-between;
   align-items: center;
   padding: 0.5rem 3rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   height: 80px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
 .header.logged {
-  background-color: #000000;
+  background-color: #000;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
 .header.logged .nav-links a {
-  color: #ffffff;
+  color: #fff;
 }
 
-.header.logged .store-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.25rem;
-}
+/* Logo */
 
 .logo {
   display: flex;
@@ -44,7 +39,10 @@
 
 .logo:hover {
   transform: translateY(-2px);
+  transition: transform 0.2s ease;
 }
+
+/* Navegação */
 
 .nav-links {
   display: flex;
@@ -52,13 +50,15 @@
   align-items: center;
 }
 
+/* Botões de Login / Cadastro (texto) */
+
 .login-btn {
-  color: #ffffff;
+  color: #fff;
   padding: 0.5rem 1rem;
   border-radius: 8px;
   font-weight: 600;
-  transition: 0, 2s;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
 }
 
 .login-btn:hover {
@@ -71,16 +71,47 @@
   padding: 0.5rem 1rem;
   border-radius: 8px;
   font-weight: 600;
-  transition: 0, 2s;
-  box-shadow: 0 4px 6px rgba(255, 255, 255, 0.197);
+  box-shadow: 0 4px 6px rgba(255, 255, 255, 0.2);
+  transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
 }
 
 .cadastro-btn:hover {
+  color: #60c040;
   background: #534bcf;
   transform: translateY(-2px);
 }
 
-.store-icon svg {
+/* Ícones (store, perfil, logout) */
+
+.bag-icon,
+.store-icon,
+.perfil-icon,
+.logout-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+/* Ícones em estado normal */
+
+.bag-icon svg,
+.store-icon svg,
+.perfil-icon svg,
+.logout-btn svg {
+  color: #fff;
+  transition: color 0.2s ease;
+}
+
+.bag-icon svg,
+.store-icon svg,
+.logout-btn svg {
   font-size: 1.6rem;
 }
 
@@ -88,6 +119,19 @@
   font-size: 1.8rem;
 }
 
-.logout-btn svg {
-  font-size: 1.6rem;
+/* Hover dos ícones */
+
+.bag-icon:hover,
+.store-icon:hover,
+.perfil-icon:hover,
+.logout-btn:hover {
+  background: #414141;
+  transform: translateY(-2px);
+}
+
+.bag-icon:hover svg,
+.store-icon:hover svg,
+.perfil-icon:hover svg,
+.logout-btn:hover svg {
+  color: #60c040;
 }

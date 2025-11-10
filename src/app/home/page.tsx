@@ -25,15 +25,11 @@ const produtos: Product[] = [
 export default function HomePage() {
   return (
     <main className="home-root">
-      <NavBar logado={false} /> {/* está em hardcoding — mude para logged={true} para testar o front (precisa de requisição do back) */}
-
+      <NavBar />
       <section className="home-hero">
         <div className="hero-content">
-          <h2>Gerencie tudo com praticidade e estilo</h2>
-          <p>Organize seu estoque, acompanhe os produtos e vizualize de forma intuitiva.</p>
-          <a href="/cadastro" className="hero-button">
-            Começar agora
-          </a>
+          <h2>Do CAOS à organização</h2>
+          <h2>em alguns cliques.</h2>
         </div>
         <div className="hero-image">
           <img src="/images/id-visual/garoto-celular.svg" alt="Personagem" />
