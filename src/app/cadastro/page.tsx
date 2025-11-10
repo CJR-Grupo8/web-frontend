@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import "@/styles/cadastro.css";
+import "@/styles/app-css/cadastro.css";
 import apiClient from "@/services/api";
 import { User } from "@/types/auth";
 

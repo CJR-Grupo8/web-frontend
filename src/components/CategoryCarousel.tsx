@@ -11,7 +11,8 @@ import {
   FaRobot,
   FaEllipsisH,
 } from "react-icons/fa";
-import "./styles/home-carousel.css";
+import { FaHouse } from "react-icons/fa6";
+import Link from "next/link";
 
 const categories = [
   { id: "mercado", name: "Mercado", icon: <FaShoppingCart /> },
@@ -21,6 +22,7 @@ const categories = [
   { id: "eletronicos", name: "Eletrônicos", icon: <FaLaptop /> },
   { id: "jogos", name: "Jogos", icon: <FaGamepad /> },
   { id: "brinquedos", name: "Brinquedos", icon: <FaRobot /> },
+  { id: "casa", name: "Casa", icon: <FaHouse /> },
   { id: "outros", name: "Outros", icon: <FaEllipsisH /> },
 ];
 
@@ -32,9 +34,12 @@ export default function CategoryCarousel() {
   });
 
   return (
-    <section className="home-block">
+    <section className="home-block home-block--categories">
       <header className="home-block__header">
         <h2 className="home-block__title">Categorias</h2>
+        <Link href="/ver_mais" className="home-block__action">
+                    ver mais
+        </Link>
       </header>
 
       <div className="home-cat__viewport" ref={emblaRef}>

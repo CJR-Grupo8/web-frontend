@@ -1,4 +1,3 @@
-import "./styles/product-card.css";
 import Link from 'next/link';
 
 export type StoreSeal = "cjr" | "moumer" | "nako" | string;
