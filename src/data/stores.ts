@@ -68,10 +68,10 @@ export const STORES: Store[] = [
   },
   {
     id: 7,
-    slug: 'cream',
-    name: 'Cream',
-    category: 'beleza',
-    categoryLabel: 'beleza',
-    logo: '/images/lojas/cream.svg',
+    slug: 'electree',
+    name: 'Electree',
+    category: 'eletronicos',
+    categoryLabel: 'eletrônicos',
+    logo: '/images/lojas/electree.svg',
   },
 ];
