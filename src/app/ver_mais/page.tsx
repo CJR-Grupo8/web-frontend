@@ -1,5 +1,5 @@
 import React from "react";
-import "../styles/ver-mais.css";
+import "@/styles/ver-mais.css";
 import ProductCard, {Product} from "@/components/ProductCard";
 import NavBar from "@/components/NavBar";
 
@@ -26,7 +26,7 @@ const pageItems = products.slice(0, 15);
 export default function VerMaisPage() {
     return (
         <main className="home-root">
-            <NavBar logado={true} /> {/* está em hardcoding — mude para logged={true} para testar o front (precisa de requisição do back) */}
+            <NavBar />
             <section className="catalog">
                 {pageItems.map((p) => (
                     <ProductCard key={p.id} {...p} />

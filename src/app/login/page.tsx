@@ -2,9 +2,9 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import "../styles/login.css";
-import apiClient from "../services/api";
-import { LoginResponse } from "../types/auth";
+import "@/styles/login.css";
+import apiClient from "@/services/api";
+import { LoginResponse } from "@/types/auth";
 
 const LoginPage: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -81,7 +81,7 @@ const LoginPage: React.FC = () => {
     <main className="login-root">
       <section className="login-illustration">
         <div className="login-figure">
-          <a href="/home">
+          <a href="/">
             <img
               src="images/id-visual/logo_escura.svg"
               alt="Stock.io"

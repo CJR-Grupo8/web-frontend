@@ -2,9 +2,9 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import "../styles/cadastro.css";
-import apiClient from "../services/api";
-import { User } from "../types/auth";
+import "@/styles/cadastro.css";
+import apiClient from "@/services/api";
+import { User } from "@/types/auth";
 
 const RegisterPage: React.FC = () => {
   const [form, setForm] = useState({
@@ -239,7 +239,7 @@ const RegisterPage: React.FC = () => {
 
       <section className="signup-right">
         <div className="signup-figure">
-          <a href="/home">
+          <a href="/">
             <img
               src="/images/id-visual/logo_escura.svg"
               alt="Stock.io"

@@ -31,12 +31,12 @@ export default function NavBar() {
     localStorage.removeItem("user");
     setLogado(false);
     window.dispatchEvent(new Event("storage"));
-    window.location.href = "/home";
+    window.location.href = "/";
   };
 
   return (
     <header className={logado ? "header logged" : "header"}>
-      <Link href="/home" aria-label="Ir para a Home.">
+      <Link href="/" aria-label="Ir para a Home.">
         <div className="logo">
           <img
             src="/images/id-visual/logo_clara.svg"
