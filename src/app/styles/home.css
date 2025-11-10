@@ -16,12 +16,12 @@
   color: #fff;
 
   padding: 3.5rem 8%;
-  height: 360px;          /* hero mais baixinho, como no layout */
+  height: 360px;
   box-sizing: border-box;
   overflow: hidden;
 }
 
-/* BLOCO DE TEXTO (metade esquerda) */
+/* BLOCO DE TEXTO*/
 .hero-content {
   flex: 1;
   display: flex;
@@ -34,7 +34,7 @@
   font-weight: 700;
   line-height: 1.15;
   margin: 0;
-  text-align: center;     /* centralizado na metade esquerda, igual ao figma */
+  text-align: right;
 }
 
 .hero-content h2 + h2 {
