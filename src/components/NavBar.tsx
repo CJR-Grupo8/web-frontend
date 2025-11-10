@@ -58,8 +58,7 @@ export default function NavBar() {
             <button
               onClick={handleLogout}
               className="logout-btn"
-              title="deslogar"
-            >
+              title="deslogar">
               <RiLogoutBoxRLine />
             </button>
           </>
