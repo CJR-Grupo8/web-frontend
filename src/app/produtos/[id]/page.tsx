@@ -3,7 +3,7 @@ import { allProductDetails, allProductSummaries } from '@/data/mock';
 import ProductCarousel from '@/components/ProductCarousel';
 import NavBar from "@/components/NavBar";
 import ProductGallery from '@/components/ProductGallery';
-import "@/styles/produtos.css";
+import "@/styles/app-css/produtos.css";
 
 function formatPrice(price: number) {
   return price.toLocaleString('pt-BR', {

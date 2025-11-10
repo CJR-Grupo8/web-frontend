@@ -11,7 +11,7 @@ import {
   FaRobot,
   FaEllipsisH,
 } from "react-icons/fa";
-import "./styles/home-carousel.css";
+import '@/styles/components-css/home-carousel.css';
 
 const categories = [
   { id: "mercado", name: "Mercado", icon: <FaShoppingCart /> },

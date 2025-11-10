@@ -1,4 +1,4 @@
-import "./styles/product-card.css";
+import '@/styles/components-css/product-card.css';
 import Link from 'next/link';
 
 export type StoreSeal = "cjr" | "moumer" | "nako" | string;

@@ -1,6 +1,6 @@
 // src/components/Hero.tsx
 import React from "react";
-import "./styles/hero.css";
+import '@/styles/components-css/hero.css';
 
 type HeroProps = {
   lines: string[];

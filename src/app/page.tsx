@@ -1,10 +1,11 @@
 // src/app/page.tsx
-import "@/styles/home.css";
+import "@/styles/app-css/home.css";
 import NavBar from "@/components/NavBar";
 import Hero from "@/components/Hero";
 import ProductCarousel from "@/components/ProductCarousel";
 import CategoryCarousel from "@/components/CategoryCarousel";
 import { Product } from "@/components/ProductCard";
+import StoresCarousel from '@/components/StoresCarousel';
 
 const produtos: Product[] = [
     { id: "1", name: "Brownie Meio A.", price: "R$4,70", image: "brownie-meio-amargo", seal: "cjr", availability: "DISPONÍVEL" },
@@ -33,7 +34,6 @@ export default function HomePage() {
         imageSrc="/images/id-visual/garoto-celular.svg"
         imageAlt="Personagem com celular"/>
 
-      {/* CATEGORIAS*/}
        <section className="dashboard-categorias">
         <h3>Categorias</h3>
         <CategoryCarousel />
@@ -41,6 +41,10 @@ export default function HomePage() {
 
       <section className="home-produtos">
         <ProductCarousel title="Produtos" items={produtos} />
+      </section>
+
+      <section className="store-carousel">
+        <StoresCarousel />
       </section>
     </main>
   );
