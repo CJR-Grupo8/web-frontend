@@ -1,18 +1,11 @@
+// src/components/ProductCard.tsx
 import Link from 'next/link';
-import "@/styles/components-css/product-card.css";
+import type { ProductSummary } from '@/data/product';
 
 export type StoreSeal = "cjr" | "moumer" | "nako" | string;
 export type Availability = "DISPONÍVEL" | "INDISPONÍVEL";
 
-export type Product = {
-  id: string;
-  name: string;
-  price: string;
-  unit?: string;
-  image: string;
-  seal: StoreSeal;
-  availability: Availability;
-};
+export type Product = ProductSummary;
 
 function imageSrc(image: string) {
   return `/images/produtos/${image}.svg`;
@@ -22,7 +15,9 @@ function sealSrc(seal: string) {
   return `/images/lojas/${seal}.svg`;
 }
 
-export default function ProductCard({ id, name, price, unit, image, seal, availability }: Product) {
+export default function ProductCard(props: Product) {
+  const { id, name, price, unit, image, seal, availability } = props;
+
   return (
     <Link href={`/produtos/${id}`} className="product-card-link">
       <article className="card">
@@ -30,17 +25,13 @@ export default function ProductCard({ id, name, price, unit, image, seal, availa
           <img src={imageSrc(image)} alt={name} />
           <img className="seal" src={sealSrc(seal)} alt={`Selo ${seal}`} />
         </div>
-
         <h3 className="title">{name}</h3>
-
-        <div className="price-line">
-          <span className="price">{price}</span>
-          {unit && <span className="unit">{unit}</span>}
-        </div>
-
-        <span className={`availability ${availability === "DISPONÍVEL" ? "ok" : "off"}`}>
+        <p className="price">
+          {price} {unit && <span className="unit">{unit}</span>}
+        </p>
+        <p className={`availability availability--${availability === "DISPONÍVEL" ? "on" : "off"}`}>
           {availability}
-        </span>
+        </p>
       </article>
     </Link>
   );
