@@ -1,6 +1,7 @@
 // src/components/ProductCard.tsx
 import Link from 'next/link';
 import type { ProductSummary } from '@/data/product';
+import "@/styles/components-css/product-card.css";
 
 export type StoreSeal = "cjr" | "moumer" | "nako" | string;
 export type Availability = "DISPONÍVEL" | "INDISPONÍVEL";
@@ -29,7 +30,9 @@ export default function ProductCard(props: Product) {
         <p className="price">
           {price} {unit && <span className="unit">{unit}</span>}
         </p>
-        <p className={`availability availability--${availability === "DISPONÍVEL" ? "on" : "off"}`}>
+        <p
+          className={`availability ${availability === "DISPONÍVEL" ? "ok" : "off"}`}
+        >
           {availability}
         </p>
       </article>

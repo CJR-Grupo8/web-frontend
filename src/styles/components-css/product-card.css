@@ -66,13 +66,12 @@
 }
 
 .card .availability.ok {
-  color: #16a34a;
+  color: #16a34a !important;
 }
 
 .card .availability.off {
-  color: #dc2626;
+  color: #dc2626 !important;
 }
-
 
 .product-card-link {
   display: block;
