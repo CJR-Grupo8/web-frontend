@@ -5,28 +5,23 @@ import NavBar from "@/components/NavBar";
 import SearchBar from "@/components/SearchBar";
 import ProductCard from "@/components/ProductCard";
 import Pagination from "@/components/Pagination";
-import "@/styles/app-css/ver-mais.css";
+import "@/styles/components-css/product-catalog.css";
 import type { ProductSummary } from "@/data/product";
-
-function normalize(str: string) {
-  return str
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .toLowerCase();
-}
 
 type ProductCatalogProps = {
   baseProducts: ProductSummary[];
   placeholder?: string;
+  title?: string;
 };
 
 export default function ProductCatalog({
   baseProducts,
   placeholder = "Buscar por nome, categoria...",
+  title,
 }: ProductCatalogProps) {
   const [currentPage, setCurrentPage] = useState(1);
   const [filteredProducts, setFilteredProducts] = useState(baseProducts);
-  const [loading, setLoading] = useState(false); // já deixa pronto pra futura API
+  const [loading, setLoading] = useState(false);
 
   const productsPerPage = 15;
   const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
@@ -37,6 +32,13 @@ export default function ProductCatalog({
     startIndex + productsPerPage
   );
 
+  function normalize(str: string) {
+    return str
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase();
+  }
+
   function handleSearch(term: string) {
     const trimmed = term.trim();
 
@@ -46,12 +48,21 @@ export default function ProductCatalog({
       return;
     }
 
-    const normalizedTerm = normalize(trimmed);
+    const normalizedTerm = term
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase();
 
     const result = baseProducts.filter((p: any) => {
-      const name = normalize(p.name);
-      const categoryStr = normalize(p.category ?? "");
-      const seal = normalize(p.seal ?? "");
+      const name = p.name.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+      const categoryStr = (p.category ?? "")
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .toLowerCase();
+      const seal = (p.seal ?? "")
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .toLowerCase();
 
       return (
         name.includes(normalizedTerm) ||
@@ -67,9 +78,11 @@ export default function ProductCatalog({
   return (
     <div className="home-root">
       <NavBar />
-
       <main>
-        <SearchBar placeholder={placeholder} onSearch={handleSearch} />
+        <div className="catalog-header">
+          {title && <h1 className="catalog-title">{title}</h1>}
+          <SearchBar placeholder={placeholder} onSearch={handleSearch} />
+        </div>
 
         {loading && <p style={{ textAlign: "center" }}>Carregando...</p>}
 
@@ -91,6 +104,7 @@ export default function ProductCatalog({
           onPageChange={setCurrentPage}
         />
       </main>
+
     </div>
   );
 }

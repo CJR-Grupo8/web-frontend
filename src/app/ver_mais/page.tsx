@@ -8,6 +8,7 @@ export default function VerMaisPage() {
     <ProductCatalog
       baseProducts={allProductSummaries}
       placeholder="Buscar por nome, categoria..."
+      title="Todos os produtos"
     />
   );
 }

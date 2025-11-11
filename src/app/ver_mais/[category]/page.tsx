@@ -16,7 +16,6 @@ type PageProps = {
 
 export default function VerMaisCategoryPage({ params }: PageProps) {
   const { category } = use(params);
-
   const slug = category.toLowerCase();
   const categoria: ProductCategory | undefined = SLUG_TO_CATEGORY[slug];
 
@@ -32,6 +31,7 @@ export default function VerMaisCategoryPage({ params }: PageProps) {
           ? `Buscar em ${categoria}...`
           : "Buscar por nome, categoria..."
       }
+      title={categoria ? `Produtos de ${categoria}` : "Categoria"}
     />
   );
 }
