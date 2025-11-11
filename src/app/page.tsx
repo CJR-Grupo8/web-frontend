@@ -20,8 +20,7 @@ export default function HomePage() {
         imageSrc="/images/id-visual/garoto-celular.svg"
         imageAlt="Personagem com celular"
       />
-
-      <SearchBar />
+      
       <CategoryCarousel />
 
       {categorias.map((cat) => {
@@ -30,7 +29,8 @@ export default function HomePage() {
         return (
           <section key={cat} className="home-produtos">
             <ProductCarousel
-              title={`Produtos em ${cat}`}
+              title="Produtos"
+              category={cat}
               items={produtosDaCategoria}
             />
           </section>
