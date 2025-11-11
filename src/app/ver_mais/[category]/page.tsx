@@ -7,6 +7,7 @@ import {
   SLUG_TO_CATEGORY,
   type ProductCategory,
 } from "@/data/product";
+import { CATEGORY_NAV } from "@/data/categoryNav";
 
 type PageProps = {
   params: Promise<{
@@ -32,6 +33,8 @@ export default function VerMaisCategoryPage({ params }: PageProps) {
           : "Buscar por nome, categoria..."
       }
       title={categoria ? `Produtos de ${categoria}` : "Categoria"}
+      categoryNavItems={CATEGORY_NAV}
+      activeCategorySlug={slug}
     />
   );
 }

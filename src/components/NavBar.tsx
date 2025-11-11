@@ -48,10 +48,10 @@ export default function NavBar() {
       <nav className="nav-links">
         {logado ? (
           <>
-            <Link href="/carrinho" className="bag-icon" title="Ver Bolsa.">
+            <Link href="/ver_mais" className="bag-icon" title="Ver Mais Produtos.">
               <FaShoppingBag />
             </Link>
-            <Link href="/ver_mais" className="store-icon" title="Ver Mais Produtos.">
+            <Link href="/lojas" className="store-icon" title="Ver Mais Lojas.">
               <FaStore />
             </Link>
             <Link href="/perfil" className="perfil-icon" title="Ver Perfil.">
