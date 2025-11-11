@@ -1,5 +1,5 @@
 import { notFound } from 'next/navigation';
-import { allProductDetails, allProductSummaries } from '@/data/mock';
+import { allProductDetails, allProductSummaries } from '@/data/product';
 import ProductCarousel from '@/components/ProductCarousel';
 import NavBar from "@/components/NavBar";
 import ProductGallery from '@/components/ProductGallery';

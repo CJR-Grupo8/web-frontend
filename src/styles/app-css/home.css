@@ -7,6 +7,32 @@
   font-family: 'Poppins', sans-serif;
 }
 
+.home-block__title {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.25rem;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #171717;
+}
+
+.home-block__title-main {
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+.home-block__title-em {
+  font-size: 0.9rem;
+  font-weight: 400;
+  margin-left: 0.25rem;
+}
+
+.home-block__title-category {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #6b3ef7;
+}
+
 /* CATEGORIAS */
 .dashboard-categorias {
     padding: 3rem 8%;
