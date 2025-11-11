@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, FormEvent } from "react";
+import { useState, KeyboardEvent } from "react";
 import { FiSearch } from "react-icons/fi";
 import "@/styles/components-css/search-bar.css";
 
@@ -15,22 +15,25 @@ export default function SearchBar({
 }: SearchBarProps) {
   const [term, setTerm] = useState("");
 
-  function handleSubmit(e: FormEvent) {
-    e.preventDefault();
-    onSearch?.(term.trim());
+  function handleKeyDown(e: KeyboardEvent<HTMLInputElement>) {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      onSearch?.(term.trim());
+    }
   }
 
   return (
     <section className="search-section">
-      <form className="search-bar" onSubmit={handleSubmit}>
+      <form className="search-bar" onSubmit={(e) => e.preventDefault()}>
         <input
           className="search-bar__input"
           type="text"
           value={term}
           onChange={(e) => setTerm(e.target.value)}
+          onKeyDown={handleKeyDown}
           placeholder={placeholder}
         />
-        <button type="submit" className="search-bar__icon-btn">
+        <button type="button" className="search-bar__icon-btn">
           <FiSearch className="search-bar__icon" />
         </button>
       </form>

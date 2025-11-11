@@ -7,7 +7,7 @@ export type ProductCategory =
   | "Jogos"
   | "Brinquedos"
   | "Casa"
-  | "Outros"
+  | "Outros";
 
 export type ProductSummary = {
   id: string;
@@ -19,17 +19,42 @@ export type ProductSummary = {
   availability: "DISPONÍVEL" | "INDISPONÍVEL";
   category: ProductCategory;
 };
+
 export type ProductDetails = {
   id: string;
   name: string;
-  price: number; 
+  price: number;
   description: string;
-  images: string[]; 
+  images: string[];
   rating: number;
   reviews: number;
   availability: "DISPONÍVEL" | "INDISPONÍVEL";
-  stockCount: number; 
+  stockCount: number;
   seal: string;
+};
+
+export const SLUG_TO_CATEGORY: Record<string, ProductCategory> = {
+  mercado: "Mercado",
+  farmacia: "Farmácia",
+  beleza: "Beleza",
+  moda: "Moda",
+  eletronicos: "Eletrônicos",
+  jogos: "Jogos",
+  brinquedos: "Brinquedos",
+  casa: "Casa",
+  outros: "Outros",
+};
+
+export const CATEGORY_TO_SLUG: Record<ProductCategory, string> = {
+  Mercado: "mercado",
+  "Farmácia": "farmacia",
+  Beleza: "beleza",
+  Moda: "moda",
+  "Eletrônicos": "eletronicos",
+  Jogos: "jogos",
+  Brinquedos: "brinquedos",
+  Casa: "casa",
+  Outros: "outros",
 };
 
 export const allProductSummaries: ProductSummary[] = [
