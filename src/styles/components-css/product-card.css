@@ -65,10 +65,23 @@
   margin-top: auto;
 }
 
-.availability.ok {
-  color: var(--ok);
+.card .availability.ok {
+  color: #16a34a;
 }
 
-.availability.off {
-  color: var(--off);
+.card .availability.off {
+  color: #dc2626;
+}
+
+
+.product-card-link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+
+.product-card-link:hover .card {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  transition: all 0.2s ease;
 }
