@@ -21,6 +21,9 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "StockIO",
   description: "App de controle de estoque para estabelecimentos.",
+  icons: {
+    icon: "/Stockio_logo.png",
+  },
 };
 
 export default function RootLayout({
