@@ -16,6 +16,10 @@ export type Store = {
   category: StoreCategory;
   categoryLabel: string;
   logo: string;
+  image: string;       
+  rating: number;       
+  reviewsCount: number; 
+  owner?: string;       
 };
 
 export const STORES: Store[] = [
@@ -26,6 +30,9 @@ export const STORES: Store[] = [
     category: 'mercado',
     categoryLabel: 'mercado',
     logo: '/images/lojas/cjr.svg',
+    image: '',
+    rating: 4.5,
+    reviewsCount: 120,
   },
   {
     id: 2,
@@ -34,6 +41,10 @@ export const STORES: Store[] = [
     category: 'beleza',
     categoryLabel: 'beleza',
     logo: '/images/lojas/rare-beauty.svg',
+    image: '/images/banners/rare-beauty-banner.svg', 
+    rating: 4.75,
+    reviewsCount: 15, 
+    owner: 'Selena Gomez',
   },
   {
     id: 3,
@@ -42,6 +53,9 @@ export const STORES: Store[] = [
     category: 'mercado',
     categoryLabel: 'mercado',
     logo: '/images/lojas/the-croc-brew.svg',
+    image: 'https://placehold.co/1200x600/234/fff?text=Croc+Brew',
+    rating: 4.8,
+    reviewsCount: 85,
   },
   {
     id: 4,
@@ -50,6 +64,9 @@ export const STORES: Store[] = [
     category: 'casa',
     categoryLabel: 'casa',
     logo: '/images/lojas/mini-reno.svg',
+    image: 'https://placehold.co/1200x600/564/fff?text=Mini+Reno',
+    rating: 4.2,
+    reviewsCount: 40,
   },
   {
     id: 5,
@@ -58,6 +75,9 @@ export const STORES: Store[] = [
     category: 'moda',
     categoryLabel: 'moda',
     logo: '/images/lojas/amoca.svg',
+    image: 'https://placehold.co/1200x600/876/fff?text=Amoca',
+    rating: 4.9,
+    reviewsCount: 210,
   },
   {
     id: 6,
@@ -66,6 +86,9 @@ export const STORES: Store[] = [
     category: 'eletronicos',
     categoryLabel: 'eletrônicos',
     logo: '/images/lojas/repiit.svg',
+    image: 'https://placehold.co/1200x600/123/fff?text=Repiit',
+    rating: 4.6,
+    reviewsCount: 90,
   },
   {
     id: 7,
@@ -74,5 +97,8 @@ export const STORES: Store[] = [
     category: 'eletronicos',
     categoryLabel: 'eletrônicos',
     logo: '/images/lojas/electree.svg',
+    image: 'https://placehold.co/1200x600/000/fff?text=Electree',
+    rating: 4.3,
+    reviewsCount: 55,
   },
 ];
