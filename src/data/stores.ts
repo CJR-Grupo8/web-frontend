@@ -30,7 +30,7 @@ export const STORES: Store[] = [
     category: 'mercado',
     categoryLabel: 'mercado',
     logo: '/images/lojas/cjr.svg',
-    image: '',
+    image: 'https://placehold.co/1200x600/ccc/fff?text=CJR',
     rating: 4.5,
     reviewsCount: 120,
   },
