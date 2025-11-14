@@ -26,8 +26,20 @@ export default function StoreEditButtons() {
 
   return (
     <div className="store-edit-buttons">
-      <button className="edit-btn" title="Editar Loja">✎</button>
-      <button className="add-btn" title="Adicionar Produto">+</button>
+      <button
+        className="edit-btn"
+        title="Editar Loja"
+        onClick={() => alert("Editar Loja: funcionalidade não implementada ainda")}
+      >
+        ✎
+      </button>
+      <button
+        className="add-btn"
+        title="Adicionar Produto"
+        onClick={() => alert("Adicionar Produto: funcionalidade não implementada ainda")}
+      >
+        +
+      </button>
     </div>
   );
 }
