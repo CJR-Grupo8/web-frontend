@@ -6,6 +6,7 @@
   color: #fff;
 }
 
+/* --- HERO (Banner) --- */
 .store-hero {
   position: relative;
   width: 100%;
@@ -63,7 +64,7 @@
 .store-rating-section {
   background-color: #000;
   text-align: center;
-  padding: 2rem 1rem;
+  padding: 2rem 0;
 }
 
 .store-rating__title {
@@ -99,13 +100,21 @@
   padding-right: 2rem;
 }
 
+/* --- GRID DE COMENTÁRIOS (Carrossel) --- */
 .store-comments-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  display: flex; 
   gap: 1.5rem;
-  padding: 2rem;
+  padding: 2rem 1.5rem; 
   max-width: 1280px;
   margin: 0 auto;
+  overflow-x: auto; 
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none; /* Firefox */
+}
+
+/* Esconde scrollbar no Chrome/Safari */
+.store-comments-grid::-webkit-scrollbar {
+  display: none;
 }
 
 .comment-card {
@@ -116,6 +125,10 @@
   display: flex;
   align-items: center;
   gap: 1rem;
+  
+  /* NOVO: Garante tamanho fixo para o carrossel funcionar */
+  flex: 0 0 350px; 
+  scroll-snap-align: center;
 }
 
 .comment-avatar {
@@ -136,6 +149,7 @@
   font-size: 0.9rem;
 }
 
+/* --- botoes edicao --- */
 .store-edit-buttons {
   position: absolute;
   top: 1.5rem;   
@@ -173,4 +187,42 @@
 
 .store-edit-buttons .add-btn {
   background-color: #8B5CF6; 
+}
+
+/* -produtos */
+.store-products-section {
+  background-color: #F8F6F0;
+  color: #111; 
+  padding-top: 3rem;
+  padding-bottom: 4rem;
+  width: 100%;
+}
+
+/* Cabeçalho "Produtos ... ver mais" */
+.store-products-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  max-width: 1280px;
+  margin: 0 auto 1.5rem auto;
+  padding: 0 1.5rem;
+}
+
+.store-products-header h2 {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #000;
+  margin: 0;
+}
+
+.store-products-header h2 span {
+  font-size: 1rem;
+  font-weight: 400;
+  margin-left: 0.5rem;
+}
+
+.store-products-header a {
+  color: #6D28D9; 
+  text-decoration: none;
+  font-size: 0.9rem;
 }

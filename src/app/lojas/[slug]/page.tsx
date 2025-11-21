@@ -1,7 +1,10 @@
 import { notFound } from 'next/navigation';
 import { STORES } from '@/data/stores';
+import { allProductSummaries } from '@/data/product'; 
 import NavBar from "@/components/NavBar";
 import StoreEditButtons from '@/components/StoreEditButtons';
+import ProductCarousel from '@/components/ProductCarousel';
+import ProductCatalog from '@/components/ProductCatalog';
 
 import "@/styles/app-css/lojas.css";
 
@@ -14,23 +17,63 @@ function StarDisplay({ count, size = '1rem' }: { count: number, size?: string })
 }
 
 type PageProps = {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 };
 
 export default async function LojaPage({ params }: PageProps) {
-  const { slug } = params; 
+
+  const { slug } = await params; 
+  
   const store = STORES.find(s => s.slug === slug);
 
   if (!store) {
     notFound();
   }
 
-  // Comentarios fakes para testes
+
+  const storeProducts = allProductSummaries.filter(p => p.seal === slug);
+
+  const bestRatedProducts = storeProducts.slice(0, 6);
+
+
   const comments = [
-    { id: 1, name: "Sofia Figueiredo", avatar: "https://placehold.co/50x50/E2D9C8/A4907C?text=SF", rating: 5 },
-    { id: 2, name: "Maria Silva", avatar: "https://placehold.co/50x50/E2D9C8/A4907C?text=MS", rating: 5 },
+    { 
+      id: 1, 
+      name: "Sofia Figueiredo", 
+      avatar: "https://placehold.co/50x50/E2D9C8/A4907C?text=SF", 
+      rating: 5,
+      text: "Adorei o produto. Funcionou muito na minha pele. Estou muito contente e com toda certeza irei comprar mais produtos da marca. Que orgulhooooooo! Arrasaram"
+    },
+    { 
+      id: 2, 
+      name: "Selena Gomez", 
+      avatar: "https://placehold.co/50x50/E2D9C8/A4907C?text=SG", 
+      rating: 5,
+      text: "Não é porque é minha marca, mas eu amo!"
+    },
+    { 
+      id: 3, 
+      name: "Julia Santos", 
+      avatar: "https://placehold.co/50x50/E2D9C8/A4907C?text=JS", 
+      rating: 4,
+      text: "Gostei bastante, a qualidade é impecável."
+    },
+    { 
+      id: 4, 
+      name: "Maria", 
+      avatar: "https://placehold.co/50x50/E2D9C8/A4907C?text=JS", 
+      rating: 4,
+      text: "A qualidade é impecável."
+    },
+    { 
+      id: 5, 
+      name: "Luiza", 
+      avatar: "https://placehold.co/50x50/E2D9C8/A4907C?text=JS", 
+      rating: 4,
+      text: "Gostei bastante!"
+    }
   ];
 
   return (
@@ -64,19 +107,47 @@ export default async function LojaPage({ params }: PageProps) {
         <a href="#" className="store-rating__link">
           ver mais ({store.reviewsCount} reviews)
         </a>
+
+        {/* Grid de Comentários (Atualizado com textos) */}
+        <div className="store-comments-grid">
+            {comments.map((comment) => (
+            <div key={comment.id} className="comment-card">
+                <img src={comment.avatar} alt={comment.name} className="comment-avatar" />
+                <div className="comment-info">
+                    <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem'}}>
+                        <h4 style={{margin: 0}}>{comment.name}</h4>
+                        <StarDisplay count={comment.rating} size="0.8rem" />
+                    </div>
+                    <p style={{fontSize: '0.85rem', lineHeight: '1.4', margin: 0, opacity: 0.8}}>
+                        "{comment.text}"
+                    </p>
+                    <span style={{display:'block', textAlign:'right', fontSize:'0.8rem', color:'#8B5CF6', marginTop:'0.5rem'}}>ver mais</span>
+                </div>
+            </div>
+            ))}
+        </div>
       </section>
 
-      <section className="store-comments-grid">
-        {comments.map((comment) => (
-          <div key={comment.id} className="comment-card">
-            <img src={comment.avatar} alt={comment.name} className="comment-avatar" />
-            <div className="comment-info">
-              <h4>{comment.name}</h4>
-              <StarDisplay count={comment.rating} size="1rem" />
-            </div>
-          </div>
-        ))}
-      </section>
+
+      <div className="store-products-section">
+        
+  
+        {bestRatedProducts.length > 0 ? (
+             <ProductCarousel 
+                title="Produtos melhor avaliados" 
+                items={bestRatedProducts} 
+            />
+        ) : (
+            <p style={{textAlign: 'center', padding: '2rem'}}>Nenhum produto encontrado para esta loja.</p>
+        )}
+
+       
+        <div style={{ marginTop: '2rem' }}>
+      
+             <ProductCatalog initialProducts={storeProducts} itemsPerPage={8} />
+        </div>
+
+      </div>
     </div>
   );
 }
