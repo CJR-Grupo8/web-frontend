@@ -5,6 +5,7 @@ import NavBar from "@/components/NavBar";
 import StoreEditButtons from '@/components/StoreEditButtons';
 import ProductCarousel from '@/components/ProductCarousel';
 import ProductCatalog from '@/components/ProductCatalog';
+import StoreComments from '@/components/StoreComments'; 
 
 import "@/styles/app-css/lojas.css";
 
@@ -23,7 +24,6 @@ type PageProps = {
 };
 
 export default async function LojaPage({ params }: PageProps) {
-
   const { slug } = await params; 
   
   const store = STORES.find(s => s.slug === slug);
@@ -32,11 +32,8 @@ export default async function LojaPage({ params }: PageProps) {
     notFound();
   }
 
-
   const storeProducts = allProductSummaries.filter(p => p.seal === slug);
-
   const bestRatedProducts = storeProducts.slice(0, 6);
-
 
   const comments = [
     { 
@@ -62,18 +59,18 @@ export default async function LojaPage({ params }: PageProps) {
     },
     { 
       id: 4, 
-      name: "Maria", 
-      avatar: "https://placehold.co/50x50/E2D9C8/A4907C?text=JS", 
-      rating: 4,
-      text: "A qualidade é impecável."
+      name: "Ana Clara", 
+      avatar: "https://placehold.co/50x50/E2D9C8/A4907C?text=AC", 
+      rating: 5,
+      text: "Chegou super rápido e a embalagem é linda."
     },
     { 
       id: 5, 
-      name: "Luiza", 
-      avatar: "https://placehold.co/50x50/E2D9C8/A4907C?text=JS", 
+      name: "Beatriz Lima", 
+      avatar: "https://placehold.co/50x50/E2D9C8/A4907C?text=BL", 
       rating: 4,
-      text: "Gostei bastante!"
-    }
+      text: "Muito bom, recomendo para todo mundo."
+    },
   ];
 
   return (
@@ -108,30 +105,12 @@ export default async function LojaPage({ params }: PageProps) {
           ver mais ({store.reviewsCount} reviews)
         </a>
 
-        {/* Grid de Comentários (Atualizado com textos) */}
-        <div className="store-comments-grid">
-            {comments.map((comment) => (
-            <div key={comment.id} className="comment-card">
-                <img src={comment.avatar} alt={comment.name} className="comment-avatar" />
-                <div className="comment-info">
-                    <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem'}}>
-                        <h4 style={{margin: 0}}>{comment.name}</h4>
-                        <StarDisplay count={comment.rating} size="0.8rem" />
-                    </div>
-                    <p style={{fontSize: '0.85rem', lineHeight: '1.4', margin: 0, opacity: 0.8}}>
-                        "{comment.text}"
-                    </p>
-                    <span style={{display:'block', textAlign:'right', fontSize:'0.8rem', color:'#8B5CF6', marginTop:'0.5rem'}}>ver mais</span>
-                </div>
-            </div>
-            ))}
-        </div>
-      </section>
+        <StoreComments comments={comments} />
 
+      </section>
 
       <div className="store-products-section">
         
-  
         {bestRatedProducts.length > 0 ? (
              <ProductCarousel 
                 title="Produtos melhor avaliados" 
@@ -141,9 +120,7 @@ export default async function LojaPage({ params }: PageProps) {
             <p style={{textAlign: 'center', padding: '2rem'}}>Nenhum produto encontrado para esta loja.</p>
         )}
 
-       
         <div style={{ marginTop: '2rem' }}>
-      
              <ProductCatalog initialProducts={storeProducts} itemsPerPage={8} />
         </div>
 

@@ -100,35 +100,50 @@
   padding-right: 2rem;
 }
 
-/* --- GRID DE COMENTÁRIOS (Carrossel) --- */
-.store-comments-grid {
-  display: flex; 
-  gap: 1.5rem;
-  padding: 2rem 1.5rem; 
+/* --- CARROSSEL DE COMENTÁRIOS (EMBLA) --- */
+
+/* 1. A Janela (Viewport) */
+.store-comments-viewport {
+  overflow: hidden;
+  width: 100%;
   max-width: 1280px;
   margin: 0 auto;
-  overflow-x: auto; 
-  scroll-snap-type: x mandatory;
-  scrollbar-width: none; /* Firefox */
+  padding: 2rem 1.5rem;
+  cursor: grab;
 }
 
-/* Esconde scrollbar no Chrome/Safari */
-.store-comments-grid::-webkit-scrollbar {
-  display: none;
+.store-comments-viewport:active {
+  cursor: grabbing;
 }
 
+/* 2. O Container (A trilha que se move) */
+.store-comments-container {
+  display: flex; /* Garante que fiquem lado a lado */
+  flex-direction: row;
+  gap: 1.5rem;
+  height: auto; 
+}
+
+/* 3. O Slide (Wrapper do Card) */
+.store-comments-slide {
+  flex: 0 0 350px; /* Largura fixa do slide */
+  min-width: 0;
+}
+
+/* 4. O Card (Visual) */
 .comment-card {
   background-color: #F3F0E9; 
   color: #111;
   padding: 1.5rem;
   border-radius: 20px; 
   display: flex;
+  flex-direction: row;
   align-items: center;
   gap: 1rem;
   
-  /* NOVO: Garante tamanho fixo para o carrossel funcionar */
-  flex: 0 0 350px; 
-  scroll-snap-align: center;
+  height: 100%; 
+  user-select: none;
+  box-sizing: border-box;
 }
 
 .comment-avatar {
@@ -136,6 +151,12 @@
   height: 50px;
   border-radius: 50%;
   object-fit: cover;
+  pointer-events: none;
+  flex-shrink: 0;
+}
+
+.comment-info {
+  flex: 1;
 }
 
 .comment-info h4 {
@@ -149,7 +170,7 @@
   font-size: 0.9rem;
 }
 
-/* --- botoes edicao --- */
+/* --- BOTOES EDICAO --- */
 .store-edit-buttons {
   position: absolute;
   top: 1.5rem;   
@@ -189,7 +210,7 @@
   background-color: #8B5CF6; 
 }
 
-/* -produtos */
+/* --- PRODUTOS --- */
 .store-products-section {
   background-color: #F8F6F0;
   color: #111; 
@@ -198,7 +219,6 @@
   width: 100%;
 }
 
-/* Cabeçalho "Produtos ... ver mais" */
 .store-products-header {
   display: flex;
   justify-content: space-between;
