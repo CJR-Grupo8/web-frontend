@@ -2,6 +2,8 @@ import { notFound } from 'next/navigation';
 import { STORES } from '@/data/stores';
 import NavBar from "@/components/NavBar";
 import StoreEditButtons from '@/components/StoreEditButtons';
+import AddReviewButton from '@/components/AddReviewButton';
+import Link from 'next/link';
 
 import "@/styles/app-css/lojas.css";
 
@@ -61,10 +63,12 @@ export default async function LojaPage({ params }: PageProps) {
         <div className="store-rating__stars">
            <StarDisplay count={store.rating} size="2.5rem" />
         </div>
-        <a href="#" className="store-rating__link">
+        <a href={`/lojas/${slug}/reviews`} className="store-rating__link">
           ver mais ({store.reviewsCount} reviews)
         </a>
       </section>
+
+      <AddReviewButton />
 
       <section className="store-comments-grid">
         {comments.map((comment) => (
