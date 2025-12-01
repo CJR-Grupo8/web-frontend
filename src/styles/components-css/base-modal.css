@@ -1,0 +1,136 @@
+/* --- Arquivo base para referencia de todos os modais  --- */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  backdrop-filter: blur(2px);
+}
+
+.modal-container {
+  background-color: #f0f0f0; 
+  padding: 2rem;
+  border-radius: 20px;
+  width: 90%;
+  max-width: 500px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  animation: fadeIn 0.3s ease;
+  max-height: 90vh;
+  overflow-y: auto; 
+}
+
+/* --- Cabeçalho (Título e X) --- */
+.modal-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  position: relative;
+}
+
+.modal-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #333;
+  text-align: center;
+}
+
+.close-btn {
+  position: absolute;
+  right: 0;
+  top: -5px;
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #333;
+  transition: transform 0.2s;
+}
+
+.close-btn:hover {
+  transform: scale(1.1);
+}
+
+/* --- Elementos Comuns (Inputs e Botões) --- */
+
+.modal-input, .modal-select {
+  width: 100%;
+  padding: 12px 20px;
+  border-radius: 25px;
+  border: none;
+  background-color: #fff;
+  font-size: 0.9rem;
+  color: #555;
+  outline: none;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.modal-textarea {
+  width: 100%;
+  padding: 15px 20px;
+  border-radius: 20px;
+  border: none;
+  background-color: #fff;
+  font-size: 0.9rem;
+  color: #555;
+  outline: none;
+  margin-bottom: 1rem;
+  resize: none;
+  min-height: 120px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+/* Botão Roxo (Salvar/Adicionar) */
+.btn-primary {
+  width: 100%;
+  padding: 12px;
+  border-radius: 25px;
+  border: none;
+  background: #6c63ff; 
+  color: white;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(108, 99, 255, 0.3);
+  transition: transform 0.2s, background-color 0.2s;
+  margin-top: 0.5rem;
+}
+
+.btn-primary:hover {
+  background-color: #5a52d5;
+  transform: translateY(-2px);
+}
+
+/* Botão Vermelho (Deletar) */
+.btn-danger {
+  width: 100%;
+  padding: 12px;
+  border-radius: 25px;
+  border: none;
+  background-color: red; 
+  color: white;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  margin-bottom: 0.8rem;
+  transition: transform 0.2s;
+}
+
+.btn-danger:hover {
+  background-color: #cc0000;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}

@@ -7,7 +7,6 @@ const apiClient = axios.create({
 // Interceptor para adicionar o token JWT automaticamente
 apiClient.interceptors.request.use(
   (config) => {
-    // Verifica se está no browser antes de acessar localStorage
     if (typeof window !== 'undefined') {
       const token = localStorage.getItem("token");
       if (token) {
@@ -26,11 +25,9 @@ apiClient.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      // Token inválido ou expirado
       if (typeof window !== 'undefined') {
         localStorage.removeItem("token");
         localStorage.removeItem("user");
-        // Redireciona para login se não estiver na página de login/cadastro
         if (!window.location.pathname.includes('/login') && 
             !window.location.pathname.includes('/cadastro')) {
           window.location.href = "/login";
@@ -40,5 +37,22 @@ apiClient.interceptors.response.use(
     return Promise.reject(error);
   }
 );
+
+export const userService = {
+  // Atualizar perfil
+  updateProfile: async (id: number, data: any) => {
+    return apiClient.patch(`/users/${id}`, data); 
+  },
+  
+  // Deletar conta
+  deleteAccount: async (id: number) => {
+    return apiClient.delete(`/users/${id}`);
+  },
+
+  // Alterar senha 
+  changePassword: async (data: any) => {
+    return apiClient.post('/auth/change-password', data);
+  }
+};
 
 export default apiClient;
