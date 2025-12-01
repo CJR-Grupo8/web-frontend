@@ -38,7 +38,7 @@ export default function EditProfileModal({
       setFullName(user.fullName || "");
       setUsername(user.username || "");
       setEmail(user.email || "");
-
+      // Se tiver avatar vindo do banco, setar o preview aqui
     }
   }, [user, isOpen]);
 
@@ -58,7 +58,6 @@ export default function EditProfileModal({
     if (!user) return;
     setLoading(true);
     try {
-
       await userService.updateProfile(user.id, { fullName, username, email });
       
       const userAtualizado = {
@@ -72,7 +71,6 @@ export default function EditProfileModal({
 
       alert("Perfil atualizado!");
       
-      // 3. Avisa a tela pai
       if (onSuccess) onSuccess();
       onClose();
 
@@ -98,11 +96,13 @@ export default function EditProfileModal({
     }
   };
 
+  // --- Estilos Específicos (Pixel Perfect conforme imagem) ---
+  
   const avatarStyle: React.CSSProperties = {
     position: 'relative',
-    width: '100px',
-    height: '100px',
-    margin: '0 auto 1.5rem auto',
+    width: '110px',  // Levemente maior
+    height: '110px',
+    margin: '0 auto 2rem auto', // Mais espaço embaixo para separar dos inputs
   };
 
   const imgStyle: React.CSSProperties = {
@@ -110,23 +110,27 @@ export default function EditProfileModal({
     height: '100%',
     borderRadius: '50%',
     objectFit: 'cover',
-    border: '4px solid #fff'
+    border: '4px solid #fff', // Borda branca na foto
+    boxShadow: '0 4px 10px rgba(0,0,0,0.1)' 
   };
 
   const cameraBtnStyle: React.CSSProperties = {
     position: 'absolute',
-    bottom: 0,
-    right: 0,
-    background: '#fff',
-    border: 'none',
+    bottom: 0, // Fica bem na base
+    right: '50%', // Centralizado horizontalmente
+    transform: 'translateX(50%) translateY(30%)', // Ajuste fino para ficar sobreposto na borda inferior
+    background: '#1a1a1a', // Fundo quase preto (conforme imagem)
+    border: '3px solid #fff', // Borda branca grossa
     borderRadius: '50%',
-    width: '32px',
-    height: '32px',
+    width: '36px',
+    height: '36px',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
     cursor: 'pointer',
-    boxShadow: '0 2px 4px rgba(0,0,0,0.2)'
+    color: '#fff',
+    zIndex: 2,
+    boxShadow: '0 2px 5px rgba(0,0,0,0.2)'
   };
 
   return (
@@ -146,8 +150,9 @@ export default function EditProfileModal({
                 alt="Avatar" 
                 style={imgStyle}
             />
+            {/* Ícone da câmera ajustado */}
             <button style={cameraBtnStyle} onClick={triggerFileSelect}>
-                <FaCamera size={14} color="#333" />
+                <FaCamera size={15} />
             </button>
         </div>
 
@@ -171,13 +176,14 @@ export default function EditProfileModal({
             onChange={(e) => setEmail(e.target.value)}
         />
 
-        <div style={{ marginTop: '1rem' }}>
-            <button className="btn-danger" onClick={handleDelete}>
+        {/* Botões empilhados */}
+        <div style={{ marginTop: '1.5rem', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            <button className="modal-btn-base btn-danger" onClick={handleDelete}>
                 Deletar conta
             </button>
 
             <button 
-                className="btn-outline"
+                className="modal-btn-base btn-outline"
                 onClick={() => {
                     onClose(); 
                     onOpenChangePassword();
@@ -186,7 +192,7 @@ export default function EditProfileModal({
                 Alterar senha
             </button>
 
-            <button className="btn-primary" onClick={handleSave} disabled={loading}>
+            <button className="modal-btn-base btn-primary" onClick={handleSave} disabled={loading}>
                 {loading ? "Salvando..." : "Salvar"}
             </button>
         </div>
