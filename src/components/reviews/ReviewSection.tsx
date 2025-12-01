@@ -1,10 +1,10 @@
 "use client";
 
 import React, { useState } from "react";
-import { Star } from "lucide-react";
-import ReviewCardFull from "./ReviewCardFull";
+import ReviewCardFull, { Reply } from "./ReviewCardFull";
 import AddReviewModal from "./AddReviewModal";
 import { useAuth } from "@/hooks/useAuth";
+import { SendHorizontal } from "lucide-react";
 
 interface ReviewsSectionProps {
   slug: string;
@@ -13,124 +13,119 @@ interface ReviewsSectionProps {
 export default function ReviewsSection({ slug }: ReviewsSectionProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { isAuthenticated } = useAuth();
+  const [newCommentText, setNewCommentText] = useState("");
+
   const [reviews, setReviews] = useState([
     { 
       id: 1, 
       author: "Sofia Figueiredo", 
-      avatar: "https://placehold.co/100x100/png", 
+      avatar: "https://placehold.co/100x100/png?text=SF", 
       rating: 5, 
-      text: "Adorei o produto! Chegou rápido e funcionou muito bem.", 
-      date: "04/10/2025",
-      isAuthor: false
+      text: "Adorei o produto. Funcionou muito na minha pele. Estou muito contente e com toda certeza irei comprar mais produtos da marca. Que orgulhooooooo! Arrasaram", 
+      date: "1h", 
+      replies: [] as Reply[]
     },
     { 
       id: 2, 
-      author: "Maria Silva", 
-      avatar: "https://placehold.co/100x100/png", 
+      author: "Maria Santos", 
+      avatar: "https://placehold.co/100x100/png?text=MS", 
       rating: 5, 
-      text: "Excelente atendimento! A loja é muito organizada e atenciosa.", 
-      date: "05/10/2025",
-      isAuthor: false
-    },
-    { 
-      id: 3, 
-      author: "João Pedro", 
-      avatar: "https://placehold.co/100x100/png", 
-      rating: 4, 
-      text: "Produto muito bom! Recomendo para todos os meus amigos.", 
-      date: "06/10/2025",
-      isAuthor: false
+      text: "Amei muito também!", 
+      date: "1h",
+      replies: [
+        {
+          id: 101,
+          author: "Selena Gomez", 
+          avatar: "https://placehold.co/100x100/png?text=SG", 
+          text: "Muito obrigada pelo carinho! Nós da Rare Beauty ficamos felizes =)", 
+          date: "1h",
+          role: "owner"
+        }
+      ] as Reply[]
     },
   ]);
 
-  const handleAddReview = async (review: { rating: number; text: string }) => {
+  const featuredReview = reviews[0];
+  const otherReviews = reviews.slice(1);
+
+  const handleAddReview = async () => {
+    if (!newCommentText.trim()) return;
     const newReview = {
-      id: reviews.length + 1,
+      id: Date.now(),
       author: "Você",
-      avatar: "https://placehold.co/100x100/png",
-      rating: review.rating,
-      text: review.text,
-      date: new Date().toLocaleDateString("pt-BR"),
-      isAuthor: true
+      avatar: "https://placehold.co/100x100/png?text=VC",
+      rating: 5,
+      text: newCommentText,
+      date: "Agora",
+      replies: []
     };
-    setReviews([newReview, ...reviews]);
+    setReviews([...reviews, newReview]);
+    setNewCommentText("");
   };
 
-  const handleDeleteReview = (id: number | string) => {
-    setReviews(reviews.filter(r => r.id !== id));
+  const handleReply = (reviewId: number | string, text: string) => {
+    setReviews(prev => prev.map(r => r.id === reviewId ? {
+        ...r, replies: [...(r.replies || []), { id: Date.now(), author: "Você", avatar: "https://placehold.co/100x100", text, date: "Agora", role: "user" }]
+    } : r));
   };
-
-  const averageRating = (reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length).toFixed(2);
 
   return (
-    <section className="bg-black text-white py-16 px-4 md:px-8">
-      <div className="max-w-4xl mx-auto">
-
-        {/* Cabeçalho com score */}
-        <div className="text-center mb-16">
-          <h1 className="text-4xl font-bold mb-8">Avaliações da Loja</h1>
-
-          <div className="bg-zinc-900 rounded-2xl p-12 border border-zinc-800 inline-block">
-            <div className="text-6xl font-bold mb-4">{averageRating}</div>
-
-            <div className="flex justify-center gap-2 mb-4">
-              {[1, 2, 3, 4, 5].map(i => (
-                <Star 
-                  key={i} 
-                  size={32}
-                  className={i <= Math.round(Number(averageRating)) ? "fill-yellow-400 text-yellow-400" : "text-gray-600"}
+    <div className="flex flex-col w-full">
+      
+      {/*  PARTE: HERO (Fundo Preto) */}
+      <section className="bg-black text-white py-12 px-6">
+        <div className="max-w-3xl mx-auto">
+            {featuredReview && (
+                <ReviewCardFull 
+                    {...featuredReview} 
+                    isFeatured={true} 
+                    onReply={handleReply}
                 />
-              ))}
+            )}
+        </div>
+      </section>
+
+      {/*  PARTE: LISTA (Fundo Bege)*/}
+      <section className="bg-[#F3F0E9] flex-1 py-10 px-6 min-h-[50vh]">
+        <div className="max-w-3xl mx-auto">
+            
+            {/* Timeline Loop */}
+            {otherReviews.map((r, index) => (
+                <ReviewCardFull 
+                    key={r.id} 
+                    {...r}
+                    isFeatured={false}
+                    onReply={handleReply}
+                    isLast={index === otherReviews.length - 1} 
+                />
+            ))}
+
+            {/* Input Branco Flutuante */}
+            <div className="mt-12 bg-white rounded-full shadow-sm p-2 flex items-center px-6">
+                <input 
+                    type="text"
+                    placeholder="Adicionar comentário"
+                    className="flex-1 outline-none text-gray-700 bg-transparent py-2"
+                    value={newCommentText}
+                    onChange={(e) => setNewCommentText(e.target.value)}
+                    onKeyDown={(e) => e.key === 'Enter' && handleAddReview()}
+                />
+                <button 
+                    onClick={handleAddReview} 
+                    className="text-gray-400 hover:text-[#6c63ff]"
+                >
+                    <SendHorizontal size={20} />
+                </button>
             </div>
 
-            <p className="text-zinc-400">
-              Baseado em {reviews.length} {reviews.length === 1 ? "avaliação" : "avaliações"}
-            </p>
-          </div>
         </div>
+      </section>
 
-        {/* Botão adicionar review */}
-        {isAuthenticated && (
-          <div className="flex justify-center mb-12">
-            <button
-              className="bg-[#6c63ff] hover:bg-[#5a52d5] text-white font-bold py-3 px-8 rounded-full shadow-lg transition-transform hover:scale-105"
-              onClick={() => setIsModalOpen(true)}
-            >
-              + Adicionar Avaliação
-            </button>
-          </div>
-        )}
-
-        {!isAuthenticated && (
-          <div className="text-center mb-12 text-zinc-400">
-            <p>Faça login para adicionar sua avaliação</p>
-          </div>
-        )}
-
-        {/* Lista de avaliações */}
-        <div className="space-y-6">
-          {reviews.length > 0 ? (
-            reviews.map((r) => (
-              <ReviewCardFull 
-                key={r.id} 
-                {...r}
-                onDelete={() => handleDeleteReview(r.id)}
-              />
-            ))
-          ) : (
-            <div className="text-center py-12 text-zinc-400">
-              <p>Ainda não há avaliações. Seja o primeiro a avaliar!</p>
-            </div>
-          )}
-        </div>
-
-        <AddReviewModal
-          isOpen={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
-          onSubmit={handleAddReview}
-        />
-
-      </div>
-    </section>
+      <AddReviewModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onSubmit={async (val) => { setNewCommentText(val.text); handleAddReview(); }}
+      />
+    </div>
   );
 }
