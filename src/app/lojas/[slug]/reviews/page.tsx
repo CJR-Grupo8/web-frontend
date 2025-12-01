@@ -18,7 +18,8 @@ function StarRow({ stars, count, percent }: { stars: number, count: number, perc
     );
 }
 
-export default function AllReviewsPage({ params }: { params: { slug: string } }) {
+export default async function AllReviewsPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
     //mock
     const allReviews = Array.from({ length: 12 }).map((_, i) => ({
         id: i,
@@ -35,12 +36,12 @@ export default function AllReviewsPage({ params }: { params: { slug: string } })
 
                 {/*header com botao de voltar */}
                 <div className="flex items-center gap-4 mb-8">
-                    <Link href={`/lojas/${params.slug}`} className="p-2 bg-gray-800 rounded-full hover:bg-gray-700 transition-colors">
+                    <Link href={`/lojas/${(await params).slug}`} className="p-2 bg-gray-800 rounded-full hover:bg-gray-700 transition-colors">
                         <ArrowLeft size={24} />
                     </Link>
                     <div>
                         <h1 className="text-2x1 md:text-3x1 font-bold">Todas as avaliações</h1>
-                        <p className="text-gray-400 text-sm">Loja: {params.slug}</p>
+                        <p className="text-gray-400 text-sm">Loja: {(await params).slug}</p>
                     </div>
                 </div>
 
