@@ -51,8 +51,7 @@ export default function ReviewCardFull({
     }
   };
 
-  // --- MODO HERO (PRETO) ---
-  // Exatamente como o topo da imagem Stock.IO
+  // MODO HERO (PRETO) 
   if (isFeatured) {
     return (
       <div className="flex gap-4 items-start w-full">
@@ -64,7 +63,7 @@ export default function ReviewCardFull({
                     <h3 className="text-xl font-bold text-white">{author}</h3>
                     <span className="text-sm text-zinc-500">{date}</span>
                 </div>
-                {/* Estrelas alinhadas a direita ou junto ao nome, conforme preferir. No template é direita. */}
+                {/* Estrelas alinhadas a direita ou junto ao nome */}
                 <div className="flex gap-1">
                     {Array.from({ length: 5 }).map((_, i) => (
                         <Star key={i} size={18} fill="#FACC15" className={i < rating ? "text-yellow-400" : "text-zinc-700"} />
@@ -79,7 +78,7 @@ export default function ReviewCardFull({
     );
   }
 
-  // --- MODO LISTA (BEGE/CLARO) ---
+  //MODO LISTA 
   return (
     <div className="relative w-full mb-6">
       <div className="flex gap-5 relative">
