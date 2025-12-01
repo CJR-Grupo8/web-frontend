@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import NavBar from "@/components/NavBar";
 import SearchBar from "@/components/SearchBar";
@@ -19,45 +19,76 @@ function normalize(str: string) {
 }
 
 type ProductCatalogProps = {
-  baseProducts: ProductSummary[];
+  baseProducts?: ProductSummary[];
+  initialProducts?: ProductSummary[];
+  
   placeholder?: string;
   title?: string;
   categoryNavItems?: CategoryNavItem[];
   activeCategorySlug?: string;
+  
+  itemsPerPage?: number; 
+  hideHeader?: boolean;  
 };
 
 export default function ProductCatalog({
   baseProducts,
+  initialProducts,
   placeholder = "Buscar por nome, categoria...",
   title,
   categoryNavItems,
   activeCategorySlug,
+  itemsPerPage = 15,
+  hideHeader = false, 
 }: ProductCatalogProps) {
+  
+
+  const sourceData = initialProducts || baseProducts || [];
+
+  const isCompactMode = hideHeader || (!title && !categoryNavItems);
+
   const [currentPage, setCurrentPage] = useState(1);
-  const [filteredProducts, setFilteredProducts] = useState(baseProducts);
+  const [filteredProducts, setFilteredProducts] = useState(sourceData);
   const [loading, setLoading] = useState(false);
 
-  const productsPerPage = 15;
-  const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
+  useEffect(() => {
+    setFilteredProducts(sourceData);
+    setCurrentPage(1);
+  }, [initialProducts, baseProducts]); 
 
-  const startIndex = (currentPage - 1) * productsPerPage;
+  const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  
   const visibleProducts = filteredProducts.slice(
     startIndex,
-    startIndex + productsPerPage
+    startIndex + itemsPerPage
   );
+
+  // Função de rolagem suave para o topo do catálogo
+  function scrollToTop() {
+    const catalogTop = document.getElementById("catalog-anchor");
+    if (catalogTop) {
+      catalogTop.scrollIntoView({ behavior: "smooth" });
+    }
+  }
+
+  function handlePageChange(page: number) {
+    setCurrentPage(page);
+    scrollToTop();
+  }
 
   function handleSearch(term: string) {
     const trimmed = term.trim();
 
     if (!trimmed) {
-      setFilteredProducts(baseProducts);
+      setFilteredProducts(sourceData);
       setCurrentPage(1);
       return;
     }
 
     const normalizedTerm = normalize(trimmed);
 
-    const result = baseProducts.filter((p: any) => {
+    const result = sourceData.filter((p: any) => {
       const name = normalize(p.name);
       const categoryStr = normalize(p.category ?? "");
       const seal = normalize(p.seal ?? "");
@@ -74,44 +105,48 @@ export default function ProductCatalog({
   }
 
   return (
-    <div className="home-root">
-      <NavBar />
 
-      <main>
-        <div className="catalog-header">
-          <div className="catalog-header-left">
-            {/* Botão Home minimalista */}
-            <Link href="/" className="catalog-home-btn">
-              <FiHome className="catalog-home-icon" />
-              <span>Home</span>
-            </Link>
+    <div className={isCompactMode ? "catalog-root-compact" : "home-root"} id="catalog-anchor">
+      
+      {!isCompactMode && (
+        <>
+          <NavBar />
+          <div className="catalog-header">
+            <div className="catalog-header-left">
+              <Link href="/" className="catalog-home-btn">
+                <FiHome className="catalog-home-icon" />
+                <span>Home</span>
+              </Link>
 
-            {title && <h1 className="catalog-title">{title}</h1>}
+              {title && <h1 className="catalog-title">{title}</h1>}
 
-            {categoryNavItems && categoryNavItems.length > 0 && (
-              <nav className="catalog-cats">
-                {categoryNavItems.map((item) => (
-                  <Link
-                    key={item.slug}
-                    href={item.href}
-                    className={
-                      "catalog-cat-chip" +
-                      (item.slug === activeCategorySlug ? " active" : "")
-                    }
-                  >
-                    {item.icon && (
-                      <span className="catalog-cat-icon">{item.icon}</span>
-                    )}
-                    <span>{item.label}</span>
-                  </Link>
-                ))}
-              </nav>
-            )}
+              {categoryNavItems && categoryNavItems.length > 0 && (
+                <nav className="catalog-cats">
+                  {categoryNavItems.map((item) => (
+                    <Link
+                      key={item.slug}
+                      href={item.href}
+                      className={
+                        "catalog-cat-chip" +
+                        (item.slug === activeCategorySlug ? " active" : "")
+                      }
+                    >
+                      {item.icon && (
+                        <span className="catalog-cat-icon">{item.icon}</span>
+                      )}
+                      <span>{item.label}</span>
+                    </Link>
+                  ))}
+                </nav>
+              )}
+            </div>
+
+            <SearchBar placeholder={placeholder} onSearch={handleSearch} />
           </div>
+        </>
+      )}
 
-          <SearchBar placeholder={placeholder} onSearch={handleSearch} />
-        </div>
-
+      <main style={isCompactMode ? { padding: 0 } : {}}>
         {loading && <p style={{ textAlign: "center" }}>Carregando...</p>}
 
         <section className="catalog">
@@ -120,17 +155,19 @@ export default function ProductCatalog({
               <ProductCard key={product.id} {...product} />
             ))
           ) : (
-            <p style={{ textAlign: "center", marginTop: "2rem" }}>
+            <p style={{ textAlign: "center", marginTop: "2rem", width: "100%" }}>
               Nenhum produto encontrado.
             </p>
           )}
         </section>
 
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={setCurrentPage}
-        />
+        {totalPages > 1 && (
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={handlePageChange}
+          />
+        )}
       </main>
     </div>
   );
