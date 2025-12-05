@@ -4,8 +4,13 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
 import NavBar from "@/components/NavBar";
+import EditProfileModal from "@/components/EditProfileModal";
+import ChangePasswordModal from "@/components/ChangePasswordModal";
+import AddStoreModal from "@/components/AddStoreModal";
+import EditStoreModal from "@/components/EditStoreModal";
 import Link from "next/link";
 import { reviewService, produtoService, lojaService } from "@/services/api";
+import useEmblaCarousel from "embla-carousel-react";
 import "@/styles/app-css/perfil.css";
 
 type Produto = {
@@ -25,6 +30,7 @@ type Loja = {
   id: number;
   nome: string;
   descricao?: string;
+  categoria?: string;
   donoId: number;
   createdAt: string;
 };
@@ -48,13 +54,32 @@ type Review = {
 };
 
 export default function PerfilPage() {
+  // URL do backend para carregar imagens salvas (mesma usada no modal)
+  const API_URL = typeof window !== 'undefined' ? (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001') : 'http://localhost:3001';
   const router = useRouter();
-  const { user, loading, isAuthenticated } = useAuth();
-  const [isEditing, setIsEditing] = useState(false);
+  const { user, loading, isAuthenticated, updateUser, logout } = useAuth();
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [showPasswordModal, setShowPasswordModal] = useState(false);
+  const [showAddStoreModal, setShowAddStoreModal] = useState(false);
+  const [showEditStoreModal, setShowEditStoreModal] = useState(false);
+  const [selectedStore, setSelectedStore] = useState<Loja | null>(null);
   const [userProducts, setUserProducts] = useState<Produto[]>([]);
   const [userStores, setUserStores] = useState<Loja[]>([]);
   const [reviews, setReviews] = useState<Review[]>([]);
   const [loadingData, setLoadingData] = useState(true);
+
+  // Carrosséis
+  const [emblaRefProducts] = useEmblaCarousel({
+    loop: false,
+    align: "start",
+    dragFree: true,
+  });
+
+  const [emblaRefStores] = useEmblaCarousel({
+    loop: false,
+    align: "start",
+    dragFree: true,
+  });
 
   useEffect(() => {
     if (!loading && !isAuthenticated) {
@@ -99,6 +124,39 @@ export default function PerfilPage() {
     fetchUserData();
   }, [user]);
 
+  // Função para recarregar dados do usuário
+  const handleSuccess = () => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      updateUser(JSON.parse(storedUser));
+    }
+  };
+
+  // Função para recarregar lojas
+  const handleStoreSuccess = async () => {
+    if (!user) return;
+    try {
+      const storesResponse = await lojaService.getByDono(user.id);
+      setUserStores(storesResponse.data || []);
+      
+      // Recarregar produtos também
+      let allProducts: Produto[] = [];
+      for (const loja of storesResponse.data || []) {
+        const productsResponse = await produtoService.getByLoja(loja.id);
+        const produtos = productsResponse.data || [];
+        allProducts = [...allProducts, ...produtos];
+      }
+      setUserProducts(allProducts);
+    } catch (error) {
+      console.error("Erro ao recarregar lojas:", error);
+    }
+  };
+
+  const handleEditStore = (store: Loja) => {
+    setSelectedStore(store);
+    setShowEditStoreModal(true);
+  };
+
   if (loading || loadingData) {
     return (
       <div className="loading-container">
@@ -121,10 +179,21 @@ export default function PerfilPage() {
             ←
           </button>
           
-          <div className="perfil-avatar perfil-avatar-empty">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-            </svg>
+          <div className={`perfil-avatar ${user.avatar ? '' : 'perfil-avatar-empty'}`}>
+            {user.avatar ? (
+              <img
+                src={`${API_URL}/${user.avatar}`}
+                alt="Avatar"
+                onError={(e) => {
+                  const target = e.currentTarget as HTMLImageElement;
+                  target.src = 'https://via.placeholder.com/150';
+                }}
+              />
+            ) : (
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+              </svg>
+            )}
           </div>
 
           <div className="perfil-info">
@@ -136,7 +205,7 @@ export default function PerfilPage() {
           {isAuthenticated && (
             <button
               className="edit-perfil-btn"
-              onClick={() => setIsEditing(!isEditing)}
+              onClick={() => setShowEditModal(true)}
             >
               Editar Perfil
             </button>
@@ -155,35 +224,40 @@ export default function PerfilPage() {
             </Link>
           </div>
 
-          <div className="products-grid">
+          <div className="carousel-wrapper">
             {userProducts.length > 0 ? (
-              userProducts.map((product) => (
-                <Link
-                  key={product.id}
-                  href={`/produtos/${product.id}`}
-                  className="product-card-perfil"
-                >
-                  <div className="product-image-wrapper">
-                    <img
-                      src={`https://placehold.co/200x200/ccc/333?text=${encodeURIComponent(product.nome)}`}
-                      alt={product.nome}
-                      onError={(e) => {
-                        e.currentTarget.src = "https://placehold.co/200x200/ccc/333?text=Produto";
-                      }}
-                    />
-                    <span className={`product-badge ${product.estoque && product.estoque > 0 ? "disponivel" : "indisponivel"}`}>
-                      {product.estoque && product.estoque > 0 ? "DISPONÍVEL" : "ESGOTADO"}
-                    </span>
-                  </div>
-                  <div className="product-info-perfil">
-                    <h3>{product.nome}</h3>
-                    <p className="product-price">R$ {product.preco.toFixed(2)}</p>
-                    {product.loja && (
-                      <p className="product-store">{product.loja.nome}</p>
-                    )}
-                  </div>
-                </Link>
-              ))
+              <div className="embla" ref={emblaRefProducts}>
+                <div className="embla__container">
+                  {userProducts.map((product) => (
+                    <div key={product.id} className="embla__slide">
+                      <Link
+                        href={`/produtos/${product.id}`}
+                        className="product-card-perfil"
+                      >
+                        <div className="product-image-wrapper">
+                          <img
+                            src={`https://placehold.co/200x200/ccc/333?text=${encodeURIComponent(product.nome)}`}
+                            alt={product.nome}
+                            onError={(e) => {
+                              e.currentTarget.src = "https://placehold.co/200x200/ccc/333?text=Produto";
+                            }}
+                          />
+                          <span className={`product-badge ${product.estoque && product.estoque > 0 ? "disponivel" : "indisponivel"}`}>
+                            {product.estoque && product.estoque > 0 ? "DISPONÍVEL" : "ESGOTADO"}
+                          </span>
+                        </div>
+                        <div className="product-info-perfil">
+                          <h3>{product.nome}</h3>
+                          <p className="product-price">R$ {product.preco.toFixed(2)}</p>
+                          {product.loja && (
+                            <p className="product-store">{product.loja.nome}</p>
+                          )}
+                        </div>
+                      </Link>
+                    </div>
+                  ))}
+                </div>
+              </div>
             ) : (
               <div className="empty-state">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="64" height="64">
@@ -203,36 +277,53 @@ export default function PerfilPage() {
           <div className="section-header">
             <h2 className="section-title">Lojas</h2>
             {isAuthenticated && (
-              <button className="add-store-btn" title="Adicionar loja">
+              <button 
+                className="add-store-btn" 
+                title="Adicionar loja"
+                onClick={() => setShowAddStoreModal(true)}
+              >
                 +
               </button>
             )}
           </div>
 
-          <div className="stores-list">
+          <div className="carousel-wrapper">
             {userStores.length > 0 ? (
-              userStores.map((store) => (
-                <Link key={store.id} href={`/lojas/${store.id}`} className="store-item">
-                  <div className="store-logo">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="48" height="48">
-                      <path d="M20 4H4v2h16V4zm1 10v-2l-1-5H4l-1 5v2h1v6h10v-6h4v6h2v-6h1zm-9 4H6v-4h6v4z"/>
-                    </svg>
-                  </div>
-                  <div className="store-details">
-                    <h3 className="store-name">{store.nome}</h3>
-                    {store.descricao && (
-                      <p className="store-description">{store.descricao}</p>
-                    )}
-                  </div>
-                </Link>
-              ))
+              <div className="embla" ref={emblaRefStores}>
+                <div className="embla__container">
+                  {userStores.map((store) => (
+                    <div key={store.id} className="embla__slide">
+                      <div 
+                        className="store-item-carousel"
+                        onClick={() => handleEditStore(store)}
+                        style={{ cursor: 'pointer' }}
+                      >
+                        <div className="store-logo">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="48" height="48">
+                            <path d="M20 4H4v2h16V4zm1 10v-2l-1-5H4l-1 5v2h1v6h10v-6h4v6h2v-6h1zm-9 4H6v-4h6v4z"/>
+                          </svg>
+                        </div>
+                        <div className="store-details">
+                          <h3 className="store-name">{store.nome}</h3>
+                          {store.descricao && (
+                            <p className="store-description">{store.descricao}</p>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
             ) : (
               <div className="empty-state">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="64" height="64">
                   <path d="M20 4H4v2h16V4zm1 10v-2l-1-5H4l-1 5v2h1v6h10v-6h4v6h2v-6h1zm-9 4H6v-4h6v4z"/>
                 </svg>
                 <p>Crie sua primeira loja e comece a vender!</p>
-                <button className="empty-state-btn">
+                <button 
+                  className="empty-state-btn"
+                  onClick={() => setShowAddStoreModal(true)}
+                >
                   Criar loja
                 </button>
               </div>
@@ -296,6 +387,54 @@ export default function PerfilPage() {
           </div>
         </section>
       </div>
+
+      {/* Modal de Edição de Perfil */}
+      <EditProfileModal
+        isOpen={showEditModal}
+        onClose={() => setShowEditModal(false)}
+        user={user}
+        onSuccess={handleSuccess}
+        onOpenChangePassword={() => {
+          setShowEditModal(false);
+          setShowPasswordModal(true);
+        }}
+      />
+
+      {/* Modal de Alteração de Senha */}
+      <ChangePasswordModal
+        isOpen={showPasswordModal}
+        onClose={() => setShowPasswordModal(false)}
+        onBack={() => {
+          setShowPasswordModal(false);
+          setShowEditModal(true);
+        }}
+      />
+
+      {/* Modal de Adicionar Loja */}
+      {user && (
+        <AddStoreModal
+          isOpen={showAddStoreModal}
+          onClose={() => setShowAddStoreModal(false)}
+          userId={user.id}
+          onSuccess={handleStoreSuccess}
+        />
+      )}
+
+      {/* Modal de Editar Loja */}
+      {selectedStore && (
+        <EditStoreModal
+          isOpen={showEditStoreModal}
+          onClose={() => {
+            setShowEditStoreModal(false);
+            setSelectedStore(null);
+          }}
+          storeId={selectedStore.id}
+          storeName={selectedStore.nome}
+          storeDescription={selectedStore.descricao}
+          storeCategoria={selectedStore.categoria}
+          onSuccess={handleStoreSuccess}
+        />
+      )}
     </div>
   );
 }

@@ -3,8 +3,12 @@
 import React, { useState, useEffect, useRef } from "react";
 import { FaCamera } from "react-icons/fa";
 import BaseModal from "./BaseModal"; 
+import ConfirmModal from "./ConfirmModal";
 import { userService } from "../services/api"; 
 import { User } from "../types/auth";
+
+// URL do Backend para carregar as imagens salvas
+const API_URL = "http://localhost:3001";
 
 interface EditProfileModalProps {
   isOpen: boolean;
@@ -31,14 +35,23 @@ export default function EditProfileModal({
   const fileInputRef = useRef<HTMLInputElement>(null); 
 
   const [loading, setLoading] = useState(false);
+  const [showConfirmDelete, setShowConfirmDelete] = useState(false);
 
-  // Preenche o formulário ao abrir
+  // Preenche o formulário ao abrir e carrega a foto atual
   useEffect(() => {
     if (user) {
       setFullName(user.fullName || "");
       setUsername(user.username || "");
       setEmail(user.email || "");
-      // Se tiver avatar vindo do banco, setar o preview aqui
+      
+      // Lógica de Preview:
+      if (user.avatar) {
+        // Se já tem avatar salvo, monta a URL completa do backend
+        // O backend salva como "uploads/avatars/foto.jpg", então adicionamos o domínio antes
+        setPreview(`${API_URL}/${user.avatar}`);
+      } else {
+        setPreview("https://via.placeholder.com/150");
+      }
     }
   }, [user, isOpen]);
 
@@ -46,7 +59,8 @@ export default function EditProfileModal({
     const file = e.target.files?.[0];
     if (file) {
       setSelectedFile(file);
-      setPreview(URL.createObjectURL(file)); // Cria preview instantâneo
+      // Cria uma URL temporária para mostrar a foto nova imediatamente
+      setPreview(URL.createObjectURL(file)); 
     }
   };
 
@@ -57,47 +71,59 @@ export default function EditProfileModal({
   const handleSave = async () => {
     if (!user) return;
     setLoading(true);
+    
     try {
-      await userService.updateProfile(user.id, { fullName, username, email });
+      // --- CORREÇÃO PRINCIPAL: Usar FormData ---
+      const formData = new FormData();
+      formData.append("fullName", fullName);
+      formData.append("username", username);
+      formData.append("email", email);
       
-      const userAtualizado = {
-        ...user,
-        fullName,
-        username,
-        email
-      };
+      // Se o usuário escolheu uma foto nova, anexa ela
+      if (selectedFile) {
+        // 'file' deve ser o mesmo nome que usamos no Backend (FileInterceptor)
+        formData.append("file", selectedFile); 
+      }
+
+      // O Axios detecta FormData e ajusta os headers automaticamente
+      const response = await userService.updateProfile(user.id, formData);
       
+      // O backend retorna o usuário atualizado (com o novo caminho do avatar!)
+      const userAtualizado = response.data;
+      
+      // Atualizamos o localStorage para a foto nova aparecer no resto do site
       localStorage.setItem("user", JSON.stringify(userAtualizado));
 
-      alert("Perfil atualizado!");
+      alert("Perfil atualizado com sucesso!");
       
       if (onSuccess) onSuccess();
       onClose();
 
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
-      alert("Erro ao atualizar.");
+      alert(`Erro ao atualizar perfil: ${error.response?.data?.message || error.message}`);
     } finally {
       setLoading(false);
     }
   };
 
-  const handleDelete = async () => {
+  const handleDeleteClick = () => {
+    setShowConfirmDelete(true);
+  };
+
+  const handleDeleteConfirm = async () => {
     if (!user) return;
-    if (confirm("Tem certeza que deseja deletar sua conta?")) {
-      try {
-        await userService.deleteAccount(user.id);
-        localStorage.clear();
-        window.location.href = "/";
-      } catch (error) {
-        console.error(error);
-        alert("Erro ao deletar conta.");
-      }
+    try {
+      await userService.deleteAccount(user.id);
+      localStorage.clear();
+      window.location.href = "/";
+    } catch (error) {
+      console.error(error);
+      alert("Erro ao deletar conta.");
     }
   };
 
-  // --- Estilos Específicos (Pixel Perfect conforme imagem) ---
-  
+  // --- Estilos Específicos ---
   const avatarStyle: React.CSSProperties = {
     position: 'relative',
     width: '110px',  
@@ -178,7 +204,7 @@ export default function EditProfileModal({
 
         {/* Botões empilhados */}
         <div style={{ marginTop: '1.5rem', display: 'flex', flexDirection: 'column', gap: '8px' }}>
-            <button className="modal-btn-base btn-danger" onClick={handleDelete}>
+            <button className="modal-btn-base btn-danger" onClick={handleDeleteClick}>
                 Deletar conta
             </button>
 
@@ -196,6 +222,18 @@ export default function EditProfileModal({
                 {loading ? "Salvando..." : "Salvar"}
             </button>
         </div>
+
+        {/* Modal de Confirmação de Delete */}
+        <ConfirmModal
+          isOpen={showConfirmDelete}
+          onClose={() => setShowConfirmDelete(false)}
+          onConfirm={handleDeleteConfirm}
+          title="Deletar Conta"
+          message="Tem certeza que deseja deletar sua conta? Esta ação é permanente e todos os seus dados, lojas e produtos serão removidos."
+          confirmText="Deletar Conta"
+          cancelText="Cancelar"
+          isDanger={true}
+        />
     </BaseModal>
   );
 }
