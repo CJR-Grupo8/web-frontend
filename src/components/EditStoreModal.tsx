@@ -169,6 +169,16 @@ export default function EditStoreModal({
               </option>
             ))}
           </select>
+
+          {/* Descrição (opcional) */}
+          <textarea
+            className="modal-textarea"
+            placeholder="Descrição da loja (opcional)"
+            value={descricao}
+            onChange={(e) => setDescricao(e.target.value)}
+            disabled={loading}
+            rows={3}
+          />
         </div>
 
         <div className="modal-store-right">
