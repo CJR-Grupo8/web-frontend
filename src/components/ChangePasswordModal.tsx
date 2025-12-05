@@ -128,6 +128,7 @@ export default function ChangePasswordModal({
         type="password"
         className="modal-input"
         placeholder="Senha Antiga"
+        aria-label="Senha Antiga"
         value={oldPassword}
         onChange={(e) => setOldPassword(e.target.value)}
       />
@@ -136,6 +137,7 @@ export default function ChangePasswordModal({
         type="password"
         className="modal-input"
         placeholder="Nova Senha"
+        aria-label="Nova Senha"
         value={newPassword}
         onChange={(e) => setNewPassword(e.target.value)}
       />
@@ -144,6 +146,7 @@ export default function ChangePasswordModal({
         type="password"
         className="modal-input"
         placeholder="Confirmar Senha"
+        aria-label="Confirmar Senha"
         value={confirmPassword}
         onChange={(e) => setConfirmPassword(e.target.value)}
       />
