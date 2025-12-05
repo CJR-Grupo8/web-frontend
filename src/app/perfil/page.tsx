@@ -4,27 +4,55 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
 import NavBar from "@/components/NavBar";
-import { ProductSummary } from "@/data/product";
-import { Store } from "@/data/stores";
 import Link from "next/link";
-import apiClient from "@/services/api";
+import { reviewService, produtoService, lojaService } from "@/services/api";
 import "@/styles/app-css/perfil.css";
 
+type Produto = {
+  id: number;
+  nome: string;
+  preco: number;
+  descricao?: string;
+  estoque?: number;
+  lojaId: number;
+  loja?: {
+    id: number;
+    nome: string;
+  };
+};
+
+type Loja = {
+  id: number;
+  nome: string;
+  descricao?: string;
+  donoId: number;
+  createdAt: string;
+};
+
 type Review = {
-  id: string;
-  userName: string;
-  userImage: string;
+  id: number;
   rating: number;
-  comment: string;
-  date: string;
+  comentario: string;
+  createdAt: string;
+  loja?: {
+    id: number;
+    nome: string;
+    descricao: string;
+  };
+  produto?: {
+    id: number;
+    nome: string;
+    preco: number;
+    descricao: string;
+  };
 };
 
 export default function PerfilPage() {
   const router = useRouter();
   const { user, loading, isAuthenticated } = useAuth();
   const [isEditing, setIsEditing] = useState(false);
-  const [userProducts, setUserProducts] = useState<ProductSummary[]>([]);
-  const [userStores, setUserStores] = useState<Store[]>([]);
+  const [userProducts, setUserProducts] = useState<Produto[]>([]);
+  const [userStores, setUserStores] = useState<Loja[]>([]);
   const [reviews, setReviews] = useState<Review[]>([]);
   const [loadingData, setLoadingData] = useState(true);
 
@@ -40,25 +68,23 @@ export default function PerfilPage() {
 
       setLoadingData(true);
       try {
-        // TODO: Implementar endpoints no backend
-        // Quando os endpoints estiverem disponíveis, descomentar:
-        
-        // Buscar produtos do usuário
-        // const productsResponse = await apiClient.get(`/products/user/${user.id}`);
-        // setUserProducts(productsResponse.data || []);
-
         // Buscar lojas do usuário
-        // const storesResponse = await apiClient.get(`/stores/user/${user.id}`);
-        // setUserStores(storesResponse.data || []);
+        const storesResponse = await lojaService.getByDono(user.id);
+        const lojas = storesResponse.data || [];
+        setUserStores(lojas);
 
-        // Buscar avaliações do usuário
-        // const reviewsResponse = await apiClient.get(`/reviews/user/${user.id}`);
-        // setReviews(reviewsResponse.data || []);
+        // Buscar produtos de todas as lojas do usuário
+        let allProducts: Produto[] = [];
+        for (const loja of lojas) {
+          const productsResponse = await produtoService.getByLoja(loja.id);
+          const produtos = productsResponse.data || [];
+          allProducts = [...allProducts, ...produtos];
+        }
+        setUserProducts(allProducts);
 
-        // Por enquanto, deixa vazio até os endpoints serem criados
-        setUserProducts([]);
-        setUserStores([]);
-        setReviews([]);
+        // Buscar avaliações feitas pelo usuário
+        const reviewsResponse = await reviewService.getByAuthor(user.id);
+        setReviews(reviewsResponse.data || []);
       } catch (error) {
         console.error("Erro ao buscar dados do usuário:", error);
         // Em caso de erro, mantém arrays vazios
@@ -139,19 +165,22 @@ export default function PerfilPage() {
                 >
                   <div className="product-image-wrapper">
                     <img
-                      src={product.image}
-                      alt={product.name}
+                      src={`https://placehold.co/200x200/ccc/333?text=${encodeURIComponent(product.nome)}`}
+                      alt={product.nome}
                       onError={(e) => {
                         e.currentTarget.src = "https://placehold.co/200x200/ccc/333?text=Produto";
                       }}
                     />
-                    <span className={`product-badge ${product.availability === "DISPONÍVEL" ? "disponivel" : "indisponivel"}`}>
-                      {product.availability}
+                    <span className={`product-badge ${product.estoque && product.estoque > 0 ? "disponivel" : "indisponivel"}`}>
+                      {product.estoque && product.estoque > 0 ? "DISPONÍVEL" : "ESGOTADO"}
                     </span>
                   </div>
                   <div className="product-info-perfil">
-                    <h3>{product.name}</h3>
-                    <p className="product-price">{product.price}</p>
+                    <h3>{product.nome}</h3>
+                    <p className="product-price">R$ {product.preco.toFixed(2)}</p>
+                    {product.loja && (
+                      <p className="product-store">{product.loja.nome}</p>
+                    )}
                   </div>
                 </Link>
               ))
@@ -183,17 +212,19 @@ export default function PerfilPage() {
           <div className="stores-list">
             {userStores.length > 0 ? (
               userStores.map((store) => (
-                <div key={store.id} className="store-item">
+                <Link key={store.id} href={`/lojas/${store.id}`} className="store-item">
                   <div className="store-logo">
-                    <img src={store.logo} alt={store.name} />
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="48" height="48">
+                      <path d="M20 4H4v2h16V4zm1 10v-2l-1-5H4l-1 5v2h1v6h10v-6h4v6h2v-6h1zm-9 4H6v-4h6v4z"/>
+                    </svg>
                   </div>
                   <div className="store-details">
-                    <h3 className="store-name">
-                      {store.name}
-                      <span className="store-category">{store.categoryLabel}</span>
-                    </h3>
+                    <h3 className="store-name">{store.nome}</h3>
+                    {store.descricao && (
+                      <p className="store-description">{store.descricao}</p>
+                    )}
                   </div>
-                </div>
+                </Link>
               ))
             ) : (
               <div className="empty-state">
@@ -212,7 +243,7 @@ export default function PerfilPage() {
         {/* Seção de Avaliações */}
         <section className="perfil-section">
           <div className="section-header">
-            <h2 className="section-title">Avaliações</h2>
+            <h2 className="section-title">Minhas Avaliações</h2>
             <Link href="#" className="ver-mais-link">
               ver mais
             </Link>
@@ -224,15 +255,9 @@ export default function PerfilPage() {
                 <div key={review.id} className="review-card">
                   <div className="review-header">
                     <div className="review-user">
-                      <img
-                        className="review-avatar"
-                        src={review.userImage}
-                        alt={review.userName}
-                        onError={(e) => {
-                          e.currentTarget.src = "https://placehold.co/60x60/ccc/333?text=" + review.userName.charAt(0);
-                        }}
-                      />
-                      <h4 className="review-user-name">{review.userName}</h4>
+                      <h4 className="review-user-name">
+                        Avaliação para: {review.loja ? review.loja.nome : review.produto?.nome}
+                      </h4>
                     </div>
                     <div className="review-rating">
                       {Array.from({ length: 5 }).map((_, i) => (
@@ -242,10 +267,22 @@ export default function PerfilPage() {
                       ))}
                     </div>
                   </div>
-                  <p className="review-comment">{review.comment}</p>
-                  <Link href="#" className="review-more">
-                    ver mais
-                  </Link>
+                  <p className="review-comment">{review.comentario}</p>
+                  <div className="review-footer">
+                    <small className="review-date">
+                      {new Date(review.createdAt).toLocaleDateString('pt-BR')}
+                    </small>
+                    {review.loja && (
+                      <Link href={`/lojas/${review.loja.id}`} className="review-more">
+                        Ver loja
+                      </Link>
+                    )}
+                    {review.produto && (
+                      <Link href={`/produtos/${review.produto.id}`} className="review-more">
+                        Ver produto
+                      </Link>
+                    )}
+                  </div>
                 </div>
               ))
             ) : (
@@ -253,7 +290,7 @@ export default function PerfilPage() {
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="64" height="64">
                   <path d="M22 9.24l-7.19-.62L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27 18.18 21l-1.63-7.03L22 9.24zM12 15.4l-3.76 2.27 1-4.28-3.32-2.88 4.38-.38L12 6.1l1.71 4.04 4.38.38-3.32 2.88 1 4.28L12 15.4z"/>
                 </svg>
-                <p>Você ainda não recebeu avaliações</p>
+                <p>Você ainda não fez nenhuma avaliação</p>
               </div>
             )}
           </div>
