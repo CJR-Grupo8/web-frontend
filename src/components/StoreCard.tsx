@@ -3,7 +3,7 @@ import type { Store } from '@/data/stores';
 
 type StoreCardProps = {
   store: Store;
-  variant?: 'carousel' | 'grid';
+  variant?: 'carousel' | 'grid' | "card";
 };
 
 export default function StoreCard({ store, variant = 'carousel' }: StoreCardProps) {

@@ -76,13 +76,25 @@
   justify-content: center;
   cursor: pointer;
   transition: 0.15s ease-out;
+  /* 👇 isso tira o sublinhado do <a> */
+  text-decoration: none;
 }
 
+/* se algum navegador insistir, reforça aqui também */
+.home-cat__card:hover,
+.home-cat__card:visited,
+.home-cat__card:focus {
+  text-decoration: none;
+}
+
+/* HOVER (estado normal) */
 .home-cat__card:hover {
-  border-color: rgba(107, 62, 247, 0.25);
+  border-color: rgba(107, 62, 247, 0.35);
+  background: rgba(107, 62, 247, 0.08);
   transform: translateY(-2px);
 }
 
+/* Texto e ícone padrão */
 .home-cat__icon {
   font-size: 1.6rem;
   color: #6b3ef7;
@@ -96,6 +108,26 @@
   font-weight: 600;
   color: #272727;
   text-align: center;
+}
+
+/* 🔵 CARD ATIVO (categoria da página) */
+.home-cat__card.active {
+  background: #6b3ef7;
+  border-color: #6b3ef7;
+  box-shadow: 0 12px 26px rgba(107, 62, 247, 0.45);
+}
+
+/* texto/ícone brancos quando ativo */
+.home-cat__card.active .home-cat__icon,
+.home-cat__card.active .home-cat__name {
+  color: #ffffff;
+}
+
+/* HOVER do card já ativo → azul mais forte */
+.home-cat__card.active:hover {
+  background: #5a2fe3;
+  border-color: #5a2fe3;
+  transform: translateY(-3px);
 }
 
 /* ======================
