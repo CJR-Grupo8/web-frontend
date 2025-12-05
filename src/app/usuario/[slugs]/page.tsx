@@ -53,7 +53,7 @@ const API_URL = "http://localhost:3001";
 export default function UsuarioPublicoPage() {
   const params = useParams();
   const router = useRouter();
-  const username = params?.id as string | undefined;
+  const username = params?.slugs as string | undefined;
 
   const [user, setUser] = useState<User | null>(null);
   const [lojas, setLojas] = useState<Loja[]>([]);
