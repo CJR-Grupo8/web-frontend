@@ -1,0 +1,28 @@
+.store-grid {
+  width: 90%;
+  max-width: 1280px;
+  margin: 35px auto;
+  display: grid;
+  gap: 40px;
+  justify-content: center;
+
+  grid-template-columns: repeat(6, 1fr);
+}
+
+@media (max-width: 1200px) {
+  .store-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .store-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 550px) {
+  .store-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

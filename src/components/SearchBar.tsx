@@ -1,24 +1,25 @@
 "use client";
 
-import { useState, KeyboardEvent } from "react";
 import { FiSearch } from "react-icons/fi";
 import "@/styles/components-css/search-bar.css";
 
 type SearchBarProps = {
   placeholder?: string;
+  value: string;
+  onChange: (value: string) => void;
   onSearch?: (term: string) => void;
 };
 
 export default function SearchBar({
   placeholder = "Procurar por...",
+  value,
+  onChange,
   onSearch,
 }: SearchBarProps) {
-  const [term, setTerm] = useState("");
-
-  function handleKeyDown(e: KeyboardEvent<HTMLInputElement>) {
+  function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
     if (e.key === "Enter") {
       e.preventDefault();
-      onSearch?.(term.trim());
+      onSearch?.(value.trim());
     }
   }
 
@@ -28,12 +29,16 @@ export default function SearchBar({
         <input
           className="search-bar__input"
           type="text"
-          value={term}
-          onChange={(e) => setTerm(e.target.value)}
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
           onKeyDown={handleKeyDown}
           placeholder={placeholder}
         />
-        <button type="button" className="search-bar__icon-btn">
+        <button
+          type="button"
+          className="search-bar__icon-btn"
+          onClick={() => onSearch?.(value.trim())}
+        >
           <FiSearch className="search-bar__icon" />
         </button>
       </form>

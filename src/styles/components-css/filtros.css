@@ -1,0 +1,27 @@
+.filtros-container {
+  background: white;
+  padding: 2rem;
+  width: 260px;
+  border-radius: 20px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.filtros-title {
+  font-size: 1.6rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: #6b3ef7;
+}
+
+.filtro-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 0.8rem;
+  font-size: 1.2rem;
+}
+
+.filtros-empty {
+  font-size: 1rem;
+  color: #999;
+}

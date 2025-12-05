@@ -18,7 +18,10 @@ export type ProductSummary = {
   seal: string;
   availability: "DISPONÍVEL" | "INDISPONÍVEL";
   category: ProductCategory;
+  rating?: number;        // usado em "mais avaliados"
+  createdAt?: string;     // usado em "mais recentes"
 };
+
 
 export type ProductDetails = {
   id: string;
