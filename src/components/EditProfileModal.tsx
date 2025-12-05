@@ -100,9 +100,9 @@ export default function EditProfileModal({
   
   const avatarStyle: React.CSSProperties = {
     position: 'relative',
-    width: '110px',  // Levemente maior
+    width: '110px',  
     height: '110px',
-    margin: '0 auto 2rem auto', // Mais espaço embaixo para separar dos inputs
+    margin: '0 auto 2rem auto', 
   };
 
   const imgStyle: React.CSSProperties = {
@@ -110,17 +110,17 @@ export default function EditProfileModal({
     height: '100%',
     borderRadius: '50%',
     objectFit: 'cover',
-    border: '4px solid #fff', // Borda branca na foto
+    border: '4px solid #fff', 
     boxShadow: '0 4px 10px rgba(0,0,0,0.1)' 
   };
 
   const cameraBtnStyle: React.CSSProperties = {
     position: 'absolute',
-    bottom: 0, // Fica bem na base
-    right: '50%', // Centralizado horizontalmente
-    transform: 'translateX(50%) translateY(30%)', // Ajuste fino para ficar sobreposto na borda inferior
-    background: '#1a1a1a', // Fundo quase preto (conforme imagem)
-    border: '3px solid #fff', // Borda branca grossa
+    bottom: 0, 
+    right: '50%',
+    transform: 'translateX(50%) translateY(30%)', 
+    background: '#1a1a1a', 
+    border: '3px solid #fff', 
     borderRadius: '50%',
     width: '36px',
     height: '36px',

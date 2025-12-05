@@ -20,7 +20,7 @@ apiClient.interceptors.request.use(
   }
 );
 
-// Interceptor para lidar com erros de autenticação
+// Interceptor para lidar com erros de autenticação (401)
 apiClient.interceptors.response.use(
   (response) => response,
   (error) => {
@@ -28,6 +28,7 @@ apiClient.interceptors.response.use(
       if (typeof window !== 'undefined') {
         localStorage.removeItem("token");
         localStorage.removeItem("user");
+        // Redireciona para login se não estiver na página de login ou cadastro
         if (!window.location.pathname.includes('/login') && 
             !window.location.pathname.includes('/cadastro')) {
           window.location.href = "/login";
@@ -40,18 +41,19 @@ apiClient.interceptors.response.use(
 
 export const userService = {
   // Atualizar perfil
-  updateProfile: async (id: number, data: any) => {
+  updateProfile: async (id: number | string, data: any) => {
     return apiClient.patch(`/users/${id}`, data); 
   },
   
   // Deletar conta
-  deleteAccount: async (id: number) => {
+  deleteAccount: async (id: number | string) => {
     return apiClient.delete(`/users/${id}`);
   },
 
-  // Alterar senha 
-  changePassword: async (data: any) => {
-    return apiClient.post('/auth/change-password', data);
+  // Alterar senha (Agora passando o ID corretamente)
+  changePassword: async (id: number | string, data: { oldPassword: string, newPassword: string }) => {
+    // Rota ajustada para o padrão REST: PATCH /users/:id/password
+    return apiClient.patch(`/users/${id}/password`, data);
   }
 };
 
