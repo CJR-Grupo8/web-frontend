@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { FaImage } from "react-icons/fa";
 import BaseModal from "./BaseModal";
+import ConfirmModal from "./ConfirmModal";
 import { lojaService } from "../services/api";
 
 interface EditStoreModalProps {
@@ -40,6 +41,7 @@ export default function EditStoreModal({
   const [categoria, setCategoria] = useState(storeCategoria || "beleza");
   const [descricao, setDescricao] = useState(storeDescription || "");
   const [loading, setLoading] = useState(false);
+  const [showConfirmDelete, setShowConfirmDelete] = useState(false);
 
   // Estados para uploads
   const [profileImage, setProfileImage] = useState<string>("");
@@ -101,11 +103,11 @@ export default function EditStoreModal({
     }
   };
 
-  const handleDelete = async () => {
-    if (!confirm("Tem certeza que deseja deletar esta loja? Esta ação não pode ser desfeita.")) {
-      return;
-    }
+  const handleDeleteClick = () => {
+    setShowConfirmDelete(true);
+  };
 
+  const handleDeleteConfirm = async () => {
     setLoading(true);
     try {
       await lojaService.delete(storeId);
@@ -224,7 +226,7 @@ export default function EditStoreModal({
       <div style={{ marginTop: "1.5rem", display: "flex", flexDirection: "column", gap: "8px" }}>
         <button
           className="modal-btn-base btn-danger"
-          onClick={handleDelete}
+          onClick={handleDeleteClick}
           disabled={loading}
         >
           DELETAR
@@ -239,6 +241,18 @@ export default function EditStoreModal({
           {loading ? "Salvando..." : "Salvar"}
         </button>
       </div>
+
+      {/* Modal de Confirmação de Delete */}
+      <ConfirmModal
+        isOpen={showConfirmDelete}
+        onClose={() => setShowConfirmDelete(false)}
+        onConfirm={handleDeleteConfirm}
+        title="Deletar Loja"
+        message="Tem certeza que deseja deletar esta loja? Esta ação não pode ser desfeita e todos os produtos associados serão removidos."
+        confirmText="Deletar"
+        cancelText="Cancelar"
+        isDanger={true}
+      />
     </BaseModal>
   );
 }

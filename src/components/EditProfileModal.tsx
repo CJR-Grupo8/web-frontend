@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { FaCamera } from "react-icons/fa";
 import BaseModal from "./BaseModal"; 
+import ConfirmModal from "./ConfirmModal";
 import { userService } from "../services/api"; 
 import { User } from "../types/auth";
 
@@ -34,6 +35,7 @@ export default function EditProfileModal({
   const fileInputRef = useRef<HTMLInputElement>(null); 
 
   const [loading, setLoading] = useState(false);
+  const [showConfirmDelete, setShowConfirmDelete] = useState(false);
 
   // Preenche o formulário ao abrir e carrega a foto atual
   useEffect(() => {
@@ -105,17 +107,19 @@ export default function EditProfileModal({
     }
   };
 
-  const handleDelete = async () => {
+  const handleDeleteClick = () => {
+    setShowConfirmDelete(true);
+  };
+
+  const handleDeleteConfirm = async () => {
     if (!user) return;
-    if (confirm("Tem certeza que deseja deletar sua conta?")) {
-      try {
-        await userService.deleteAccount(user.id);
-        localStorage.clear();
-        window.location.href = "/";
-      } catch (error) {
-        console.error(error);
-        alert("Erro ao deletar conta.");
-      }
+    try {
+      await userService.deleteAccount(user.id);
+      localStorage.clear();
+      window.location.href = "/";
+    } catch (error) {
+      console.error(error);
+      alert("Erro ao deletar conta.");
     }
   };
 
@@ -200,7 +204,7 @@ export default function EditProfileModal({
 
         {/* Botões empilhados */}
         <div style={{ marginTop: '1.5rem', display: 'flex', flexDirection: 'column', gap: '8px' }}>
-            <button className="modal-btn-base btn-danger" onClick={handleDelete}>
+            <button className="modal-btn-base btn-danger" onClick={handleDeleteClick}>
                 Deletar conta
             </button>
 
@@ -218,6 +222,18 @@ export default function EditProfileModal({
                 {loading ? "Salvando..." : "Salvar"}
             </button>
         </div>
+
+        {/* Modal de Confirmação de Delete */}
+        <ConfirmModal
+          isOpen={showConfirmDelete}
+          onClose={() => setShowConfirmDelete(false)}
+          onConfirm={handleDeleteConfirm}
+          title="Deletar Conta"
+          message="Tem certeza que deseja deletar sua conta? Esta ação é permanente e todos os seus dados, lojas e produtos serão removidos."
+          confirmText="Deletar Conta"
+          cancelText="Cancelar"
+          isDanger={true}
+        />
     </BaseModal>
   );
 }
