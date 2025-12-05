@@ -2,27 +2,29 @@
 
 import React, { useState, useEffect } from "react";
 import EditProfileModal from "../../components/EditProfileModal";
+import ChangePasswordModal from "../../components/ChangePasswordModal"; 
 import { User } from "../../types/auth";
 
 export default function TesteModalPage() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const [isPasswordOpen, setIsPasswordOpen] = useState(false);
+  
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
-
     const storedUser = localStorage.getItem("user");
     
     if (storedUser) {
       setUser(JSON.parse(storedUser));
     } else {
       alert("Você precisa fazer Login antes de testar essa página!");
-      window.location.href = "/login";
+     
     }
   }, []);
 
   const handleSuccess = () => {
     console.log("Sucesso! Recarregando dados...");
-    // Aqui simulamos uma atualização dos dados
     const storedUser = localStorage.getItem("user");
     if (storedUser) setUser(JSON.parse(storedUser));
   };
@@ -47,7 +49,7 @@ export default function TesteModalPage() {
       )}
 
       <button 
-        onClick={() => setIsModalOpen(true)}
+        onClick={() => setIsProfileOpen(true)}
         style={{
           padding: "15px 30px",
           fontSize: "18px",
@@ -62,10 +64,24 @@ export default function TesteModalPage() {
       </button>
 
       <EditProfileModal 
-        isOpen={isModalOpen} 
-        onClose={() => setIsModalOpen(false)}
+        isOpen={isProfileOpen} 
+        onClose={() => setIsProfileOpen(false)}
         user={user}
         onSuccess={handleSuccess}
+        onOpenChangePassword={() => {
+            setIsProfileOpen(false); 
+            setIsPasswordOpen(true); 
+        }}
+      />
+
+      <ChangePasswordModal
+        isOpen={isPasswordOpen}
+        onClose={() => setIsPasswordOpen(false)}
+  
+        onBack={() => {
+            setIsPasswordOpen(false); 
+            setIsProfileOpen(true);   
+        }}
       />
     </div>
   );
