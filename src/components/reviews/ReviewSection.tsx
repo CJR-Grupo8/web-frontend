@@ -122,7 +122,7 @@ export default function ReviewsSection({ slug }: ReviewsSectionProps) {
       </section>
 
       <AddReviewModal
-        isOpen={isModalOpen}
+        open={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onSubmit={async (val) => { setNewCommentText(val.text); handleAddReview(); }}
       />
