@@ -1,51 +1,46 @@
-import React from "react";
-import { Star } from "lucide-react";
+"use client";
 
-interface ReviewCardProps {
-    id: number | string;
-    author: string;
-    avatar: string;
-    rating: number;
-    text?: string;
-    date?: string;
+interface ReviewProps {
+  name: string;
+  avatar: string;
+  rating: number;
+  comment: string;
+  date: string;
 }
 
-export default function ReviewCard({
-    author,
-    avatar,
-    rating,
-    text,
-    date
-}: ReviewCardProps) {
-    return (
-        <div className="bg-white text-black p-6 rounded-2xl shadow-sm border border-gray-100 w-full flex flex-col">
-            
-            {/* Avatar + Nome */}
-            <div className="flex items-center gap-3 mb-4">
-                <img
-                    src={avatar}
-                    alt={author}
-                    className="w-10 h-10 rounded-full object-cover border border-gray-200 bg-gray-100"
-                />
-                <div>
-                    <h4 className="font-bold text-sm text-gray-900">{author}</h4>
-                    {date && <span className="text-xs text-gray-400">{date}</span>}
-                </div>
-            </div>
+export default function ReviewCard({ name, avatar, rating, comment, date }: ReviewProps) {
+  return (
+    <div className="bg-white p-5 rounded-xl shadow-md hover:shadow-lg transition-transform duration-200 hover:-translate-y-1">
+      {/* Header */}
+      <div className="flex items-center justify-between">
 
-            {/* Estrelas */}
-            <div className="flex mb-2">
-                {[...Array(5)].map((_, i) => (
-                    <Star
-                        key={i}
-                        size={16}
-                        className={`${i < rating ? "fill-yellow-400 text-yellow-400" : "text-gray-300"}`}
-                    />
-                ))}
-            </div>
+        {/* Avatar + nome */}
+        <div className="flex items-center gap-3">
+          <img
+            src={avatar}
+            alt={name}
+            className="w-14 h-14 rounded-full object-cover border"
+          />
 
-            {/* Texto */}
-            {text && <p className="text-gray-600 text-sm">{text}</p>}
+          <div className="flex flex-col">
+            <h3 className="text-lg font-semibold">{name}</h3>
+            <span className="text-sm text-gray-500">{date}</span>
+          </div>
         </div>
-    );
+
+        {/* Rating */}
+        <div className="text-yellow-400 text-xl font-semibold">
+          {"★".repeat(rating)}
+          <span className="text-gray-300">
+            {"★".repeat(5 - rating)}
+          </span>
+        </div>
+      </div>
+
+      {/* Comentário */}
+      <p className="mt-4 text-gray-700 leading-relaxed">
+        {comment}
+      </p>
+    </div>
+  );
 }
