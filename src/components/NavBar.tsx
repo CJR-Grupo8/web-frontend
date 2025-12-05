@@ -2,11 +2,13 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import { FaStore, FaShoppingBag  } from "react-icons/fa";
 import { RiAccountCircleFill, RiLogoutBoxRLine } from "react-icons/ri";
 
 export default function NavBar() {
   const [logado, setLogado] = useState(false);
+  const pathname = usePathname();
 
   useEffect(() => {
     const checkLoginStatus = () => {
@@ -54,7 +56,11 @@ export default function NavBar() {
             <Link href="/lojas" className="store-icon" title="Ver Mais Lojas.">
               <FaStore />
             </Link>
-            <Link href="/perfil" className="perfil-icon" title="Ver Perfil.">
+            <Link 
+              href="/perfil" 
+              className={`perfil-icon ${pathname === '/perfil' ? 'active' : ''}`}
+              title="Ver Perfil."
+            >
               <RiAccountCircleFill />
             </Link>
             <button onClick={handleLogout} className="logout-btn" title="Deslogar">
