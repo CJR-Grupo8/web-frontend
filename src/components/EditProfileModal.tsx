@@ -6,6 +6,9 @@ import BaseModal from "./BaseModal";
 import { userService } from "../services/api"; 
 import { User } from "../types/auth";
 
+// URL do Backend para carregar as imagens salvas
+const API_URL = "http://localhost:3001";
+
 interface EditProfileModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -32,13 +35,21 @@ export default function EditProfileModal({
 
   const [loading, setLoading] = useState(false);
 
-  // Preenche o formulário ao abrir
+  // Preenche o formulário ao abrir e carrega a foto atual
   useEffect(() => {
     if (user) {
       setFullName(user.fullName || "");
       setUsername(user.username || "");
       setEmail(user.email || "");
-      // Se tiver avatar vindo do banco, setar o preview aqui
+      
+      // Lógica de Preview:
+      if (user.avatar) {
+        // Se já tem avatar salvo, monta a URL completa do backend
+        // O backend salva como "uploads/avatars/foto.jpg", então adicionamos o domínio antes
+        setPreview(`${API_URL}/${user.avatar}`);
+      } else {
+        setPreview("https://via.placeholder.com/150");
+      }
     }
   }, [user, isOpen]);
 
@@ -46,7 +57,8 @@ export default function EditProfileModal({
     const file = e.target.files?.[0];
     if (file) {
       setSelectedFile(file);
-      setPreview(URL.createObjectURL(file)); // Cria preview instantâneo
+      // Cria uma URL temporária para mostrar a foto nova imediatamente
+      setPreview(URL.createObjectURL(file)); 
     }
   };
 
@@ -57,26 +69,37 @@ export default function EditProfileModal({
   const handleSave = async () => {
     if (!user) return;
     setLoading(true);
+    
     try {
-      await userService.updateProfile(user.id, { fullName, username, email });
+      // --- CORREÇÃO PRINCIPAL: Usar FormData ---
+      const formData = new FormData();
+      formData.append("fullName", fullName);
+      formData.append("username", username);
+      formData.append("email", email);
       
-      const userAtualizado = {
-        ...user,
-        fullName,
-        username,
-        email
-      };
+      // Se o usuário escolheu uma foto nova, anexa ela
+      if (selectedFile) {
+        // 'file' deve ser o mesmo nome que usamos no Backend (FileInterceptor)
+        formData.append("file", selectedFile); 
+      }
+
+      // O Axios detecta FormData e ajusta os headers automaticamente
+      const response = await userService.updateProfile(user.id, formData);
       
+      // O backend retorna o usuário atualizado (com o novo caminho do avatar!)
+      const userAtualizado = response.data;
+      
+      // Atualizamos o localStorage para a foto nova aparecer no resto do site
       localStorage.setItem("user", JSON.stringify(userAtualizado));
 
-      alert("Perfil atualizado!");
+      alert("Perfil atualizado com sucesso!");
       
       if (onSuccess) onSuccess();
       onClose();
 
     } catch (error) {
       console.error(error);
-      alert("Erro ao atualizar.");
+      alert("Erro ao atualizar perfil.");
     } finally {
       setLoading(false);
     }
@@ -96,8 +119,7 @@ export default function EditProfileModal({
     }
   };
 
-  // --- Estilos Específicos (Pixel Perfect conforme imagem) ---
-  
+  // --- Estilos Específicos ---
   const avatarStyle: React.CSSProperties = {
     position: 'relative',
     width: '110px',  
