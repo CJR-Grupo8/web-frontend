@@ -51,6 +51,8 @@ type Review = {
 };
 
 export default function PerfilPage() {
+  // URL do backend para carregar imagens salvas (mesma usada no modal)
+  const API_URL = typeof window !== 'undefined' ? (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001') : 'http://localhost:3001';
   const router = useRouter();
   const { user, loading, isAuthenticated, updateUser, logout } = useAuth();
   const [showEditModal, setShowEditModal] = useState(false);
@@ -146,10 +148,21 @@ export default function PerfilPage() {
             ←
           </button>
           
-          <div className="perfil-avatar perfil-avatar-empty">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-            </svg>
+          <div className={`perfil-avatar ${user.avatar ? '' : 'perfil-avatar-empty'}`}>
+            {user.avatar ? (
+              <img
+                src={`${API_URL}/${user.avatar}`}
+                alt="Avatar"
+                onError={(e) => {
+                  const target = e.currentTarget as HTMLImageElement;
+                  target.src = 'https://via.placeholder.com/150';
+                }}
+              />
+            ) : (
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+              </svg>
+            )}
           </div>
 
           <div className="perfil-info">
