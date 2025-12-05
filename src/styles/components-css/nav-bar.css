@@ -135,3 +135,12 @@
 .logout-btn:hover svg {
   color: #60c040;
 }
+
+/* Ícone ativo */
+.perfil-icon.active svg {
+  color: #b4ff39;
+}
+
+.perfil-icon.active {
+  background: #2a2a2a;
+}
