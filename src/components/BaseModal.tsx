@@ -32,9 +32,7 @@ export default function BaseModal({ isOpen, onClose, title, children }: BaseModa
           </button>
         </div>
         
-        <div className="modal-content">
-          {children}
-        </div>
+        {children}
       </div>
     </div>
   );

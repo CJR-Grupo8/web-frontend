@@ -4,8 +4,11 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
 import NavBar from "@/components/NavBar";
+import EditProfileModal from "@/components/EditProfileModal";
+import ChangePasswordModal from "@/components/ChangePasswordModal";
 import Link from "next/link";
 import { reviewService, produtoService, lojaService } from "@/services/api";
+import useEmblaCarousel from "embla-carousel-react";
 import "@/styles/app-css/perfil.css";
 
 type Produto = {
@@ -49,12 +52,26 @@ type Review = {
 
 export default function PerfilPage() {
   const router = useRouter();
-  const { user, loading, isAuthenticated } = useAuth();
-  const [isEditing, setIsEditing] = useState(false);
+  const { user, loading, isAuthenticated, updateUser, logout } = useAuth();
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [showPasswordModal, setShowPasswordModal] = useState(false);
   const [userProducts, setUserProducts] = useState<Produto[]>([]);
   const [userStores, setUserStores] = useState<Loja[]>([]);
   const [reviews, setReviews] = useState<Review[]>([]);
   const [loadingData, setLoadingData] = useState(true);
+
+  // Carrosséis
+  const [emblaRefProducts] = useEmblaCarousel({
+    loop: false,
+    align: "start",
+    dragFree: true,
+  });
+
+  const [emblaRefStores] = useEmblaCarousel({
+    loop: false,
+    align: "start",
+    dragFree: true,
+  });
 
   useEffect(() => {
     if (!loading && !isAuthenticated) {
@@ -99,6 +116,14 @@ export default function PerfilPage() {
     fetchUserData();
   }, [user]);
 
+  // Função para recarregar dados do usuário
+  const handleSuccess = () => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      updateUser(JSON.parse(storedUser));
+    }
+  };
+
   if (loading || loadingData) {
     return (
       <div className="loading-container">
@@ -136,7 +161,7 @@ export default function PerfilPage() {
           {isAuthenticated && (
             <button
               className="edit-perfil-btn"
-              onClick={() => setIsEditing(!isEditing)}
+              onClick={() => setShowEditModal(true)}
             >
               Editar Perfil
             </button>
@@ -155,35 +180,40 @@ export default function PerfilPage() {
             </Link>
           </div>
 
-          <div className="products-grid">
+          <div className="carousel-wrapper">
             {userProducts.length > 0 ? (
-              userProducts.map((product) => (
-                <Link
-                  key={product.id}
-                  href={`/produtos/${product.id}`}
-                  className="product-card-perfil"
-                >
-                  <div className="product-image-wrapper">
-                    <img
-                      src={`https://placehold.co/200x200/ccc/333?text=${encodeURIComponent(product.nome)}`}
-                      alt={product.nome}
-                      onError={(e) => {
-                        e.currentTarget.src = "https://placehold.co/200x200/ccc/333?text=Produto";
-                      }}
-                    />
-                    <span className={`product-badge ${product.estoque && product.estoque > 0 ? "disponivel" : "indisponivel"}`}>
-                      {product.estoque && product.estoque > 0 ? "DISPONÍVEL" : "ESGOTADO"}
-                    </span>
-                  </div>
-                  <div className="product-info-perfil">
-                    <h3>{product.nome}</h3>
-                    <p className="product-price">R$ {product.preco.toFixed(2)}</p>
-                    {product.loja && (
-                      <p className="product-store">{product.loja.nome}</p>
-                    )}
-                  </div>
-                </Link>
-              ))
+              <div className="embla" ref={emblaRefProducts}>
+                <div className="embla__container">
+                  {userProducts.map((product) => (
+                    <div key={product.id} className="embla__slide">
+                      <Link
+                        href={`/produtos/${product.id}`}
+                        className="product-card-perfil"
+                      >
+                        <div className="product-image-wrapper">
+                          <img
+                            src={`https://placehold.co/200x200/ccc/333?text=${encodeURIComponent(product.nome)}`}
+                            alt={product.nome}
+                            onError={(e) => {
+                              e.currentTarget.src = "https://placehold.co/200x200/ccc/333?text=Produto";
+                            }}
+                          />
+                          <span className={`product-badge ${product.estoque && product.estoque > 0 ? "disponivel" : "indisponivel"}`}>
+                            {product.estoque && product.estoque > 0 ? "DISPONÍVEL" : "ESGOTADO"}
+                          </span>
+                        </div>
+                        <div className="product-info-perfil">
+                          <h3>{product.nome}</h3>
+                          <p className="product-price">R$ {product.preco.toFixed(2)}</p>
+                          {product.loja && (
+                            <p className="product-store">{product.loja.nome}</p>
+                          )}
+                        </div>
+                      </Link>
+                    </div>
+                  ))}
+                </div>
+              </div>
             ) : (
               <div className="empty-state">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="64" height="64">
@@ -209,23 +239,29 @@ export default function PerfilPage() {
             )}
           </div>
 
-          <div className="stores-list">
+          <div className="carousel-wrapper">
             {userStores.length > 0 ? (
-              userStores.map((store) => (
-                <Link key={store.id} href={`/lojas/${store.id}`} className="store-item">
-                  <div className="store-logo">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="48" height="48">
-                      <path d="M20 4H4v2h16V4zm1 10v-2l-1-5H4l-1 5v2h1v6h10v-6h4v6h2v-6h1zm-9 4H6v-4h6v4z"/>
-                    </svg>
-                  </div>
-                  <div className="store-details">
-                    <h3 className="store-name">{store.nome}</h3>
-                    {store.descricao && (
-                      <p className="store-description">{store.descricao}</p>
-                    )}
-                  </div>
-                </Link>
-              ))
+              <div className="embla" ref={emblaRefStores}>
+                <div className="embla__container">
+                  {userStores.map((store) => (
+                    <div key={store.id} className="embla__slide">
+                      <Link href={`/lojas/${store.id}`} className="store-item-carousel">
+                        <div className="store-logo">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="48" height="48">
+                            <path d="M20 4H4v2h16V4zm1 10v-2l-1-5H4l-1 5v2h1v6h10v-6h4v6h2v-6h1zm-9 4H6v-4h6v4z"/>
+                          </svg>
+                        </div>
+                        <div className="store-details">
+                          <h3 className="store-name">{store.nome}</h3>
+                          {store.descricao && (
+                            <p className="store-description">{store.descricao}</p>
+                          )}
+                        </div>
+                      </Link>
+                    </div>
+                  ))}
+                </div>
+              </div>
             ) : (
               <div className="empty-state">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="64" height="64">
@@ -296,6 +332,28 @@ export default function PerfilPage() {
           </div>
         </section>
       </div>
+
+      {/* Modal de Edição de Perfil */}
+      <EditProfileModal
+        isOpen={showEditModal}
+        onClose={() => setShowEditModal(false)}
+        user={user}
+        onSuccess={handleSuccess}
+        onOpenChangePassword={() => {
+          setShowEditModal(false);
+          setShowPasswordModal(true);
+        }}
+      />
+
+      {/* Modal de Alteração de Senha */}
+      <ChangePasswordModal
+        isOpen={showPasswordModal}
+        onClose={() => setShowPasswordModal(false)}
+        onBack={() => {
+          setShowPasswordModal(false);
+          setShowEditModal(true);
+        }}
+      />
     </div>
   );
 }
