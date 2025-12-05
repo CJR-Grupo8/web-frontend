@@ -24,12 +24,35 @@ export default function ChangePasswordModal({
 
   const handleSave = async () => {
     // 1. Validações básicas
+    if (!oldPassword || !newPassword) {
+      alert("Por favor, preencha todos os campos.");
+      return;
+    }
+    
     if (newPassword !== confirmPassword) {
       alert("A nova senha e a confirmação não coincidem.");
       return;
     }
-    if (!oldPassword || !newPassword) {
-      alert("Por favor, preencha todos os campos.");
+    
+    // 2. Validação de força da senha
+    if (newPassword.length < 8) {
+      alert("A senha deve ter pelo menos 8 caracteres.");
+      return;
+    }
+    if (!/[A-Z]/.test(newPassword)) {
+      alert("A senha deve conter pelo menos uma letra maiúscula.");
+      return;
+    }
+    if (!/[a-z]/.test(newPassword)) {
+      alert("A senha deve conter pelo menos uma letra minúscula.");
+      return;
+    }
+    if (!/[0-9]/.test(newPassword)) {
+      alert("A senha deve conter pelo menos um número.");
+      return;
+    }
+    if (!/[^A-Za-z0-9]/.test(newPassword)) {
+      alert("A senha deve conter pelo menos um caractere especial.");
       return;
     }
 
