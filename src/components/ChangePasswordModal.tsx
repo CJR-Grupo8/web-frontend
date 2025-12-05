@@ -24,7 +24,7 @@ export default function ChangePasswordModal({
 
   const handleSave = async () => {
     // 1. Validações básicas
-    if (!oldPassword || !newPassword) {
+    if (!oldPassword || !newPassword || !confirmPassword) {
       alert("Por favor, preencha todos os campos.");
       return;
     }
