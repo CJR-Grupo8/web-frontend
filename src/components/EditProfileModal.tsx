@@ -97,9 +97,9 @@ export default function EditProfileModal({
       if (onSuccess) onSuccess();
       onClose();
 
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
-      alert("Erro ao atualizar perfil.");
+      alert(`Erro ao atualizar perfil: ${error.response?.data?.message || error.message}`);
     } finally {
       setLoading(false);
     }

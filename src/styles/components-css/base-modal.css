@@ -28,6 +28,15 @@
   overflow-y: auto; 
 }
 
+/* Layout para modais de loja em telas maiores */
+@media (min-width: 768px) {
+  .modal-container:has(.modal-store-content) {
+    max-width: 750px;
+    max-height: 80vh;
+    overflow-y: visible;
+  }
+}
+
 
 .modal-header {
   display: flex;
@@ -44,6 +53,11 @@
   color: #333;
   text-align: center;
   margin: 0;
+}
+
+/* Remove margin-bottom do modal-header quando não há título */
+.modal-header:has(.modal-title:empty) {
+  margin-bottom: 0;
 }
 
 .close-btn {
@@ -147,6 +161,98 @@
 .btn-outline:hover {
   background-color: rgba(108, 99, 255, 0.2);
   transform: translateY(-1px);
+}
+
+/* Botões de upload */
+.modal-upload-btn {
+  width: 100%;
+  padding: 1.5rem;
+  border-radius: 12px;
+  border: 2px dashed #d0d0d0;
+  background-color: #fff;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  transition: all 0.2s ease;
+  margin-bottom: 1rem;
+  color: #8B5CF6;
+}
+
+.modal-upload-btn:hover:not(:disabled) {
+  border-color: #8B5CF6;
+  background-color: rgba(139, 92, 246, 0.05);
+}
+
+.modal-upload-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.modal-upload-btn span {
+  font-size: 0.9rem;
+  color: #666;
+  text-align: center;
+}
+
+.modal-textarea {
+  width: 100%;
+  padding: 14px 20px;
+  border-radius: 12px;
+  border: none;
+  background-color: #fff;
+  font-size: 1rem;
+  color: #333;
+  font-weight: 500;
+  outline: none;
+  margin-bottom: 1rem;
+  resize: vertical;
+  min-height: 80px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  transition: box-shadow 0.2s;
+  font-family: inherit;
+}
+
+.modal-textarea:focus {
+  box-shadow: 0 0 0 2px rgba(108, 99, 255, 0.2);
+}
+
+/* Layout de duas colunas para modais de loja */
+.modal-store-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.modal-store-left,
+.modal-store-right {
+  flex: 1;
+}
+
+@media (min-width: 768px) {
+  .modal-store-content {
+    flex-direction: row;
+    gap: 2rem;
+  }
+  
+  .modal-store-left {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .modal-store-right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .modal-store-content .modal-upload-btn {
+    flex: 1;
+    min-height: 100px;
+  }
 }
 
 @keyframes fadeIn {

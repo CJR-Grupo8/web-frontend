@@ -6,6 +6,8 @@ import { useAuth } from "@/hooks/useAuth";
 import NavBar from "@/components/NavBar";
 import EditProfileModal from "@/components/EditProfileModal";
 import ChangePasswordModal from "@/components/ChangePasswordModal";
+import AddStoreModal from "@/components/AddStoreModal";
+import EditStoreModal from "@/components/EditStoreModal";
 import Link from "next/link";
 import { reviewService, produtoService, lojaService } from "@/services/api";
 import useEmblaCarousel from "embla-carousel-react";
@@ -28,6 +30,7 @@ type Loja = {
   id: number;
   nome: string;
   descricao?: string;
+  categoria?: string;
   donoId: number;
   createdAt: string;
 };
@@ -57,6 +60,9 @@ export default function PerfilPage() {
   const { user, loading, isAuthenticated, updateUser, logout } = useAuth();
   const [showEditModal, setShowEditModal] = useState(false);
   const [showPasswordModal, setShowPasswordModal] = useState(false);
+  const [showAddStoreModal, setShowAddStoreModal] = useState(false);
+  const [showEditStoreModal, setShowEditStoreModal] = useState(false);
+  const [selectedStore, setSelectedStore] = useState<Loja | null>(null);
   const [userProducts, setUserProducts] = useState<Produto[]>([]);
   const [userStores, setUserStores] = useState<Loja[]>([]);
   const [reviews, setReviews] = useState<Review[]>([]);
@@ -124,6 +130,31 @@ export default function PerfilPage() {
     if (storedUser) {
       updateUser(JSON.parse(storedUser));
     }
+  };
+
+  // Função para recarregar lojas
+  const handleStoreSuccess = async () => {
+    if (!user) return;
+    try {
+      const storesResponse = await lojaService.getByDono(user.id);
+      setUserStores(storesResponse.data || []);
+      
+      // Recarregar produtos também
+      let allProducts: Produto[] = [];
+      for (const loja of storesResponse.data || []) {
+        const productsResponse = await produtoService.getByLoja(loja.id);
+        const produtos = productsResponse.data || [];
+        allProducts = [...allProducts, ...produtos];
+      }
+      setUserProducts(allProducts);
+    } catch (error) {
+      console.error("Erro ao recarregar lojas:", error);
+    }
+  };
+
+  const handleEditStore = (store: Loja) => {
+    setSelectedStore(store);
+    setShowEditStoreModal(true);
   };
 
   if (loading || loadingData) {
@@ -246,7 +277,11 @@ export default function PerfilPage() {
           <div className="section-header">
             <h2 className="section-title">Lojas</h2>
             {isAuthenticated && (
-              <button className="add-store-btn" title="Adicionar loja">
+              <button 
+                className="add-store-btn" 
+                title="Adicionar loja"
+                onClick={() => setShowAddStoreModal(true)}
+              >
                 +
               </button>
             )}
@@ -258,7 +293,11 @@ export default function PerfilPage() {
                 <div className="embla__container">
                   {userStores.map((store) => (
                     <div key={store.id} className="embla__slide">
-                      <Link href={`/lojas/${store.id}`} className="store-item-carousel">
+                      <div 
+                        className="store-item-carousel"
+                        onClick={() => handleEditStore(store)}
+                        style={{ cursor: 'pointer' }}
+                      >
                         <div className="store-logo">
                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="48" height="48">
                             <path d="M20 4H4v2h16V4zm1 10v-2l-1-5H4l-1 5v2h1v6h10v-6h4v6h2v-6h1zm-9 4H6v-4h6v4z"/>
@@ -270,7 +309,7 @@ export default function PerfilPage() {
                             <p className="store-description">{store.descricao}</p>
                           )}
                         </div>
-                      </Link>
+                      </div>
                     </div>
                   ))}
                 </div>
@@ -281,7 +320,10 @@ export default function PerfilPage() {
                   <path d="M20 4H4v2h16V4zm1 10v-2l-1-5H4l-1 5v2h1v6h10v-6h4v6h2v-6h1zm-9 4H6v-4h6v4z"/>
                 </svg>
                 <p>Crie sua primeira loja e comece a vender!</p>
-                <button className="empty-state-btn">
+                <button 
+                  className="empty-state-btn"
+                  onClick={() => setShowAddStoreModal(true)}
+                >
                   Criar loja
                 </button>
               </div>
@@ -367,6 +409,32 @@ export default function PerfilPage() {
           setShowEditModal(true);
         }}
       />
+
+      {/* Modal de Adicionar Loja */}
+      {user && (
+        <AddStoreModal
+          isOpen={showAddStoreModal}
+          onClose={() => setShowAddStoreModal(false)}
+          userId={user.id}
+          onSuccess={handleStoreSuccess}
+        />
+      )}
+
+      {/* Modal de Editar Loja */}
+      {selectedStore && (
+        <EditStoreModal
+          isOpen={showEditStoreModal}
+          onClose={() => {
+            setShowEditStoreModal(false);
+            setSelectedStore(null);
+          }}
+          storeId={selectedStore.id}
+          storeName={selectedStore.nome}
+          storeDescription={selectedStore.descricao}
+          storeCategoria={selectedStore.categoria}
+          onSuccess={handleStoreSuccess}
+        />
+      )}
     </div>
   );
 }
