@@ -30,7 +30,7 @@ export default function AddReviewButton() {
       </div>
 
       <AddReviewModal
-        isOpen={isModalOpen}
+        open={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onSubmit={handleAddReview}
       />
