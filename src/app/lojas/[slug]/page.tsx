@@ -3,9 +3,14 @@ import { STORES } from '@/data/stores';
 import { allProductSummaries } from '@/data/product'; 
 import NavBar from "@/components/NavBar";
 import StoreEditButtons from '@/components/StoreEditButtons';
+<<<<<<< HEAD
+import AddReviewButton from '@/components/AddReviewButton';
+import Link from 'next/link';
+=======
 import ProductCarousel from '@/components/ProductCarousel';
 import ProductCatalog from '@/components/ProductCatalog';
 import StoreComments from '@/components/StoreComments'; 
+>>>>>>> dev
 
 import "@/styles/app-css/lojas.css";
 
@@ -101,7 +106,7 @@ export default async function LojaPage({ params }: PageProps) {
         <div className="store-rating__stars">
            <StarDisplay count={store.rating} size="2.5rem" />
         </div>
-        <a href="#" className="store-rating__link">
+        <a href={`/lojas/${slug}/reviews`} className="store-rating__link">
           ver mais ({store.reviewsCount} reviews)
         </a>
 
@@ -109,6 +114,21 @@ export default async function LojaPage({ params }: PageProps) {
 
       </section>
 
+<<<<<<< HEAD
+      <AddReviewButton />
+
+      <section className="store-comments-grid">
+        {comments.map((comment) => (
+          <div key={comment.id} className="comment-card">
+            <img src={comment.avatar} alt={comment.name} className="comment-avatar" />
+            <div className="comment-info">
+              <h4>{comment.name}</h4>
+              <StarDisplay count={comment.rating} size="1rem" />
+            </div>
+          </div>
+        ))}
+      </section>
+=======
       <div className="store-products-section">
         
         {bestRatedProducts.length > 0 ? (
@@ -125,6 +145,7 @@ export default async function LojaPage({ params }: PageProps) {
         </div>
 
       </div>
+>>>>>>> dev
     </div>
   );
 }
