@@ -55,10 +55,9 @@ type Review = {
 };
 
 export default function PerfilPage() {
-  // URL do backend para carregar imagens salvas (mesma usada no modal)
   const API_URL = typeof window !== 'undefined' ? (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001') : 'http://localhost:3001';
   const router = useRouter();
-  const { user, loading, isAuthenticated, updateUser, logout } = useAuth();
+  const { user, loading, isAuthenticated, updateUser } = useAuth();
   const [showEditModal, setShowEditModal] = useState(false);
   const [showPasswordModal, setShowPasswordModal] = useState(false);
   const [showAddStoreModal, setShowAddStoreModal] = useState(false);
@@ -70,7 +69,6 @@ export default function PerfilPage() {
   const [reviews, setReviews] = useState<Review[]>([]);
   const [loadingData, setLoadingData] = useState(true);
 
-  // Carrosséis
   const [emblaRefProducts] = useEmblaCarousel({
     loop: false,
     align: "start",
@@ -95,12 +93,10 @@ export default function PerfilPage() {
 
       setLoadingData(true);
       try {
-        // Buscar lojas do usuário
         const storesResponse = await lojaService.getByDono(user.id);
         const lojas = storesResponse.data || [];
         setUserStores(lojas);
 
-        // Buscar produtos de todas as lojas do usuário
         let allProducts: Produto[] = [];
         for (const loja of lojas) {
           const productsResponse = await produtoService.getByLoja(loja.id);
@@ -109,12 +105,10 @@ export default function PerfilPage() {
         }
         setUserProducts(allProducts);
 
-        // Buscar avaliações feitas pelo usuário
         const reviewsResponse = await reviewService.getByAuthor(user.id);
         setReviews(reviewsResponse.data || []);
       } catch (error) {
         console.error("Erro ao buscar dados do usuário:", error);
-        // Em caso de erro, mantém arrays vazios
         setUserProducts([]);
         setUserStores([]);
         setReviews([]);
@@ -126,7 +120,6 @@ export default function PerfilPage() {
     fetchUserData();
   }, [user]);
 
-  // Função para recarregar dados do usuário
   const handleSuccess = () => {
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
@@ -134,14 +127,12 @@ export default function PerfilPage() {
     }
   };
 
-  // Função para recarregar lojas
   const handleStoreSuccess = async () => {
     if (!user) return;
     try {
       const storesResponse = await lojaService.getByDono(user.id);
       setUserStores(storesResponse.data || []);
       
-      // Recarregar produtos também
       let allProducts: Produto[] = [];
       for (const loja of storesResponse.data || []) {
         const productsResponse = await produtoService.getByLoja(loja.id);
@@ -219,12 +210,28 @@ export default function PerfilPage() {
 
         {/* Seção de Produtos */}
         <section className="perfil-section">
+          {/* --- CORREÇÃO AQUI --- */}
           <div className="section-header">
-            <h2 className="section-title">Produtos</h2>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <h2 className="section-title">Produtos</h2>
+              
+              {/* Adicionei o botão de + aqui. Ele usa a mesma classe do botão de loja para manter o estilo roxo */}
+              {isAuthenticated && (
+                <button 
+                  className="add-store-btn" 
+                  title="Adicionar produto"
+                  onClick={() => setShowAddProductModal(true)}
+                >
+                  +
+                </button>
+              )}
+            </div>
+            
             <Link href="/ver_mais" className="ver-mais-link">
               ver mais
             </Link>
           </div>
+          {/* --------------------- */}
 
           <div className="carousel-wrapper">
             {userProducts.length > 0 ? (
@@ -238,7 +245,11 @@ export default function PerfilPage() {
                       >
                         <div className="product-image-wrapper">
                           <img
-                            src={`https://placehold.co/200x200/ccc/333?text=${encodeURIComponent(product.nome)}`}
+                            src={
+                              product.id === 123 
+                                ? "https://placehold.co/200x200?text=Celular" // Exemplo para seu teste
+                                : `https://placehold.co/200x200/ccc/333?text=${encodeURIComponent(product.nome)}`
+                            }
                             alt={product.nome}
                             onError={(e) => {
                               e.currentTarget.src = "https://placehold.co/200x200/ccc/333?text=Produto";
@@ -393,7 +404,6 @@ export default function PerfilPage() {
         </section>
       </div>
 
-      {/* Modal de Edição de Perfil */}
       <EditProfileModal
         isOpen={showEditModal}
         onClose={() => setShowEditModal(false)}
@@ -405,7 +415,6 @@ export default function PerfilPage() {
         }}
       />
 
-      {/* Modal de Alteração de Senha */}
       <ChangePasswordModal
         isOpen={showPasswordModal}
         onClose={() => setShowPasswordModal(false)}
@@ -415,7 +424,6 @@ export default function PerfilPage() {
         }}
       />
 
-      {/* Modal de Adicionar Loja */}
       {user && (
         <AddStoreModal
           isOpen={showAddStoreModal}
@@ -425,7 +433,6 @@ export default function PerfilPage() {
         />
       )}
 
-      {/* Modal de Adicionar Produto */}
       <AddProductModal
         isOpen={showAddProductModal}
         onClose={() => setShowAddProductModal(false)}
@@ -433,7 +440,6 @@ export default function PerfilPage() {
         onSuccess={handleStoreSuccess}
       />
 
-      {/* Modal de Editar Loja */}
       {selectedStore && (
         <EditStoreModal
           isOpen={showEditStoreModal}
