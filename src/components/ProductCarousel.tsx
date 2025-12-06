@@ -10,12 +10,14 @@ type ProductCarouselProps = {
   title?: string;
   category?: ProductCategory;
   items: Product[];
+  hrefBase?: string;
 };
 
 export default function ProductCarousel({
   title = "Produtos",
   category,
   items,
+  hrefBase = "/produtos",
 }: ProductCarouselProps) {
   const [emblaRef] = useEmblaCarousel({
     loop: false,
@@ -60,7 +62,7 @@ export default function ProductCarousel({
         <div className="home-prod__container">
           {items.map((product) => (
             <div key={product.id} className="home-prod__slide">
-              <ProductCard {...product} />
+              <ProductCard {...product} hrefBase={hrefBase} />
             </div>
           ))}
         </div>

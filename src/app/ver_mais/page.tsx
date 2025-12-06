@@ -9,6 +9,7 @@ export default function VerMaisPage() {
       baseProducts={allProductSummaries}
       placeholder="Buscar por nome, categoria..."
       title="Todos os produtos"
+      hrefBase="/produtos-fake"
     />
   );
 }

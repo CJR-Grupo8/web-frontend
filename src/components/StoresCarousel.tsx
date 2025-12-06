@@ -8,10 +8,16 @@ import StoreFilters from "./StoreFilters";
 import { STORES, type Store, type StoreCategory } from "@/data/stores";
 
 type StoresCarouselProps = {
-  storesOverride?: Store[];  // tipagem correta
+  storesOverride?: Store[];
+  hrefBase?: string;
+  moreHref?: string;
 };
 
-export default function StoresCarousel({ storesOverride }: StoresCarouselProps) {
+export default function StoresCarousel({
+  storesOverride,
+  hrefBase = "/lojas",
+  moreHref,
+}: StoresCarouselProps) {
   const stores = storesOverride ?? STORES;
 
   const [isFilterOpen, setIsFilterOpen] = useState(false);
@@ -42,7 +48,7 @@ export default function StoresCarousel({ storesOverride }: StoresCarouselProps) 
             toggleOpen={() => setIsFilterOpen((v) => !v)}
           />
 
-          <Link href="/lojas" className="home-block__action">
+          <Link href={moreHref ?? "/lojas"} className="home-block__action">
             ver mais
           </Link>
         </div>
@@ -52,7 +58,7 @@ export default function StoresCarousel({ storesOverride }: StoresCarouselProps) 
         <div className="stores-carousel__container">
           {filteredStores.map((store) => (
             <div key={store.id} className="stores-carousel__slide">
-              <StoreCard store={store} variant="carousel" />
+              <StoreCard store={store} variant="carousel" hrefBase={hrefBase} />
             </div>
           ))}
         </div>

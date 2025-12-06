@@ -3,15 +3,31 @@ import type { Store } from '@/data/stores';
 
 type StoreCardProps = {
   store: Store;
-  variant?: 'carousel' | 'grid' | "card";
+  variant?: 'carousel' | 'grid' | 'card';
+  hrefBase?: string;
+  hrefOverride?: string;
 };
 
-export default function StoreCard({ store, variant = 'carousel' }: StoreCardProps) {
+function toSlug(value: string) {
+  return value
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
+
+export default function StoreCard({
+  store,
+  variant = 'carousel',
+  hrefBase = '/lojas',
+  hrefOverride,
+}: StoreCardProps) {
+  const slug = store.slug ?? toSlug(store.name);
+  const targetHref = hrefOverride ?? `${hrefBase}/${slug}`;
+
   return (
-    <Link
-      href={`/lojas/${store.slug}`}
-      className={`store-card store-card--${variant}`}
-    >
+    <Link href={targetHref} className={`store-card store-card--${variant}`}>
       <div className="store-card-logo">
         <img src={store.logo} alt={store.name} />
       </div>

@@ -77,6 +77,7 @@ export default function VerMaisCategoryPage({ params }: Props) {
           title="Mais avaliados"
           category={categoria}
           items={maisAvaliados}
+          hrefBase="/produtos-fake"
         />
       )}
 
@@ -86,6 +87,7 @@ export default function VerMaisCategoryPage({ params }: Props) {
           title="Mais recentes"
           category={categoria}
           items={maisRecentes}
+          hrefBase="/produtos-fake"
         />
       )}
 
@@ -94,11 +96,16 @@ export default function VerMaisCategoryPage({ params }: Props) {
         baseProducts={produtosDaCategoria}
         title={`Produtos de ${categoria}`}
         placeholder={`Buscar em ${categoria}...`}
+        hrefBase="/produtos-fake"
       />
 
       {/* 🔥 CARROSSEL DE LOJAS RELACIONADAS */}
       {lojasDaCategoria.length > 0 && (
-        <StoresCarousel storesOverride={lojasDaCategoria} />
+        <StoresCarousel
+          storesOverride={lojasDaCategoria}
+          hrefBase="/lojas-fake"
+          moreHref="/ver_mais_lojas"
+        />
       )}
     </>
   );

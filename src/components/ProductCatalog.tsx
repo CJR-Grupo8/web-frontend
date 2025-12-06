@@ -24,6 +24,7 @@ type ProductCatalogProps = {
   title?: string;
   itemsPerPage?: number;
   hideHeader?: boolean;
+  hrefBase?: string;
 };
 
 export default function ProductCatalog({
@@ -33,6 +34,7 @@ export default function ProductCatalog({
   title,
   itemsPerPage = 15,
   hideHeader = false,
+  hrefBase = "/produtos",
 }: ProductCatalogProps) {
   const sourceData = initialProducts || baseProducts || [];
 
@@ -119,7 +121,7 @@ export default function ProductCatalog({
         <section className="catalog">
           {visibleProducts.length > 0 ? (
             visibleProducts.map((product) => (
-              <ProductCard key={product.id} {...product} />
+              <ProductCard key={product.id} {...product} hrefBase={hrefBase} />
             ))
           ) : (
             <p style={{ textAlign: "center", marginTop: "2rem", width: "100%" }}>

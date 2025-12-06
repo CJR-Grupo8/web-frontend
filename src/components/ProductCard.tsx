@@ -6,7 +6,10 @@ import "@/styles/components-css/product-card.css";
 export type StoreSeal = "cjr" | "moumer" | "nako" | string;
 export type Availability = "DISPONÍVEL" | "INDISPONÍVEL";
 
-export type Product = ProductSummary;
+export type Product = ProductSummary & {
+  hrefBase?: string;
+  hrefOverride?: string;
+};
 
 function imageSrc(image: string) {
   return `/images/produtos/${image}.svg`;
@@ -17,10 +20,22 @@ function sealSrc(seal: string) {
 }
 
 export default function ProductCard(props: Product) {
-  const { id, name, price, unit, image, seal, availability } = props;
+  const {
+    id,
+    name,
+    price,
+    unit,
+    image,
+    seal,
+    availability,
+    hrefBase = "/produtos",
+    hrefOverride,
+  } = props;
+
+  const targetHref = hrefOverride ?? `${hrefBase}/${id}`;
 
   return (
-    <Link href={`/produtos/${id}`} className="product-card-link">
+    <Link href={targetHref} className="product-card-link">
       <article className="card">
         <div className="thumb">
           <img src={imageSrc(image)} alt={name} />
