@@ -60,40 +60,33 @@ export const userService = {
     return apiClient.delete(`/users/${id}`);
   },
 
-  // Alterar senha (Agora passando o ID corretamente)
+  // Alterar senha
   changePassword: async (id: number | string, data: { oldPassword: string, newPassword: string }) => {
-    // Rota ajustada para o padrão REST: PATCH /users/:id/password
     return apiClient.patch(`/users/${id}/password`, data);
   }
 };
 
 export const reviewService = {
-  // Buscar avaliações por autor
   getByAuthor: async (authorId: number) => {
     return apiClient.get(`/reviews?authorId=${authorId}`);
   },
 
-  // Buscar avaliações por loja
   getByLoja: async (lojaId: number) => {
     return apiClient.get(`/reviews?lojaId=${lojaId}`);
   },
 
-  // Buscar avaliações por produto
   getByProduto: async (produtoId: number) => {
     return apiClient.get(`/reviews?produtoId=${produtoId}`);
   },
 
-  // Criar avaliação
   create: async (data: any) => {
     return apiClient.post('/reviews', data);
   },
 
-  // Atualizar avaliação
   update: async (id: number, data: any) => {
     return apiClient.patch(`/reviews/${id}`, data);
   },
 
-  // Deletar avaliação
   delete: async (id: number) => {
     return apiClient.delete(`/reviews/${id}`);
   }
@@ -115,9 +108,16 @@ export const produtoService = {
     return apiClient.get(`/produtos/${id}`);
   },
 
-  // Criar produto
-  create: async (data: any) => {
-    return apiClient.post('/produtos', data);
+  // --- CORREÇÃO IMPORTANTE AQUI ---
+  // Mantivemos APENAS esta função 'create' que suporta FormData e LojaId na URL.
+  // A versão duplicada abaixo foi removida.
+  create: async (formData: FormData, lojaId: number | string) => {
+    // Passamos o lojaId na URL (?lojaId=...) para o Guard do backend ler antes do upload
+    return apiClient.post(`/produtos?lojaId=${lojaId}`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
   },
 
   // Atualizar produto
@@ -132,32 +132,26 @@ export const produtoService = {
 };
 
 export const lojaService = {
-  // Buscar todas as lojas
   getAll: async () => {
     return apiClient.get('/lojas');
   },
 
-  // Buscar lojas por dono
   getByDono: async (donoId: number) => {
     return apiClient.get(`/lojas?donoId=${donoId}`);
   },
 
-  // Buscar loja por ID
   getById: async (id: number) => {
     return apiClient.get(`/lojas/${id}`);
   },
 
-  // Criar loja
   create: async (data: any) => {
     return apiClient.post('/lojas', data);
   },
 
-  // Atualizar loja
   update: async (id: number, data: any) => {
     return apiClient.patch(`/lojas/${id}`, data);
   },
 
-  // Deletar loja
   delete: async (id: number) => {
     return apiClient.delete(`/lojas/${id}`);
   }
