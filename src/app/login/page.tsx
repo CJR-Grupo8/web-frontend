@@ -2,9 +2,9 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import "../styles/login.css";
-import apiClient from "../services/api";
-import { LoginResponse } from "../types/auth";
+import "@/styles/app-css/login.css";
+import apiClient from "@/services/api";
+import { LoginResponse } from "@/types/auth";
 
 const LoginPage: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -65,7 +65,7 @@ const LoginPage: React.FC = () => {
       
       // Redireciona para a home após 1 segundo
       setTimeout(() => {
-        window.location.href = "/home";
+        window.location.href = "/";
       }, 1000);
     } catch (error: any) {
       const errorMessage = error.response?.data?.message || "Erro ao realizar login.";
@@ -81,7 +81,7 @@ const LoginPage: React.FC = () => {
     <main className="login-root">
       <section className="login-illustration">
         <div className="login-figure">
-          <a href="/home">
+          <a href="/">
             <img
               src="images/id-visual/logo_escura.svg"
               alt="Stock.io"

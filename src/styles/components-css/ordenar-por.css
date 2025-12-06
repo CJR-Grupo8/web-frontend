@@ -1,0 +1,65 @@
+.sort-wrapper {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  max-width: 420px;
+}
+
+/* pill principal */
+.sort-pill {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.9rem 1.6rem;
+  border-radius: 999px;
+  border: none;
+  background: #ffffff;
+  box-shadow: 0 12px 32px rgba(75, 43, 153, 0.12);
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #b086ff;
+  cursor: pointer;
+}
+
+.sort-pill-label {
+  text-transform: lowercase;
+}
+
+.sort-pill-current {
+  font-weight: 600;
+}
+
+/* dropdown */
+.sort-dropdown {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  right: 0;
+  min-width: 220px;
+  background: #ffffff;
+  border-radius: 18px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+  padding: 0.75rem 0;
+  z-index: 20;
+}
+
+.sort-option {
+  display: block;
+  width: 100%;
+  padding: 0.6rem 1.2rem;
+  background: transparent;
+  border: none;
+  text-align: left;
+  font-size: 1rem;
+  color: #4b4b4b;
+  cursor: pointer;
+}
+
+.sort-option:hover {
+  background: #f5eeff;
+}
+
+.sort-option.is-active {
+  color: #6b3ef7;
+  font-weight: 600;
+}

@@ -1,16 +1,14 @@
-import "./styles/product-card.css";
+// src/components/ProductCard.tsx
+import Link from 'next/link';
+import type { ProductSummary } from '@/data/product';
+import "@/styles/components-css/product-card.css";
 
 export type StoreSeal = "cjr" | "moumer" | "nako" | string;
 export type Availability = "DISPONÍVEL" | "INDISPONÍVEL";
 
-export type Product = {
-  id: string;
-  name: string;
-  price: string;
-  unit?: string;
-  image: string;
-  seal: StoreSeal;
-  availability: Availability;
+export type Product = ProductSummary & {
+  hrefBase?: string;
+  hrefOverride?: string;
 };
 
 function imageSrc(image: string) {
@@ -21,21 +19,38 @@ function sealSrc(seal: string) {
   return `/images/lojas/${seal}.svg`;
 }
 
-export default function ProductCard({ id, name, price, unit, image, seal, availability }: Product) {
+export default function ProductCard(props: Product) {
+  const {
+    id,
+    name,
+    price,
+    unit,
+    image,
+    seal,
+    availability,
+    hrefBase = "/produtos",
+    hrefOverride,
+  } = props;
+
+  const targetHref = hrefOverride ?? `${hrefBase}/${id}`;
+
   return (
-    <article className="card" key={id}>
-      <div className="thumb">
-        <img src={imageSrc(image)} alt={name} />
-        <img className="seal" src={sealSrc(seal)} alt={`Selo ${seal}`} />
-      </div>
-      <h3 className="title">{name}</h3>
-      <div className="price-line">
-        <span className="price">{price}</span>
-        {unit && <span className="unit">{unit}</span>}
-      </div>
-      <span className={`availability ${availability === "DISPONÍVEL" ? "ok" : "off"}`}>
-        {availability}
-      </span>
-    </article>
+    <Link href={targetHref} className="product-card-link">
+      <article className="card">
+        <div className="thumb">
+          <img src={imageSrc(image)} alt={name} />
+          <img className="seal" src={sealSrc(seal)} alt={`Selo ${seal}`} />
+        </div>
+        <h3 className="title">{name}</h3>
+        <p className="price">
+          {price} {unit && <span className="unit">{unit}</span>}
+        </p>
+        <p
+          className={`availability ${availability === "DISPONÍVEL" ? "ok" : "off"}`}
+        >
+          {availability}
+        </p>
+      </article>
+    </Link>
   );
 }

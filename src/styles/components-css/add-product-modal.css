@@ -1,0 +1,122 @@
+/* Container das fotos */
+.photos-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Área principal da foto (topo) */
+.photo-upload-main {
+  width: 100%;
+  height: 120px;
+  border: 2px dashed #8B5CF6; /* Roxo */
+  border-radius: 12px;
+  background-color: #F8F6FF; /* Fundo roxo bem clarinho */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #8B5CF6;
+  transition: background-color 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+
+.photo-upload-main:hover {
+  background-color: #EDE9FE;
+}
+
+.photo-text {
+  font-size: 0.8rem;
+  color: #666;
+  margin-top: 0.5rem;
+}
+
+/* Grid das 3 fotos menores */
+.photos-grid-small {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1rem;
+}
+
+.photo-upload-small {
+  width: 100%;
+  height: 80px;
+  border: 2px dashed #8B5CF6;
+  border-radius: 12px;
+  background-color: #F8F6FF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #8B5CF6;
+  position: relative;
+  overflow: hidden;
+}
+
+.photo-upload-small:hover {
+  background-color: #EDE9FE;
+}
+
+/* Quando tem imagem, ela ocupa tudo */
+.preview-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Ícone de adicionar foto (+) */
+.add-icon-overlay {
+  position: absolute;
+  bottom: 25%;
+  right: 40%;
+  background: white;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 1.2rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* --- Contador de Quantidade --- */
+.quantity-control {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  margin: 1.5rem 0;
+}
+
+.qty-btn {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  border: 2px solid #8B5CF6;
+  background: transparent;
+  color: #8B5CF6;
+  font-size: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding-bottom: 5px; /* Ajuste visual do ícone */
+  transition: all 0.2s;
+}
+
+.qty-btn:hover {
+  background-color: #8B5CF6;
+  color: white;
+}
+
+.qty-value {
+  font-size: 2.5rem;
+  font-weight: 600;
+  color: #8B5CF6;
+  font-family: monospace; /* Para o número não pular de tamanho */
+}

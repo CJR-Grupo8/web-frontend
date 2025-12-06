@@ -2,41 +2,71 @@
 
 import useEmblaCarousel from "embla-carousel-react";
 import ProductCard, { Product } from "@/components/ProductCard";
-import "./styles/home-carousel.css";
 import Link from "next/link";
+import type { ProductCategory } from "@/data/product";
+import { CATEGORY_TO_SLUG } from "@/data/product";
 
+type ProductCarouselProps = {
+  title?: string;
+  category?: ProductCategory;
+  items: Product[];
+  hrefBase?: string;
+};
 
 export default function ProductCarousel({
-    title = "Produtos",
-    items,
-}: {
-    title?: string;
-    items: Product[];
-}) {
-    const [emblaRef] = useEmblaCarousel({
-        loop: false,
-        align: "start",
-        dragFree: true,
-    });
+  title = "Produtos",
+  category,
+  items,
+  hrefBase = "/produtos",
+}: ProductCarouselProps) {
+  const [emblaRef] = useEmblaCarousel({
+    loop: false,
+    align: "start",
+    dragFree: true,
+  });
 
-    return (
-        <section className="home-block">
-            <header className="home-block__header">
-                <h2 className="home-block__title">{title}</h2>
-                <Link href="/ver_mais" className="home-block__action">
-                    ver mais
-                </Link>
-            </header>
+  // Garante slug válido
+  const categorySlug = category ? CATEGORY_TO_SLUG[category] : null;
 
-            <div className="home-prod__viewport" ref={emblaRef}>
-                <div className="home-prod__container">
-                    {items.map((product) => (
-                        <div key={product.id} className="home-prod__slide">
-                            <ProductCard {...product} />
-                        </div>
-                    ))}
-                </div>
+  return (
+    <section className="home-block">
+      <header className="home-block__header">
+        <h2 className="home-block__title">
+          <span className="home-block__title-main">{title}</span>
+
+          {category && categorySlug && (
+            <>
+              <span className="home-block__title-em">em</span>
+
+              {/* Link para /ver_mais/[category] */}
+              <Link
+                href={`/ver_mais/${categorySlug}`}
+                className="home-block__title-category"
+              >
+                {category}
+              </Link>
+            </>
+          )}
+        </h2>
+
+        {/* Botão “ver mais” → se não tiver categoria, vai para /ver_mais */}
+        <Link
+          href={categorySlug ? `/ver_mais/${categorySlug}` : "/ver_mais"}
+          className="home-block__action"
+        >
+          ver mais
+        </Link>
+      </header>
+
+      <div className="home-prod__viewport" ref={emblaRef}>
+        <div className="home-prod__container">
+          {items.map((product) => (
+            <div key={product.id} className="home-prod__slide">
+              <ProductCard {...product} hrefBase={hrefBase} />
             </div>
-        </section>
-    );
+          ))}
+        </div>
+      </div>
+    </section>
+  );
 }
