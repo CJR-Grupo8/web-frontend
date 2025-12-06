@@ -7,6 +7,7 @@ import NavBar from "@/components/NavBar";
 import EditProfileModal from "@/components/EditProfileModal";
 import ChangePasswordModal from "@/components/ChangePasswordModal";
 import AddStoreModal from "@/components/AddStoreModal";
+import AddProductModal from "@/components/AddProductModal";
 import EditStoreModal from "@/components/EditStoreModal";
 import Link from "next/link";
 import { reviewService, produtoService, lojaService } from "@/services/api";
@@ -61,6 +62,7 @@ export default function PerfilPage() {
   const [showEditModal, setShowEditModal] = useState(false);
   const [showPasswordModal, setShowPasswordModal] = useState(false);
   const [showAddStoreModal, setShowAddStoreModal] = useState(false);
+  const [showAddProductModal, setShowAddProductModal] = useState(false);
   const [showEditStoreModal, setShowEditStoreModal] = useState(false);
   const [selectedStore, setSelectedStore] = useState<Loja | null>(null);
   const [userProducts, setUserProducts] = useState<Produto[]>([]);
@@ -264,9 +266,12 @@ export default function PerfilPage() {
                   <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
                 </svg>
                 <p>Você ainda não cadastrou nenhum produto</p>
-                <Link href="/ver_mais" className="empty-state-btn">
+                <button 
+                  className="empty-state-btn"
+                  onClick={() => setShowAddProductModal(true)}
+                >
                   Adicionar produto
-                </Link>
+                </button>
               </div>
             )}
           </div>
@@ -419,6 +424,14 @@ export default function PerfilPage() {
           onSuccess={handleStoreSuccess}
         />
       )}
+
+      {/* Modal de Adicionar Produto */}
+      <AddProductModal
+        isOpen={showAddProductModal}
+        onClose={() => setShowAddProductModal(false)}
+        stores={userStores}
+        onSuccess={handleStoreSuccess}
+      />
 
       {/* Modal de Editar Loja */}
       {selectedStore && (
