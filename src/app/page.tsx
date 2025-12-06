@@ -36,13 +36,14 @@ export default function HomePage() {
               title={cat}
               category={cat}
               items={produtosDaCategoria}
+              hrefBase="/produtos-fake"
             />
           </section>
         );
       })}
 
       <section className="store-carousel">
-        <StoresCarousel />
+        <StoresCarousel hrefBase="/lojas-fake" moreHref="/ver_mais_lojas" />
       </section>
     </main>
   );

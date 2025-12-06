@@ -13,12 +13,14 @@ type StoresCatalogProps = {
   stores: Store[];
   title?: string;
   itemsPerPage?: number;
+  hrefBase?: string;
 };
 
 export default function StoresCatalog({
   stores,
   title = "Lojas",
   itemsPerPage = 12,
+  hrefBase = "/lojas",
 }: StoresCatalogProps) {
   const [search, setSearch] = useState("");
   const [selectedCats, setSelectedCats] = useState<StoreCategory[]>([]);
@@ -82,7 +84,7 @@ export default function StoresCatalog({
       <section className="stores-grid">
         {visible.length > 0 ? (
           visible.map((store) => (
-            <StoreCard key={store.id} store={store} variant="card" />
+            <StoreCard key={store.id} store={store} variant="card" hrefBase={hrefBase} />
           ))
         ) : (
           <p className="no-results">Nenhuma loja encontrada.</p>

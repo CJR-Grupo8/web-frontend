@@ -23,7 +23,7 @@ export default function VerMaisLojasPage() {
 
       {/* CATÁLOGO DE LOJAS */}
       <section style={{ padding: "3rem 8%" }}>
-        <StoresCatalog stores={STORES} title="Lojas" />
+        <StoresCatalog stores={STORES} title="Lojas" hrefBase="/lojas-fake" />
       </section>
     </main>
   );
