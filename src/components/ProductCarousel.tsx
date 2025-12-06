@@ -23,6 +23,7 @@ export default function ProductCarousel({
     dragFree: true,
   });
 
+  // Garante slug válido
   const categorySlug = category ? CATEGORY_TO_SLUG[category] : null;
 
   return (
@@ -34,7 +35,8 @@ export default function ProductCarousel({
           {category && categorySlug && (
             <>
               <span className="home-block__title-em">em</span>
-              {/* CLICAR EM “Mercado” → /ver_mais/mercado */}
+
+              {/* Link para /ver_mais/[category] */}
               <Link
                 href={`/ver_mais/${categorySlug}`}
                 className="home-block__title-category"
@@ -45,7 +47,7 @@ export default function ProductCarousel({
           )}
         </h2>
 
-        {/* BOTÃO “ver mais” → /ver_mais/mercado */}
+        {/* Botão “ver mais” → se não tiver categoria, vai para /ver_mais */}
         <Link
           href={categorySlug ? `/ver_mais/${categorySlug}` : "/ver_mais"}
           className="home-block__action"

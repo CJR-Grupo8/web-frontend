@@ -4,7 +4,7 @@
   min-height: 100vh;
   background-color: #ffffff;
   color: #1a1a1a;
-  font-family: 'Poppins', sans-serif;
+  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
 }
 
 .home-block__title {

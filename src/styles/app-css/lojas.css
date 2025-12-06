@@ -1,11 +1,12 @@
 .store-page-container {
   width: 100%;
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
   background-color: #000; 
   min-height: 100vh;
   color: #fff;
 }
 
+/* --- HERO (Banner) --- */
 .store-hero {
   position: relative;
   width: 100%;
@@ -63,7 +64,7 @@
 .store-rating-section {
   background-color: #000;
   text-align: center;
-  padding: 2rem 1rem;
+  padding: 2rem 0;
 }
 
 .store-rating__title {
@@ -99,23 +100,50 @@
   padding-right: 2rem;
 }
 
-.store-comments-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 1.5rem;
-  padding: 2rem;
+/* --- CARROSSEL DE COMENTÁRIOS (EMBLA) --- */
+
+/* 1. A Janela (Viewport) */
+.store-comments-viewport {
+  overflow: hidden;
+  width: 100%;
   max-width: 1280px;
   margin: 0 auto;
+  padding: 2rem 1.5rem;
+  cursor: grab;
 }
 
+.store-comments-viewport:active {
+  cursor: grabbing;
+}
+
+/* 2. O Container (A trilha que se move) */
+.store-comments-container {
+  display: flex; /* Garante que fiquem lado a lado */
+  flex-direction: row;
+  gap: 1.5rem;
+  height: auto; 
+}
+
+/* 3. O Slide (Wrapper do Card) */
+.store-comments-slide {
+  flex: 0 0 350px; /* Largura fixa do slide */
+  min-width: 0;
+}
+
+/* 4. O Card (Visual) */
 .comment-card {
   background-color: #F3F0E9; 
   color: #111;
   padding: 1.5rem;
   border-radius: 20px; 
   display: flex;
+  flex-direction: row;
   align-items: center;
   gap: 1rem;
+  
+  height: 100%; 
+  user-select: none;
+  box-sizing: border-box;
 }
 
 .comment-avatar {
@@ -123,6 +151,12 @@
   height: 50px;
   border-radius: 50%;
   object-fit: cover;
+  pointer-events: none;
+  flex-shrink: 0;
+}
+
+.comment-info {
+  flex: 1;
 }
 
 .comment-info h4 {
@@ -136,6 +170,7 @@
   font-size: 0.9rem;
 }
 
+/* --- BOTOES EDICAO --- */
 .store-edit-buttons {
   position: absolute;
   top: 1.5rem;   
@@ -173,4 +208,41 @@
 
 .store-edit-buttons .add-btn {
   background-color: #8B5CF6; 
+}
+
+/* --- PRODUTOS --- */
+.store-products-section {
+  background-color: #F8F6F0;
+  color: #111; 
+  padding-top: 3rem;
+  padding-bottom: 4rem;
+  width: 100%;
+}
+
+.store-products-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  max-width: 1280px;
+  margin: 0 auto 1.5rem auto;
+  padding: 0 1.5rem;
+}
+
+.store-products-header h2 {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #000;
+  margin: 0;
+}
+
+.store-products-header h2 span {
+  font-size: 1rem;
+  font-weight: 400;
+  margin-left: 0.5rem;
+}
+
+.store-products-header a {
+  color: #6D28D9; 
+  text-decoration: none;
+  font-size: 0.9rem;
 }
