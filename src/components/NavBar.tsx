@@ -53,7 +53,7 @@ export default function NavBar() {
             <Link href="/ver_mais" className="bag-icon" title="Ver Mais Produtos.">
               <FaShoppingBag />
             </Link>
-            <Link href="/ver_mais_lojas" className="store-icon" title="Ver Mais Lojas.">
+            <Link href="/lojas" className="store-icon" title="Ver Mais Lojas.">
               <FaStore />
             </Link>
             <Link 

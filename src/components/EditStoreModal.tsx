@@ -13,7 +13,7 @@ interface EditStoreModalProps {
   storeName: string;
   storeDescription?: string;
   storeCategoria?: string;
-  onSuccess?: () => void;
+  onSuccess?: (newStoreName?: string) => void;
 }
 
 const CATEGORIES = [
@@ -83,6 +83,8 @@ export default function EditStoreModal({
       return;
     }
 
+    const nomeChanged = nome.trim() !== storeName;
+
     setLoading(true);
     try {
       await lojaService.update(storeId, {
@@ -93,7 +95,10 @@ export default function EditStoreModal({
 
       alert("Loja atualizada com sucesso!");
 
-      if (onSuccess) onSuccess();
+      if (onSuccess) {
+        // Se o nome mudou, passar o novo nome para redirecionar
+        onSuccess(nomeChanged ? nome.trim() : undefined);
+      }
       onClose();
     } catch (error: any) {
       console.error(error);

@@ -40,6 +40,16 @@ apiClient.interceptors.response.use(
 );
 
 export const userService = {
+  // Buscar usuário por ID (privado - requer autenticação)
+  findOne: async (id: number | string) => {
+    return apiClient.get(`/users/${id}`);
+  },
+
+  // Buscar usuário por username (público)
+  findByUsername: async (username: string) => {
+    return apiClient.get(`/users/username/${username}`);
+  },
+
   // Atualizar perfil
   updateProfile: async (id: number | string, data: any) => {
     return apiClient.patch(`/users/${id}`, data); 
